@@ -9,11 +9,8 @@
     </parent>
     <artifactId>uv-dataunit-files</artifactId>
     <name>UV_DataUnit_Files</name>
+    <version>${uv.dataunit.files.version}</version>
     <description>Definition of FilesDataUnit.</description>
-
-    <properties>
-        <uv.dpuapi.version>1.0.0</uv.dpuapi.version>
-    </properties>
 
     <dependencies>
 

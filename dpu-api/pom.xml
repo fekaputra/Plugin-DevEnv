@@ -8,6 +8,7 @@
     </parent>
     <artifactId>uv-dpu-api</artifactId>
     <name>UV_DpuApi</name>
+    <version>${uv.dpuapi.version}</version>
     <description></description>
 
     <properties>
