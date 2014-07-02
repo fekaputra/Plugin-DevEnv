@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.unifiedviews</groupId>
-    <artifactId>uv_plugin_devenv</artifactId>
+    <artifactId>uv-plugin-devenv</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>UV_PluginDevEnv</name>
@@ -44,7 +44,8 @@
         <module>dataunit-files</module>
         <module>dataunit-rdf</module>
         <!-- api helpers and support libraries -->
-        <module>dpu-api-helpers</module>
+        <!-- uncomment this when module defined: 
+            module>dpu-api-helpers</module-->
     </modules>
 
     <scm>
