@@ -16,24 +16,6 @@ import java.lang.annotation.Target;
 public interface DataUnit {
 
     /**
-     * Types of DataUnit interface implementation.
-     *
-     * @author Petyr
-     */
-    public enum Type {
-
-        /**
-         * General RDF type, the repository will be selected by the application.
-         */
-        RDF,
-        /**
-         * Represent file data unit.
-         */
-        FILE,
-        FILES
-    }
-
-    /**
      * Used to announced that given
      * {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit} should be used as
      * input. Can not be use together with {@link AsOutput}. If DPU
@@ -98,33 +80,18 @@ public interface DataUnit {
         public String description() default "";
 
         /**
-         * @return If it's false and the output is not used then the warning
-         * should be shown to the user.
+         * @return If true that output can be null if not used by other dpu.
          */
         public boolean optional() default false;
 
     }
 
-    /**
-     * Return type of data unit interface implementation.
-     *
-     * @return DataUnit type.
-     */
-    DataUnit.Type getType();
 
     /**
-     * Check my type against provided.
-     *
-     * @param dataUnitType
-     * @return True if equals
+     * 
+     * @return Uri that identifies this dataunit.
      */
-    boolean isType(DataUnit.Type dataUnitType);
+    public String getUri();
+    
 
-    /**
-     * Return dataUnit's URI. The DataUnit URI should be set in constructor.
-     * Otherwise it should be immutable.
-     *
-     * @return String name of data unit.
-     */
-    public String getDataUnitName();
 }
