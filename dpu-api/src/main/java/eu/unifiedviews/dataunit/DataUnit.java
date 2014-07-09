@@ -110,4 +110,5 @@ public interface DataUnit {
         public Set<URI> getGraphnames() throws DataUnitException;
     }
 
+    DataUnit.Metadata getMetadata() throws DataUnitException;
 }
