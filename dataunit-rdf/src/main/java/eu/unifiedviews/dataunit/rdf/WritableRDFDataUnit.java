@@ -2,6 +2,8 @@ package eu.unifiedviews.dataunit.rdf;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import org.openrdf.model.URI;
+import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
 
 public interface WritableRDFDataUnit extends RDFDataUnit {
 
@@ -12,6 +14,15 @@ public interface WritableRDFDataUnit extends RDFDataUnit {
 
     @Override
     WritableRDFDataUnit.WritableGraphIteration getGraphIteration() throws DataUnitException;
+
+    /**
+     * Returns connection to repository.
+     *
+     * @return Connection to repository.
+     * @throws RepositoryException If something went wrong during the creation
+     * of the Connection.
+     */
+    public RepositoryConnection getWriteConnection() throws RepositoryException;
 
     /**
      * Get name of the context which is considered to be owned by data unit and
