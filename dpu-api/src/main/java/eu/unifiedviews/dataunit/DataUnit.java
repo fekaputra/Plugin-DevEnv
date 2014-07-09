@@ -84,8 +84,7 @@ public interface DataUnit {
         public String description() default "";
 
         /**
-         * @return If it's false and the output is not used then the warning
-         * should be shown to the user.
+         * @return If true that output can be null if not used by other dpu.
          */
         public boolean optional() default false;
 
