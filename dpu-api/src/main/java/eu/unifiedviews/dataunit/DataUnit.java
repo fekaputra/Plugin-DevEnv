@@ -4,6 +4,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Set;
+
+import org.openrdf.model.URI;
+import org.openrdf.repository.RepositoryConnection;
 
 /**
  * Basic data unit interface. The data unit should be passed in context between
@@ -18,9 +22,9 @@ public interface DataUnit {
     /**
      * Used to announced that given
      * {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit} should be used as
-     * input. Can not be use together with {@link AsOutput}. If DPU
-     * contains more than one output the name should be provided for all the
-     * output data units. Use only letters [a-z, A-Z], numbers [0-9] and '_' in
+     * input. Can not be use together with {@link AsOutput}. If DPU contains
+     * more than one output the name should be provided for all the output data
+     * units. Use only letters [a-z, A-Z], numbers [0-9] and '_' in
      * {@link #name()}.Usage of other chars is not allowed.
      *
      * @author Petyr
@@ -56,9 +60,9 @@ public interface DataUnit {
     /**
      * Used to announced that given
      * {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit} should be used as
-     * output. Can not be use together with {@link AsInput}. If DPU
-     * contains more than one output the name should be provided for all the
-     * output data units. Use only letters [a-z, A-Z], numbers [0-9] and '_' in
+     * output. Can not be use together with {@link AsInput}. If DPU contains
+     * more than one output the name should be provided for all the output data
+     * units. Use only letters [a-z, A-Z], numbers [0-9] and '_' in
      * {@link #name()}.Usage of other chars is not allowed.
      *
      * @author Petyr
@@ -87,11 +91,24 @@ public interface DataUnit {
 
     }
 
-    /**
-     * Return dataUnit's URI. The DataUnit URI should be set in constructor.
-     * Otherwise it should be immutable.
-     *
-     * @return String name of data unit.
-     */
-    public String getDataUnitName();
+    interface Metadata {
+
+        /**
+         * Returns connection to meta data repository.
+         *
+         * @return connection to meta data repository.
+         * @throws eu.unifiedviews.dataunit.DataUnitException If something went
+         * wrong during the creation of the Connection.
+         */
+        public RepositoryConnection getConnection() throws DataUnitException;
+
+        /**
+         * Returns URI representation of graph where RDF data are stored.
+         *
+         * @return URI representation of graph where meta data are stored.
+         * @throws eu.unifiedviews.dataunit.DataUnitException
+         */
+        public Set<URI> getGraphnames() throws DataUnitException;
+    }
+
 }
