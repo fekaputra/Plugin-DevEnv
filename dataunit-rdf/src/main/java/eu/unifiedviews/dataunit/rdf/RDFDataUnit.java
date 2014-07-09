@@ -2,8 +2,6 @@ package eu.unifiedviews.dataunit.rdf;
 
 import eu.unifiedviews.dataunit.DataUnit;
 import eu.unifiedviews.dataunit.DataUnitException;
-import java.util.List;
-import java.util.Map;
 
 import java.util.Set;
 import org.openrdf.model.URI;
@@ -21,9 +19,9 @@ public interface RDFDataUnit extends DataUnit {
     interface GraphEntry {
 
         /**
-         * Returns shared connection to repository.
+         * Returns connection to repository.
          *
-         * @return Shared connection to repository.
+         * @return Connection to repository.
          * @throws RepositoryException If something went wrong during the
          * creation of the Connection.
          */
