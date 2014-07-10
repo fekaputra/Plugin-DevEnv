@@ -12,7 +12,7 @@ public interface WritableRDFDataUnit extends RDFDataUnit {
      * @return
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
-    URI getWriteGraph() throws DataUnitException;
+    URI getWriteDataGraph() throws DataUnitException;
 
     /**
      * Add all data from given DataUnit into this DataUnit. The method must not
