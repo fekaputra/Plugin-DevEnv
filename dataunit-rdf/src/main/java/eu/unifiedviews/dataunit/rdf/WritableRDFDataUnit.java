@@ -2,27 +2,8 @@ package eu.unifiedviews.dataunit.rdf;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import org.openrdf.model.URI;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
 
 public interface WritableRDFDataUnit extends RDFDataUnit {
-
-    interface WritableGraphIteration extends RDFDataUnit.GraphIteration {
-
-        public void remove() throws DataUnitException;
-    }
-
-    @Override
-    WritableRDFDataUnit.WritableGraphIteration getGraphIteration() throws DataUnitException;
-
-    /**
-     * Returns connection to repository.
-     *
-     * @return Connection to repository.
-     * @throws RepositoryException If something went wrong during the creation
-     * of the Connection.
-     */
-    public RepositoryConnection getWriteConnection() throws RepositoryException;
 
     /**
      * Get name of the context which is considered to be owned by data unit and
@@ -39,6 +20,7 @@ public interface WritableRDFDataUnit extends RDFDataUnit {
      *
      * @param dataunit {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} to add
      * from
+     * @throws eu.unifiedviews.dataunit.DataUnitException
      * @throws IllegalArgumentException if some property of an element of the
      * specified dataunit prevents it from being added to this dataunit
      */

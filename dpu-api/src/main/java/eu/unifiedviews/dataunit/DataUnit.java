@@ -89,26 +89,4 @@ public interface DataUnit {
         public boolean optional() default false;
 
     }
-
-    interface Metadata {
-
-        /**
-         * Returns connection to meta data repository.
-         *
-         * @return connection to meta data repository.
-         * @throws eu.unifiedviews.dataunit.DataUnitException If something went
-         * wrong during the creation of the Connection.
-         */
-        public RepositoryConnection getConnection() throws DataUnitException;
-
-        /**
-         * Returns URI representation of graph where RDF data are stored.
-         *
-         * @return URI representation of graph where meta data are stored.
-         * @throws eu.unifiedviews.dataunit.DataUnitException
-         */
-        public Set<URI> getGraphnames() throws DataUnitException;
-    }
-
-    DataUnit.Metadata getMetadata() throws DataUnitException;
 }

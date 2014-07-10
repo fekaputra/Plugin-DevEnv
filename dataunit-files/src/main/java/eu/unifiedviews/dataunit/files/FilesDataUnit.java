@@ -1,11 +1,10 @@
 package eu.unifiedviews.dataunit.files;
 
-import eu.unifiedviews.dataunit.DataUnit;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.DataUnitException;
 
-public interface FilesDataUnit extends DataUnit {
+public interface FilesDataUnit extends MetadataDataUnit {
 
-    public static final String PREDICATE_SYMBOLIC_NAME = "http://linked.opendata.cz/ontology/odcs/dataunit/files/symbolicName";
     public static final String PREDICATE_FILE_URI = "http://linked.opendata.cz/ontology/odcs/dataunit/files/fileURI";
 
     interface FileEntry {
