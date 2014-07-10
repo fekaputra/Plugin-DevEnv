@@ -3,8 +3,6 @@ package eu.unifiedviews.dataunit.rdf;
 import java.util.Set;
 
 import org.openrdf.model.URI;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
