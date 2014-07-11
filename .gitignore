@@ -1,3 +1,19 @@
-/dpu-api/target/
-/dataunit-files/target/
-/dataunit-rdf/target/
+
+# Eclipse Project Files #
+.project
+.settings/
+.classpath
+
+# Netbeans files #
+nbactions.xml
+nb-configuration.xml
+
+# Build Directories #
+target/
+bin/
+
+# Package Files #
+*.war
+*.jar
+*.ear
+
