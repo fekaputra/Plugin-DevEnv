@@ -7,7 +7,7 @@ public interface FilesDataUnit extends MetadataDataUnit {
 
     public static final String PREDICATE_FILE_URI = "http://linked.opendata.cz/ontology/odcs/dataunit/files/fileURI";
 
-    interface FileEntry {
+    interface Entry {
 
         /**
          *
@@ -26,11 +26,11 @@ public interface FilesDataUnit extends MetadataDataUnit {
         String getFileURIString() throws DataUnitException;
     }
 
-    interface FileIteration extends AutoCloseable {
+    interface Iteration extends AutoCloseable {
 
         public boolean hasNext() throws DataUnitException;
 
-        public FilesDataUnit.FileEntry next() throws DataUnitException;
+        public FilesDataUnit.Entry next() throws DataUnitException;
 
         @Override
         public void close() throws DataUnitException;
@@ -42,5 +42,5 @@ public interface FilesDataUnit extends MetadataDataUnit {
      * @return
      * @throws DataUnitException
      */
-    FilesDataUnit.FileIteration getFileIteration() throws DataUnitException;
+    FilesDataUnit.Iteration getFileIteration() throws DataUnitException;
 }

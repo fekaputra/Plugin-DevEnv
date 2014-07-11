@@ -4,7 +4,7 @@ import eu.unifiedviews.dataunit.DataUnitException;
 
 public interface WritableFilesDataUnit extends FilesDataUnit {
 
-    interface WritableFileIteration extends FilesDataUnit.FileIteration {
+    interface WritableFileIteration extends FilesDataUnit.Iteration {
         public void remove() throws DataUnitException;
     }
     
