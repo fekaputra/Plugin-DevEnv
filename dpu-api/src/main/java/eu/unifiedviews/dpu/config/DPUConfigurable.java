@@ -32,6 +32,6 @@ public interface DPUConfigurable<C extends DPUConfig> {
      * @throws DPUConfigException
      *             If the configuration can't be serialized.
      */
-    String getConf() throws DPUConfigException;
+    String getDefaultConfiguration() throws DPUConfigException;
 
 }
