@@ -29,4 +29,34 @@ public interface MetadataDataUnit extends DataUnit {
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
     Set<URI> getMetadataGraphnames() throws DataUnitException;
+
+    interface Entry {
+
+        /**
+         *
+         * @return Symbolic name under which the file is stored inside this data
+         * unit.
+         * @throws eu.unifiedviews.dataunit.DataUnitException
+         */
+        String getSymbolicName() throws DataUnitException;
+    }
+
+    interface Iteration extends AutoCloseable {
+
+        boolean hasNext() throws DataUnitException;
+
+        MetadataDataUnit.Entry next() throws DataUnitException;
+
+        @Override
+        void close() throws DataUnitException;
+    }
+
+    /**
+     * List the metadata.
+     *
+     * @return
+     * @throws DataUnitException
+     */
+    MetadataDataUnit.Iteration getIteration() throws DataUnitException;
+
 }
