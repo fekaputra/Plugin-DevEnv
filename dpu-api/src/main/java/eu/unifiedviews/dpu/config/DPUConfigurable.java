@@ -1,8 +1,5 @@
 package eu.unifiedviews.dpu.config;
 
-import eu.unifiedviews.dpu.config.DPUConfigException;
-import eu.unifiedviews.dpu.config.DPUConfig;
-
 /**
  * Interface describes object that can be configured by using configuration.
  * 
