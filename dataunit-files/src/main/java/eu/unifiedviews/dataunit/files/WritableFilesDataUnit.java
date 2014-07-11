@@ -3,13 +3,6 @@ package eu.unifiedviews.dataunit.files;
 import eu.unifiedviews.dataunit.DataUnitException;
 
 public interface WritableFilesDataUnit extends FilesDataUnit {
-
-    interface WritableFileIteration extends FilesDataUnit.Iteration {
-        public void remove() throws DataUnitException;
-    }
-    
-    @Override
-    WritableFilesDataUnit.WritableFileIteration getFileIteration() throws DataUnitException;
     
     /**
      * Get base URI (as string) where all new files should be written (only when used as output data unit).
@@ -30,7 +23,7 @@ public interface WritableFilesDataUnit extends FilesDataUnit {
      * @throws DataUnitException
      */
     void addExistingFile(String symbolicName, String existingFileURIString) throws DataUnitException;
-
+    
     /**
      * Generates unique file under the getBaseURIString().
      * Returns the newly generated full file path URI to work with.

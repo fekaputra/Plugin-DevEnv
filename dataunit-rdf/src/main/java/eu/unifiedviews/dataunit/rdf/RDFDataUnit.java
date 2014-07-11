@@ -15,6 +15,15 @@ import eu.unifiedviews.dataunit.MetadataDataUnit;
  */
 public interface RDFDataUnit extends MetadataDataUnit {
 
+    interface Entry extends MetadataDataUnit.Entry {
+        URI getDataGraphname() throws DataUnitException;
+    }
+    
+    interface Iteration extends MetadataDataUnit.Iteration {
+        @Override
+        public RDFDataUnit.Entry next() throws DataUnitException;
+    }
+    
     /**
      * Returns URI representation of graph where RDF data are stored.
      *

@@ -5,17 +5,9 @@ import eu.unifiedviews.dataunit.DataUnitException;
 
 public interface FilesDataUnit extends MetadataDataUnit {
 
-    public static final String PREDICATE_FILE_URI = "http://linked.opendata.cz/ontology/odcs/dataunit/files/fileURI";
+    static final String PREDICATE_FILE_URI = "http://linked.opendata.cz/ontology/odcs/dataunit/files/fileURI";
 
-    interface Entry {
-
-        /**
-         *
-         * @return Symbolic name under which the file is stored inside this data
-         * unit.
-         * @throws eu.unifiedviews.dataunit.DataUnitException
-         */
-        String getSymbolicName() throws DataUnitException;
+    interface Entry extends MetadataDataUnit.Entry {
 
         /**
          *
@@ -26,14 +18,10 @@ public interface FilesDataUnit extends MetadataDataUnit {
         String getFileURIString() throws DataUnitException;
     }
 
-    interface Iteration extends AutoCloseable {
-
-        public boolean hasNext() throws DataUnitException;
-
-        public FilesDataUnit.Entry next() throws DataUnitException;
+    interface Iteration extends MetadataDataUnit.Iteration {
 
         @Override
-        public void close() throws DataUnitException;
+        FilesDataUnit.Entry next() throws DataUnitException;
     }
 
     /**
@@ -42,5 +30,5 @@ public interface FilesDataUnit extends MetadataDataUnit {
      * @return
      * @throws DataUnitException
      */
-    FilesDataUnit.Iteration getFileIteration() throws DataUnitException;
+    FilesDataUnit.Iteration getIteration() throws DataUnitException;
 }
