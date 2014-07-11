@@ -27,7 +27,7 @@ public interface DataUnit {
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
-    public @interface AsInput {
+    @interface AsInput {
 
         /**
          * Name which identify input. Name is obligatory.
@@ -35,13 +35,13 @@ public interface DataUnit {
          *
          * @return Name of {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit}.
          */
-        public String name();
+        String name();
 
         /**
          * @return False the execution failed if there is no suitable
          * {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit} that can be used.
          */
-        public boolean optional() default false;
+        boolean optional() default false;
 
         /**
          * Return description that will be presented to the user.
@@ -49,7 +49,7 @@ public interface DataUnit {
          * @return {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit}'s
          * description
          */
-        public String description() default "";
+        String description() default "";
 
     }
 
@@ -65,24 +65,24 @@ public interface DataUnit {
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
-    public @interface AsOutput {
+    @interface AsOutput {
 
         /**
          * @return Name of output
          * {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit}.
          */
-        public String name();
+        String name();
 
         /**
          * @return {@link cz.cuni.mff.xrg.odcs.commons.data.DataUnit}'s
          * description will be visible to the user.
          */
-        public String description() default "";
+        String description() default "";
 
         /**
          * @return If true that output can be null if not used by other dpu.
          */
-        public boolean optional() default false;
+        boolean optional() default false;
 
     }
 }
