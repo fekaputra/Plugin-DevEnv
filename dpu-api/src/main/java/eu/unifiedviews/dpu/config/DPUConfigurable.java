@@ -7,7 +7,7 @@ package eu.unifiedviews.dpu.config;
  * @param <C>
  *            Configuration object that carries the configuration.
  */
-public interface DPUConfigurable<C extends DPUConfig> {
+public interface DPUConfigurable {
 
     /**
      * Deserialize given configuration and then use it to
