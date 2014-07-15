@@ -1,92 +1,77 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>eu.unifiedviews</groupId>
-        <artifactId>uv-plugin-devenv</artifactId>
-        <version>1.0.0</version>
-    </parent>
-    <artifactId>uv-dpu-api</artifactId>
-    <name>UV_DpuApi</name>
-    <version>${uv.dpuapi.version}</version>
-    <description></description>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>eu.unifiedviews</groupId>
+	<artifactId>uv-dpu-api</artifactId>
+	<version>1.0.0</version>
+	<packaging>bundle</packaging>
 
-    <properties>
-        <slf4j.version>1.7.5</slf4j.version>
-    </properties>
+	<name>UV_DpuApi</name>
+	<description></description>
 
-    <repositories>
-        <repository>
-            <id>JBoss Thirdparty Releases</id>
-            <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
-        </repository>
-    </repositories>
+	<properties>
+		<project.java.version>1.7</project.java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-    <dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-model</artifactId>
+			<version>2.7.11</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-repository-api</artifactId>
+			<version>2.7.11</version>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
 
-        <dependency> <!-- JUnit dependency -->
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
+	<!-- define license -->
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License, Version 3</name>
+			<url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+			<distribution>repo</distribution>
+			<!-- https://maven.apache.org/pom.html#Licenses -->
+		</license>
+	</licenses>
 
-        <dependency> <!-- slf4j -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+	<!-- add license from LICENSE.md to the generated JAR file -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${project.java.version}</source>
+						<target>${project.java.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 
-        <dependency> <!-- bridge from log4j to slf4j -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
 
-        <!-- Bridge from java.uttil.logging http://www.slf4j.org/legacy.html: j.u.l.
-        to SLF4J translation can seriously increase the cost of disabled logging
-        statements (60 fold or 6000%) and measurably impact the performance of enabled
-        log statements (20% overall increase). -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jul-to-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-model</artifactId>
-            <version>2.7.11</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-repository-api</artifactId>
-            <version>2.7.11</version>
-            <type>jar</type>
-        </dependency>
-    </dependencies>
-
-    <!-- define license -->
-    <licenses>
-        <license>
-            <name>GNU Lesser General Public License, Version 3</name>
-            <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
-            <distribution>repo</distribution>
-            <!-- https://maven.apache.org/pom.html#Licenses -->
-        </license>
-    </licenses>
-
-    <!-- add license from LICENSE.md to the generated JAR file -->
-    <build>
-        <resources>
-            <resource>
-                <directory>${basedir}</directory>
-                <!-- this is default dir-->
-                <includes>
-                    <include>LICENSE.md</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
+		<resources>
+			<resource>
+				<directory>${basedir}</directory>
+				<!-- this is default dir -->
+				<includes>
+					<include>LICENSE.md</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
 
 </project>
