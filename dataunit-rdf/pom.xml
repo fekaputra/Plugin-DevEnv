@@ -55,9 +55,9 @@
 				<version>2.3.7</version>
 				<extensions>true</extensions>
 				<configuration>
-				<instructions>
-				<Import-Package>eu.unifiedviews.dataunit;provide:=true,*</Import-Package>
-				</instructions>
+					<instructions>
+						<Import-Package>eu.unifiedviews.dataunit;provide:=true,*</Import-Package>
+					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -44,6 +44,7 @@
     <modules>
         <!-- commons -->
         <module>dpu-api</module>
+        <module>dpu-api-helpers</module>
         <!-- dataunits -->
         <module>dataunit-files</module>
         <module>dataunit-rdf</module>

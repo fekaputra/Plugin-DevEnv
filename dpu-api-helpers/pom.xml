@@ -2,42 +2,48 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews</groupId>
-	<artifactId>uv-dpu-api</artifactId>
+	<artifactId>uv-dpu-api-helpers</artifactId>
 	<version>1.0.0</version>
 	<packaging>bundle</packaging>
-
-	<name>UV_DpuApi</name>
-	<description></description>
 
 	<properties>
 		<project.java.version>1.7</project.java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<vaadin.version>7.1.8</vaadin.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-model</artifactId>
-			<version>2.7.11</version>
-			<type>jar</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
+		<dependency> <!-- dpi-api project -->
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dpu-api</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-repository-api</artifactId>
-			<version>2.7.11</version>
-			<type>jar</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-server</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency> <!-- xml object de-serialization -->
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency> <!-- mocking for testing -->
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.4</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -68,10 +74,26 @@
 
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*SysTest.java</exclude>
+						<exclude>**/*DoesntPassTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.3.7</version>
 				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Import-Package>eu.unifiedviews.dataunit;provide:=true,*</Import-Package>
+					</instructions>
+				</configuration>
 			</plugin>
 		</plugins>
 
