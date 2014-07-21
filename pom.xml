@@ -12,45 +12,20 @@
     <properties>
         <!-- specify java build version for commons?, backend and frontend -->
         <project.java.version>1.7</project.java.version>
-        <!-- define used vaadin version
-            !!! do not forget to update the version for OSGI's package export
-        -->
-        <vaadin.version>7.1.8</vaadin.version>
-        <!-- the minimal required vaadin version
-            The lowest Vaadin version accepted by DPUs.
-        -->
-        <vaadin.version.min>7.1.8</vaadin.version.min>
-        <!-- max vaadin version accepted be DPUs
-            The highest Vaadin version accepted by DPUs.
-        -->
-        <vaadin.version.max>8.0.0</vaadin.version.max>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- define output dirs -->
-        <project.output.lib>target/lib/</project.output.lib>
-
-        <uv.dpuapi.version>1.0.0</uv.dpuapi.version>
-        <uv.dataunit.files.version>1.0.0</uv.dataunit.files.version>
-        <uv.dataunit.rdf.version>1.0.0</uv.dataunit.rdf.version>
-
-        <skipTests>false</skipTests>
- 
-        <!-- other third party libraries versions -->
-        <logback.version>1.0.13</logback.version>
     </properties>
 
     <modules>
         <!-- commons -->
         <module>dpu-api</module>
+        <!-- api helpers and support libraries -->
         <module>dpu-api-helpers</module>
         <!-- dataunits -->
         <module>dataunit-files</module>
         <module>dataunit-rdf</module>
-        <!-- api helpers and support libraries -->
-        <!-- uncomment this when module defined: 
-            module>dpu-api-helpers</module-->
+        <!-- dataunit helpers and support libraries -->
+        <module>dataunit-helpers</module>
     </modules>
 
     <scm>

@@ -2,14 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews</groupId>
-	<artifactId>uv-dpu-api-helpers</artifactId>
+	<artifactId>uv-dataunit-helpers</artifactId>
 	<version>1.0.0</version>
 	<packaging>bundle</packaging>
 
 	<properties>
 		<project.java.version>1.7</project.java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>7.1.8</vaadin.version>
 	</properties>
 
 	<dependencies>
@@ -19,31 +18,9 @@
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency> <!-- xml object de-serialization -->
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.4.5</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency> <!-- mocking for testing -->
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.8.4</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -91,7 +68,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Import-Package>eu.unifiedviews.dpu;provide:=true,eu.unifiedviews.dpu.config;provide:=true,*</Import-Package>
+						<Import-Package>eu.unifiedviews.dataunit;provide:=true,*</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
