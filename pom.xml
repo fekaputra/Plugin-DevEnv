@@ -17,14 +17,14 @@
 
     <modules>
         <!-- commons -->
-        <module>dpu-api</module>
+        <module>uv-dpu-api</module>
         <!-- api helpers and support libraries -->
-        <module>dpu-api-helpers</module>
+        <module>uv-dpu-api-helpers</module>
         <!-- dataunits -->
-        <module>dataunit-files</module>
-        <module>dataunit-rdf</module>
+        <module>uv-dataunit-files</module>
+        <module>uv-dataunit-rdf</module>
         <!-- dataunit helpers and support libraries -->
-        <module>dataunit-helpers</module>
+        <module>uv-dataunit-helpers</module>
     </modules>
 
     <scm>
