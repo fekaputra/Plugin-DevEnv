@@ -6,7 +6,6 @@
     <artifactId>uv-plugin-devenv</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>UV_PluginDevEnv</name>
     <description/>
 
     <properties>

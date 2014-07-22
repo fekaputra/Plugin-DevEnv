@@ -5,8 +5,6 @@
 	<artifactId>uv-dpu-api</artifactId>
 	<version>1.0.0</version>
 	<packaging>bundle</packaging>
-
-	<name>UV_DpuApi</name>
 	<description></description>
 
 	<properties>

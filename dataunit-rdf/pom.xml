@@ -6,8 +6,6 @@
 	<artifactId>uv-dataunit-rdf</artifactId>
 	<version>1.0.0</version>
 	<packaging>bundle</packaging>
-
-	<name>UV_DataUnit_RDF</name>
 	<description>Definition of RDFDataUnit.</description>
 
 	<properties>
