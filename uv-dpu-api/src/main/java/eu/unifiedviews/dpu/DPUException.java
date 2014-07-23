@@ -13,12 +13,7 @@ public class DPUException extends Exception {
      * 
      */
     private static final long serialVersionUID = 7553781737871929862L;
-
-    public DPUException() {
-        super();
-    }
-
-    /**
+     /**
      * @param cause
      *            Cause of the {@link DPUException}.
      */

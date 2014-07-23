@@ -2,17 +2,16 @@ package eu.unifiedviews.dpu.config;
 
 /**
  * Exception used in relation do DPU invalid configuration.
+ * Thrown by DPU to indicate invalid configuration to backend/frontend.
  * 
  * @author Petyr
  */
 public class DPUConfigException extends Exception {
 
     /**
-     * Create exception with default message.
+     * 
      */
-    public DPUConfigException() {
-        super("Invalid configuration.");
-    }
+    private static final long serialVersionUID = 9217632742130977047L;
 
     /**
      * @param cause

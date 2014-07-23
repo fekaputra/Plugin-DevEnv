@@ -2,6 +2,7 @@ package eu.unifiedviews.dataunit;
 
 /**
  * Base class for exceptions related to DataUnits.
+ * Thrown by backend to report problems with data units to DPU execution.
  * 
  * @author Petyr
  */

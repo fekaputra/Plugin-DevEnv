@@ -1,33 +1,28 @@
 package eu.unifiedviews.dpu.config;
 
 /**
- * Interface describes object that can be configured by using configuration.
+ * Interface describes object that can be configured by using configuration string.
  * 
  * @author Petyr
- * @param <C>
- *            Configuration object that carries the configuration.
  */
 public interface DPUConfigurable {
 
     /**
-     * Deserialize given configuration and then use it to
+     * Use given configuration string to
      * configure object. If the invalid configuration is given then {@link DPUConfigException} is thrown. For null the configuration
      * is left unchanged.
      * 
      * @param config
-     *            Serialized configuration.
-     * @throws DPUConfigException
+     *            configuration.
+     * @throws DPUConfigException to indicate invalid configuration
      */
     void configure(String config) throws DPUConfigException;
 
     /**
-     * Return serialized configuration object. If no configuration has
-     * been previously set by {@link #configure(java.lang.String) } then serialized default
-     * configuration should be returned.
+     * Return default configuration string.
      * 
-     * @return Serialized configuration.
-     * @throws DPUConfigException
-     *             If the configuration can't be serialized.
+     * @return configuration.
+     * @throws DPUConfigException to indicate that default configuration cannot be obtained
      */
     String getDefaultConfiguration() throws DPUConfigException;
 

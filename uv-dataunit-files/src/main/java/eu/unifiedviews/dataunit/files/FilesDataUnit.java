@@ -5,7 +5,7 @@ import eu.unifiedviews.dataunit.DataUnitException;
 
 public interface FilesDataUnit extends MetadataDataUnit {
 
-    static final String PREDICATE_FILE_URI = "http://linked.opendata.cz/ontology/odcs/dataunit/files/fileURI";
+    static final String PREDICATE_FILE_URI = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/FilesDataUnit/fileURI";
 
     interface Entry extends MetadataDataUnit.Entry {
 
