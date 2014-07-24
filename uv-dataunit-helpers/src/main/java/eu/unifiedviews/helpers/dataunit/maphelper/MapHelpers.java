@@ -63,6 +63,9 @@ public class MapHelpers {
 
         @Override
         public Map<String, String> getMap(String symbolicName, String mapName) throws DataUnitException {
+            if (true) {
+                return null;
+            }
             TupleQueryResult tupleQueryResult = null;
             Map<String, String> result = null;
             try {
