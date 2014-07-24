@@ -1,8 +1,9 @@
 package eu.unifiedviews.dataunit.files;
 
 import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
 
-public interface WritableFilesDataUnit extends FilesDataUnit {
+public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDataUnit {
     
     /**
      * Get base URI (as string) where all new files should be created (only when used as output data unit).

@@ -1,10 +1,11 @@
 package eu.unifiedviews.dataunit.rdf;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-
 import org.openrdf.model.URI;
 
-public interface WritableRDFDataUnit extends RDFDataUnit {
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+
+public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUnit {
 
     /**
      * Get name of the context which is considered to be owned by data unit and
