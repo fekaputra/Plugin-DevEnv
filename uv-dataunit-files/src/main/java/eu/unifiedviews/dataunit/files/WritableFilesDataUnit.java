@@ -9,7 +9,7 @@ public interface WritableFilesDataUnit extends FilesDataUnit {
      * @return base path URI where all new files should be created
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
-    String getBaseURIString() throws DataUnitException;
+    String getBaseFileURIString() throws DataUnitException;
 
     /**
      * Adds an existing file with supplied symbolic name to the data unit.

@@ -15,8 +15,10 @@ import eu.unifiedviews.dataunit.MetadataDataUnit;
  */
 public interface RDFDataUnit extends MetadataDataUnit {
 
+    static final String PREDICATE_DATAGRAPH_URI = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/RDFDataUnit/dataGraphURI";
+
     interface Entry extends MetadataDataUnit.Entry {
-        URI getDataGraphname() throws DataUnitException;
+        URI getDataGraphURI() throws DataUnitException;
     }
     
     interface Iteration extends MetadataDataUnit.Iteration {
