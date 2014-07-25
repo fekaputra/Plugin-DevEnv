@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews</groupId>
 	<artifactId>uv-dataunit-rdf</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<description>Definition of RDFDataUnit.</description>
 
@@ -17,7 +17,7 @@
 		<dependency> <!-- dpu-api project -->
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dpu-api</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews</groupId>
 	<artifactId>uv-dataunit-helpers</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<properties>
@@ -15,7 +15,7 @@
 		<dependency> <!-- dpi-api project -->
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dpu-api</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
