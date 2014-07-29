@@ -74,7 +74,7 @@ public class MetadataHelper {
         return result;
     }
 
-    private static String get(RepositoryConnection connection, Set<URI> uris,
+    public static String get(RepositoryConnection connection, Set<URI> uris,
             String symbolicName, String predicate) throws DataUnitException {
         String methodResult = null;
         TupleQueryResult result = null;
@@ -141,7 +141,7 @@ public class MetadataHelper {
         }
     }
 
-    private static void set(RepositoryConnection connection, URI uri,
+    public static void set(RepositoryConnection connection, URI uri,
             String symbolicName, String predicate, String object) throws DataUnitException {
         try {
             final ValueFactory valueFactory = connection.getValueFactory();
@@ -196,7 +196,7 @@ public class MetadataHelper {
         }
     }
 
-    private static void add(RepositoryConnection connection, URI uri,
+    public static void add(RepositoryConnection connection, URI uri,
             String symbolicName, String predicate, String object) throws DataUnitException {
         try {
             final ValueFactory valueFactory = connection.getValueFactory();
@@ -249,7 +249,7 @@ public class MetadataHelper {
      * @param uris
      * @throws DataUnitException
      */
-    static void dump(RepositoryConnection connection, Set<URI> uris)
+    public static void dump(RepositoryConnection connection, Set<URI> uris)
             throws DataUnitException {
         final StringBuilder message = new StringBuilder();
         message.append("\n\tGraphs: ");
