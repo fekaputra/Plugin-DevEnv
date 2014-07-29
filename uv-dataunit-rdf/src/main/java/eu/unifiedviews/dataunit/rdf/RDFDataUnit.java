@@ -27,14 +27,4 @@ public interface RDFDataUnit extends MetadataDataUnit {
     }
     
     RDFDataUnit.Iteration getIteration() throws DataUnitException;
-    
-    /**
-     * Returns URI representation of graph where RDF data are stored.
-     *
-     * @return URI representation of graph where RDF data are stored.
-     * @throws eu.unifiedviews.dataunit.DataUnitException
-     */
-    @Deprecated
-    public Set<URI> getDataGraphnames() throws DataUnitException;
-
 }
