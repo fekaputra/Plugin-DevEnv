@@ -25,16 +25,29 @@ public class VirtualPathHelpers {
     }
 
     public static String getVirtualPath(MetadataDataUnit filesDataUnit, String symbolicName) throws DataUnitException {
-        VirtualPathHelper helper = create(filesDataUnit);
-        String result = helper.getVirtualPath(symbolicName);
-        helper.close();
+        String result = null;
+        VirtualPathHelper helper = null;
+        try {
+            helper = create(filesDataUnit);
+            result = helper.getVirtualPath(symbolicName);
+        } finally {
+            if (helper != null) {
+                helper.close();
+            }
+        }
         return result;
     }
 
     public static void setVirtualPath(WritableMetadataDataUnit writableFilesDataUnit, String symbolicName, String virtualPath) throws DataUnitException {
-        VirtualPathHelper helper = create(writableFilesDataUnit);
-        helper.setVirtualPath(symbolicName, virtualPath);
-        helper.close();
+        VirtualPathHelper helper = null;
+        try {
+            helper = create(writableFilesDataUnit);
+            helper.setVirtualPath(symbolicName, virtualPath);
+        } finally {
+            if (helper != null) {
+                helper.close();
+            }
+        }
     }
 
     private class VirtualPathHelperImpl implements VirtualPathHelper {
