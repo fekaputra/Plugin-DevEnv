@@ -39,31 +39,4 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * @throws DataUnitException
      */
     String addNewFile(String symbolicName) throws DataUnitException;
-    
-    /**
-     * Generates unique file under the getBaseURIString().
-     * Returns the newly generated full file path URI to work with.
-     * It does create the file on the disk, but it does not add the file into the dataunit.
-     * Typical usage:
-     * {@code
-     * String htmlFileOutFilename = outputFileDataUnit.createFile();
-     * new HTMLWriter(new File(htmlFileOutFilename)).dumpMyData(data);
-     * outputFileDataUnit.addExistingFile("htmlOutput.html", htmlFileOutFilename);
-     * }
-     * @return URI (as string) of real location of the newly created file
-     * @throws DataUnitException
-     */
-    @Deprecated
-    String createFile() throws DataUnitException;
-
-    /**
-     * Same as {@link createFile}, but dataunit should try to create the name of newly created file to be
-     * similar to proposedSymbolicName (but still unique and filesystem-safe). For better debugging
-     * when browsing files on disk.
-     * @param proposedSymbolicName
-     * @return URI (as string) of real location of the newly created file
-     * @throws DataUnitException
-     */
-    @Deprecated
-    String createFile(String proposedSymbolicName) throws DataUnitException;
 }
