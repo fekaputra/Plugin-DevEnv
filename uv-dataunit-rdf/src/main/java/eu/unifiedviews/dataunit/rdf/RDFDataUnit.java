@@ -1,7 +1,5 @@
 package eu.unifiedviews.dataunit.rdf;
 
-import java.util.Set;
-
 import org.openrdf.model.URI;
 
 import eu.unifiedviews.dataunit.DataUnitException;
