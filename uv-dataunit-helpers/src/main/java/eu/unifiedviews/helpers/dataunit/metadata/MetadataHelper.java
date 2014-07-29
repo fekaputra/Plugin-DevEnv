@@ -22,9 +22,9 @@ import eu.unifiedviews.helpers.dataunit.dataset.CleverDataset;
  * 
  * @author Škoda Petr
  */
-public class Manipulator {
+public class MetadataHelper {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Manipulator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MetadataHelper.class);
 
     private static final String SYMBOLIC_NAME_BINDING = "symbolicName";
 
@@ -49,7 +49,7 @@ public class Manipulator {
             + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
             + " } ";
 
-    private Manipulator() {
+    private MetadataHelper() {
 
     }
 
