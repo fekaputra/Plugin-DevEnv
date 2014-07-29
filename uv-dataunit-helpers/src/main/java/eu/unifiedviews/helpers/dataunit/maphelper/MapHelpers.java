@@ -36,16 +36,30 @@ public class MapHelpers {
     }
 
     public static Map<String, String> getMap(MetadataDataUnit dataUnit, String symbolicName, String mapName) throws DataUnitException {
-        MapHelper helper = create(dataUnit);
-        Map<String, String> result = helper.getMap(symbolicName, mapName);
-        helper.close();
+        MapHelper helper = null;
+        Map<String, String> result = null;
+        try {
+            helper = create(dataUnit);
+            result = helper.getMap(symbolicName, mapName);
+
+        } finally {
+            if (helper != null) {
+                helper.close();
+            }
+        }
         return result;
     }
 
     public static void putMap(WritableMetadataDataUnit dataUnit, String symbolicName, String mapName, Map<String, String> map) throws DataUnitException {
-        MapHelper helper = create(dataUnit);
-        helper.putMap(symbolicName, mapName, map);
-        helper.close();
+        MapHelper helper = null;
+        try {
+            helper = create(dataUnit);
+            helper.putMap(symbolicName, mapName, map);
+        } finally {
+            if (helper != null) {
+                helper.close();
+            }
+        }
     }
 
     private class MapHelperImpl implements MapHelper {

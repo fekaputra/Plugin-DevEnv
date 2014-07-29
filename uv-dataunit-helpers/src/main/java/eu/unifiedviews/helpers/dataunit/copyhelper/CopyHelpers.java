@@ -25,15 +25,27 @@ public class CopyHelpers {
     }
 
     public static void copyMetadataAndContents(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
-        CopyHelper helper = create(source, destination);
-        helper.copyMetadataAndContents(symbolicName);
-        helper.close();
+        CopyHelper helper = null;
+        try {
+            helper = create(source, destination);
+            helper.copyMetadataAndContents(symbolicName);
+        } finally {
+            if (helper != null) {
+                helper.close();
+            }
+        }
     }
 
     public static void copyMetadata(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
-        CopyHelper helper = create(source, destination);
-        helper.copyMetadata(symbolicName);
-        helper.close();
+        CopyHelper helper = null;
+        try {
+            helper = create(source, destination);
+            helper.copyMetadata(symbolicName);
+        } finally {
+            if (helper != null) {
+                helper.close();
+            }
+        }
     }
 
     private class CopyHelperImpl implements CopyHelper {
@@ -53,15 +65,15 @@ public class CopyHelpers {
         @Override
         public void copyMetadata(String symbolicName) throws DataUnitException {
             try {
-               if (connection == null) {
-                   connection = source.getConnection();
-               }
-               Update update = connection.prepareUpdate(QueryLanguage.SPARQL,"");
-               update.execute();
+                if (connection == null) {
+                    connection = source.getConnection();
+                }
+                Update update = connection.prepareUpdate(QueryLanguage.SPARQL, "");
+                update.execute();
             } catch (RepositoryException | UpdateExecutionException | MalformedQueryException ex) {
                 throw new DataUnitException("", ex);
             } finally {
-                
+
             }
         }
 
