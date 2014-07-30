@@ -39,7 +39,7 @@ public class AddAllHelper {
             connection = destination.getConnection();
 
             String targetGraphName = destination.addNewDataGraph("all").stringValue();
-            for (URI sourceGraph : RDFHelper.getGraphs(source)) {
+            for (URI sourceGraph : RDFHelper.getGraphsURISet(source)) {
                 String sourceGraphName = sourceGraph.stringValue();
 
                 LOG.info("Trying to merge {} triples from <{}> to <{}>.",

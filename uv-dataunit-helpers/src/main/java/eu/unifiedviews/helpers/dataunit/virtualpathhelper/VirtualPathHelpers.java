@@ -1,5 +1,8 @@
 package eu.unifiedviews.helpers.dataunit.virtualpathhelper;
 
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
@@ -66,7 +69,13 @@ public class VirtualPathHelpers {
             if (connection == null) {
                 connection = dataUnit.getConnection();
             }
-            return MetadataHelper.get(connection, dataUnit.getMetadataGraphnames(), symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH);
+            String result = null;
+            try {
+                result = MetadataHelper.get(connection, dataUnit.getMetadataGraphnames(), symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH);
+            } catch (QueryEvaluationException | RepositoryException | MalformedQueryException ex) {
+                throw new DataUnitException(ex);
+            }
+            return result;
         }
 
         @Override
@@ -101,7 +110,11 @@ public class VirtualPathHelpers {
             if (connection == null) {
                 connection = dataUnit.getConnection();
             }
-            MetadataHelper.set(connection, dataUnit.getMetadataWriteGraphname(), symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH, virtualPath);
+            try {
+                MetadataHelper.set(connection, dataUnit.getMetadataWriteGraphname(), symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH, virtualPath);
+            } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
+                throw new DataUnitException(ex);
+            }
         }
     }
 

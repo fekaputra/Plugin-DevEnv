@@ -62,6 +62,8 @@ public class MetadataHelper {
             // execute query
             result = get(connection, dataUnit.getMetadataGraphnames(),
                     symbolicName, predicate);
+        } catch (QueryEvaluationException | RepositoryException | MalformedQueryException ex) {
+            throw new DataUnitException(ex);
         } finally {
             if (connection != null) {
                 try {
@@ -75,7 +77,7 @@ public class MetadataHelper {
     }
 
     public static String get(RepositoryConnection connection, Set<URI> uris,
-            String symbolicName, String predicate) throws DataUnitException {
+            String symbolicName, String predicate) throws QueryEvaluationException, RepositoryException, MalformedQueryException {
         String methodResult = null;
         TupleQueryResult result = null;
         try {
@@ -95,8 +97,6 @@ public class MetadataHelper {
                 methodResult = result.next().getBinding(OBJECT_BINDING).getValue()
                         .stringValue();
             }
-        } catch (MalformedQueryException | QueryEvaluationException | RepositoryException ex) {
-            throw new DataUnitException("Failed to execute get-query.", ex);
         } finally {
             if (result != null) {
                 try {
@@ -130,6 +130,8 @@ public class MetadataHelper {
             final URI writeGraph = dataUnit.getMetadataWriteGraphname();
             set(connection, writeGraph, symbolicName,
                     predicate, object);
+        } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
+            throw new DataUnitException(ex);
         } finally {
             if (connection != null) {
                 try {
@@ -142,27 +144,22 @@ public class MetadataHelper {
     }
 
     public static void set(RepositoryConnection connection, URI uri,
-            String symbolicName, String predicate, String object) throws DataUnitException {
-        try {
-            final ValueFactory valueFactory = connection.getValueFactory();
-            final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, UPDATE);
-            update.setBinding(SYMBOLIC_NAME_BINDING,
-                    valueFactory.createLiteral(symbolicName));
-            update.setBinding(PREDICATE_BINDING,
-                    valueFactory.createURI(predicate));
-            update.setBinding(OBJECT_BINDING,
-                    valueFactory.createLiteral(object));
+            String symbolicName, String predicate, String object) throws RepositoryException, MalformedQueryException, UpdateExecutionException {
+        final ValueFactory valueFactory = connection.getValueFactory();
+        final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, UPDATE);
+        update.setBinding(SYMBOLIC_NAME_BINDING,
+                valueFactory.createLiteral(symbolicName));
+        update.setBinding(PREDICATE_BINDING,
+                valueFactory.createURI(predicate));
+        update.setBinding(OBJECT_BINDING,
+                valueFactory.createLiteral(object));
 
-            DatasetImpl dataset = new DatasetImpl();
-            dataset.setDefaultInsertGraph(uri);
-            dataset.addDefaultRemoveGraph(uri);
-            update.setDataset(dataset);
+        DatasetImpl dataset = new DatasetImpl();
+        dataset.setDefaultInsertGraph(uri);
+        dataset.addDefaultRemoveGraph(uri);
+        update.setDataset(dataset);
 
-            update.execute();
-
-        } catch (MalformedQueryException | RepositoryException | UpdateExecutionException ex) {
-            throw new DataUnitException("Failed to execute update.", ex);
-        }
+        update.execute();
     }
 
     /**
