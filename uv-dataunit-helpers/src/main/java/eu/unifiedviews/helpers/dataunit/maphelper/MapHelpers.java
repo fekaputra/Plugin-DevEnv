@@ -1,7 +1,11 @@
 package eu.unifiedviews.helpers.dataunit.maphelper;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.openrdf.model.ValueFactory;
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.Dataset;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.QueryLanguage;
@@ -9,6 +13,7 @@ import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.query.Update;
 import org.openrdf.query.UpdateExecutionException;
+import org.openrdf.query.impl.DatasetImpl;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
@@ -17,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.CleverDataset;
+import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
 public class MapHelpers {
 
@@ -41,7 +46,6 @@ public class MapHelpers {
         try {
             helper = create(dataUnit);
             result = helper.getMap(symbolicName, mapName);
-
         } finally {
             if (helper != null) {
                 helper.close();
@@ -67,9 +71,30 @@ public class MapHelpers {
 
         private MetadataDataUnit dataUnit;
 
-        protected static final String SYMBOLIC_NAME_BINDING_NAME = "symbolicName";
-
         protected RepositoryConnection connection = null;
+
+        protected static final String SYMBOLIC_NAME_BINDING = "symbolicName";
+
+        protected static final String TITLE_BINDING = "title";
+
+        protected static final String KEY_BINDING = "key";
+
+        protected static final String VALUE_BINDING = "value";
+
+        protected static final String SELECT =
+                "SELECT ?key ?value WHERE { "
+                        // use symbolic name to pick a node
+                        + "?root <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
+                        // select all it's maps
+                        + "?root <" + MapHelper.PREDICATE_HAS_MAP + "> ?map. "
+                        // select the map with given name
+                        + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
+                        // select pair
+                        + "?map <" + MapHelper.PREDICATE_MAP_CONTAINS + "> ?entry. "
+                        // select key and value
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_KEY + "> ?" + KEY_BINDING + ". "
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_VALUE + "> ?" + VALUE_BINDING + ". "
+                        + "}";
 
         public MapHelperImpl(MetadataDataUnit dataUnit) {
             this.dataUnit = dataUnit;
@@ -77,37 +102,46 @@ public class MapHelpers {
 
         @Override
         public Map<String, String> getMap(String symbolicName, String mapName) throws DataUnitException {
-            if (true) {
-                return null;
+            if (connection == null) {
+                connection = dataUnit.getConnection();
             }
-            TupleQueryResult tupleQueryResult = null;
-            Map<String, String> result = null;
+            final Map<String, String> resultMap = new HashMap<>();
+            final ValueFactory valueFactory = connection.getValueFactory();
+            final Dataset dataset = new DatasetBuilder().withDefaultGraphs(dataUnit.getMetadataGraphnames()).build();
+
+            TupleQueryResult queryResult = null;
             try {
-                if (connection == null) {
-                    connection = dataUnit.getConnection();
+                final TupleQuery query = connection.prepareTupleQuery(
+                        QueryLanguage.SPARQL, SELECT);
+
+                query.setBinding(SYMBOLIC_NAME_BINDING,
+                        valueFactory.createLiteral(symbolicName));
+                query.setBinding(TITLE_BINDING,
+                        valueFactory.createLiteral(mapName));
+
+                query.setDataset(dataset);
+
+                queryResult = query.evaluate();
+                while (queryResult.hasNext()) {
+                    final BindingSet binding = queryResult.next();
+
+                    resultMap.put(
+                            binding.getBinding(KEY_BINDING).getValue().stringValue(),
+                            binding.getBinding(VALUE_BINDING).getValue().stringValue());
                 }
-                TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, "SOME MAGIC SELECT");
-                tupleQuery.setBinding(SYMBOLIC_NAME_BINDING_NAME, connection.getValueFactory().createLiteral(symbolicName));
-                CleverDataset dataset = new CleverDataset();
-                dataset.addDefaultGraphs(dataUnit.getMetadataGraphnames());
-                tupleQuery.setDataset(dataset);
-                tupleQueryResult = tupleQuery.evaluate();
-//                if (tupleQueryResult.hasNext()) {
-//                    BindingSet bindingSet = tupleQueryResult.next();
-//                    result = bindingSet.getBinding(VIRTUAL_PATH_BINDING_NAME).getValue().stringValue();
-//                }
-            } catch (QueryEvaluationException | RepositoryException | MalformedQueryException ex) {
-                throw new DataUnitException("", ex);
+
+            } catch (MalformedQueryException | QueryEvaluationException | RepositoryException ex) {
+                throw new DataUnitException(ex);
             } finally {
-                if (tupleQueryResult != null) {
+                if (queryResult != null) {
                     try {
-                        tupleQueryResult.close();
+                        queryResult.close();
                     } catch (QueryEvaluationException ex) {
                         LOG.warn("Error in close.", ex);
                     }
                 }
             }
-            return result;
+            return resultMap;
         }
 
         @Override
@@ -128,9 +162,44 @@ public class MapHelpers {
     }
 
     private class WritableMapHelperImpl extends MapHelperImpl {
-        private final Logger LOG = LoggerFactory.getLogger(WritableMapHelperImpl.class);
-
         private WritableMetadataDataUnit dataUnit;
+
+        protected static final String CREATE_MAP =
+                "INSERT {"
+                        + "?root <" + MapHelper.PREDICATE_HAS_MAP + "> _:map. "
+                        + "_:map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
+                        + "} WHERE {"
+                        + "?root <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
+                        + "FILTER NOT EXISTS {"
+                        + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
+                        + "} }";
+
+        protected static final String ADD_ENTRY =
+                "INSERT {"
+                        + "?map <" + MapHelper.PREDICATE_MAP_CONTAINS + "> _:entry. "
+                        + "_:entry <" + MapHelper.PREDICATE_MAP_ENTRY_KEY + "> ?" + KEY_BINDING + ". "
+                        + "_:entry <" + MapHelper.PREDICATE_MAP_ENTRY_VALUE + "> ?" + VALUE_BINDING + ". "
+                        + "} WHERE { "
+                        + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
+                        + "?s <" + MapHelper.PREDICATE_HAS_MAP + "> ?map. "
+                        + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
+                        + "}";
+
+        protected static final String DELETE_ENTRIES =
+                "DELETE {"
+                        + "?map <" + MapHelper.PREDICATE_MAP_CONTAINS + "> ?entry. "
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_KEY + "> ?key. "
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_VALUE + "> ?value. "
+                        + "} WHERE { "
+                        // get the right hash map
+                        + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
+                        + "?s <" + MapHelper.PREDICATE_HAS_MAP + "> ?map. "
+                        + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
+                        // map entries
+                        + "?map <" + MapHelper.PREDICATE_MAP_CONTAINS + "> ?entry. "
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_KEY + "> ?key. "
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_VALUE + "> ?value. "
+                        + "}";
 
         public WritableMapHelperImpl(WritableMetadataDataUnit dataUnit) {
             super(dataUnit);
@@ -138,26 +207,57 @@ public class MapHelpers {
 
         @Override
         public void putMap(String symbolicName, String mapName, Map<String, String> map) throws DataUnitException {
+            if (connection == null) {
+                connection = dataUnit.getConnection();
+            }
+            final ValueFactory valueFactory = connection.getValueFactory();
+            final DatasetImpl dataset = new DatasetImpl();
+            dataset.setDefaultInsertGraph(dataUnit.getMetadataWriteGraphname());
+            dataset.addDefaultRemoveGraph(dataUnit.getMetadataWriteGraphname());
+
             try {
-                if (connection == null) {
-                    connection = dataUnit.getConnection();
+                //
+                // create map
+                //
+                {
+                    final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, CREATE_MAP);
+
+                    update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                    update.setBinding(TITLE_BINDING, valueFactory.createLiteral(mapName));
+
+                    update.setDataset(dataset);
+                    update.execute();
                 }
-                Update update = connection.prepareUpdate(QueryLanguage.SPARQL, "SOME MAGICAL UPDATES");
-                update.setBinding(SYMBOLIC_NAME_BINDING_NAME, connection.getValueFactory().createLiteral(symbolicName));
-                CleverDataset dataset = new CleverDataset();
-                dataset.addDefaultGraphs(dataUnit.getMetadataGraphnames());
-                update.setDataset(dataset);
-                update.execute();
-            } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
-                throw new DataUnitException("", ex);
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (RepositoryException ex) {
-                        LOG.warn("Error in close.", ex);
+                //
+                // delete entries
+                //
+                {
+                    final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, DELETE_ENTRIES);
+
+                    update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                    update.setBinding(TITLE_BINDING, valueFactory.createLiteral(mapName));
+
+                    update.setDataset(dataset);
+                    update.execute();
+                }
+                //
+                // add entries
+                //
+                {
+                    for (String key : map.keySet()) {
+                        final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, ADD_ENTRY);
+
+                        update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                        update.setBinding(TITLE_BINDING, valueFactory.createLiteral(mapName));
+                        update.setBinding(KEY_BINDING, valueFactory.createLiteral(key));
+                        update.setBinding(VALUE_BINDING, valueFactory.createLiteral(map.get(key)));
+
+                        update.setDataset(dataset);
+                        update.execute();
                     }
                 }
+            } catch (MalformedQueryException | RepositoryException | UpdateExecutionException ex) {
+                throw new DataUnitException("Failed to add map.", ex);
             }
         }
     }
