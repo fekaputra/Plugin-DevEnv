@@ -2,8 +2,17 @@ package eu.unifiedviews.helpers.dataunit.metadata;
 
 import java.util.Set;
 
-import org.openrdf.model.*;
-import org.openrdf.query.*;
+import org.openrdf.model.Statement;
+import org.openrdf.model.URI;
+import org.openrdf.model.ValueFactory;
+import org.openrdf.query.Dataset;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.Update;
+import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.query.impl.DatasetImpl;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -14,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.CleverDataset;
+import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
 /**
  * Provides easy way how to set/get metadata (predicate/object) for given
@@ -88,9 +97,7 @@ public class MetadataHelper {
             tupleQuery.setBinding(PREDICATE_BINDING,
                     valueFactory.createURI(predicate));
 
-            final CleverDataset dataset = new CleverDataset();
-            dataset.addDefaultGraphs(uris);
-            tupleQuery.setDataset(dataset);
+            tupleQuery.setDataset(new DatasetBuilder().withDefaultGraphs(uris).build());
 
             result = tupleQuery.evaluate();
             if (result.hasNext()) {
