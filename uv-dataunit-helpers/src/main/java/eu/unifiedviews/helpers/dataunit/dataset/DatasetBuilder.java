@@ -24,6 +24,11 @@ public class DatasetBuilder {
         this.defaultRemoveGraphs.addAll(defaultRemoveGraphs);
         return this;
     }
+    
+    public DatasetBuilder addDefaultRemoveGraph(URI defaultRemoveGraph) {
+        this.defaultRemoveGraphs.add(defaultRemoveGraph);
+        return this;
+    }
 
     public DatasetBuilder withInsertGraph(URI defaultInsertGraph) {
         this.defaultInsertGraph = defaultInsertGraph;
@@ -35,8 +40,18 @@ public class DatasetBuilder {
         return this;
     }
 
+    public DatasetBuilder addDefaultGraphs(URI defaultGraph) {
+        this.defaultGraphs.add(defaultGraph);
+        return this;
+    }
+
     public DatasetBuilder withNamedGraphs(Set<URI> namedGraphs) {
         this.namedGraphs.addAll(namedGraphs);
+        return this;
+    }
+
+    public DatasetBuilder addNamedGraph(URI namedGraph) {
+        this.namedGraphs.add(namedGraph);
         return this;
     }
 

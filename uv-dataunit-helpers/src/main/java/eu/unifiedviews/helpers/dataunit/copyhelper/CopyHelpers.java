@@ -3,8 +3,8 @@ package eu.unifiedviews.helpers.dataunit.copyhelper;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import org.openrdf.model.URI;
 
+import org.openrdf.model.URI;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.Update;
@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CopyHelpers {
+    private static final Logger LOG = LoggerFactory.getLogger(CopyHelpers.class);
+
     private static final CopyHelpers selfie = new CopyHelpers();
 
     private CopyHelpers() {
@@ -33,7 +35,11 @@ public class CopyHelpers {
             helper.copyMetadata(symbolicName);
         } finally {
             if (helper != null) {
-                helper.close();
+                try {
+                    helper.close();
+                } catch (DataUnitException ex) {
+                    LOG.warn("Error in close.", ex);
+                }
             }
         }
     }

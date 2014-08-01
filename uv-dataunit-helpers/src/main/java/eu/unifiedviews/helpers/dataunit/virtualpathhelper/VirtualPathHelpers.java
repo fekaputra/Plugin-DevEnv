@@ -1,19 +1,17 @@
 package eu.unifiedviews.helpers.dataunit.virtualpathhelper;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
 import eu.unifiedviews.helpers.dataunit.metadata.MetadataHelper;
+import eu.unifiedviews.helpers.dataunit.metadata.MetadataHelpers;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VirtualPathHelpers {
+    private static final Logger LOG = LoggerFactory.getLogger(VirtualPathHelpers.class);
+
     private static final VirtualPathHelpers selfie = new VirtualPathHelpers();
 
     private VirtualPathHelpers() {
@@ -24,7 +22,7 @@ public class VirtualPathHelpers {
     }
 
     public static VirtualPathHelper create(WritableMetadataDataUnit writableFilesDataUnit) {
-        return selfie.new WritableVirtualPathHelperImpl(writableFilesDataUnit);
+        return selfie.new VirtualPathHelperImpl(writableFilesDataUnit);
     }
 
     public static String getVirtualPath(MetadataDataUnit filesDataUnit, String symbolicName) throws DataUnitException {
@@ -35,7 +33,11 @@ public class VirtualPathHelpers {
             result = helper.getVirtualPath(symbolicName);
         } finally {
             if (helper != null) {
-                helper.close();
+                try {
+                    helper.close();
+                } catch (DataUnitException ex) {
+                    LOG.warn("Error in close.", ex);
+                }
             }
         }
         return result;
@@ -48,7 +50,11 @@ public class VirtualPathHelpers {
             helper.setVirtualPath(symbolicName, virtualPath);
         } finally {
             if (helper != null) {
-                helper.close();
+                try {
+                    helper.close();
+                } catch (DataUnitException ex) {
+                    LOG.warn("Error in close.", ex);
+                }
             }
         }
     }
@@ -56,66 +62,35 @@ public class VirtualPathHelpers {
     private class VirtualPathHelperImpl implements VirtualPathHelper {
         private final Logger LOG = LoggerFactory.getLogger(VirtualPathHelperImpl.class);
 
-        private MetadataDataUnit dataUnit;
-
-        private RepositoryConnection connection = null;
+        protected MetadataHelper metadataHelper;
 
         public VirtualPathHelperImpl(MetadataDataUnit dataUnit) {
-            this.dataUnit = dataUnit;
+            this.metadataHelper = MetadataHelpers.create(dataUnit);
+        }
+
+        public VirtualPathHelperImpl(WritableMetadataDataUnit dataUnit) {
+            this.metadataHelper = MetadataHelpers.create(dataUnit);
         }
 
         @Override
         public String getVirtualPath(String symbolicName) throws DataUnitException {
-            if (connection == null) {
-                connection = dataUnit.getConnection();
-            }
-            String result = null;
-            try {
-                result = MetadataHelper.get(connection, dataUnit.getMetadataGraphnames(), symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH);
-            } catch (QueryEvaluationException | RepositoryException | MalformedQueryException ex) {
-                throw new DataUnitException(ex);
-            }
-            return result;
+            return metadataHelper.get(symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH);
         }
 
         @Override
         public void setVirtualPath(String symbolicName, String virtualPath) throws DataUnitException {
-            throw new UnsupportedOperationException();
+            metadataHelper.set(symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH, virtualPath);
         }
 
         @Override
         public void close() throws DataUnitException {
-            if (connection != null) {
+            if (metadataHelper != null) {
                 try {
-                    connection.close();
-                } catch (RepositoryException ex) {
+                    metadataHelper.close();
+                } catch (DataUnitException ex) {
                     LOG.warn("Error in close.", ex);
                 }
             }
         }
     }
-
-    private class WritableVirtualPathHelperImpl extends VirtualPathHelperImpl {
-        private WritableMetadataDataUnit dataUnit;
-
-        private RepositoryConnection connection = null;
-
-        public WritableVirtualPathHelperImpl(WritableMetadataDataUnit dataUnit) {
-            super(dataUnit);
-            this.dataUnit = dataUnit;
-        }
-
-        @Override
-        public void setVirtualPath(String symbolicName, String virtualPath) throws DataUnitException {
-            if (connection == null) {
-                connection = dataUnit.getConnection();
-            }
-            try {
-                MetadataHelper.set(connection, dataUnit.getMetadataWriteGraphname(), symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH, virtualPath);
-            } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
-                throw new DataUnitException(ex);
-            }
-        }
-    }
-
 }

@@ -1,7 +1,9 @@
 package eu.unifiedviews.helpers.dataunit.maphelper;
 
-import java.util.HashMap;
-import java.util.Map;
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
 import org.openrdf.model.ValueFactory;
 import org.openrdf.query.BindingSet;
@@ -19,12 +21,11 @@ import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapHelpers {
+    private static final Logger LOG = LoggerFactory.getLogger(MapHelpers.class);
 
     private static final MapHelpers selfie = new MapHelpers();
 
@@ -48,7 +49,11 @@ public class MapHelpers {
             result = helper.getMap(symbolicName, mapName);
         } finally {
             if (helper != null) {
-                helper.close();
+                try {
+                    helper.close();
+                } catch (DataUnitException ex) {
+                    LOG.warn("Error in close.", ex);
+                }
             }
         }
         return result;
@@ -162,7 +167,7 @@ public class MapHelpers {
     }
 
     private class WritableMapHelperImpl extends MapHelperImpl {
-        private WritableMetadataDataUnit dataUnit;
+        private WritableMetadataDataUnit writableDataUnit;
 
         protected static final String CREATE_MAP =
                 "INSERT {"
@@ -207,14 +212,26 @@ public class MapHelpers {
         }
 
         @Override
+        public Map<String, String> getMap(String symbolicName, String mapName) throws DataUnitException {
+            // This initialization of connection may seem redundant with parent at first sight
+            // But if the data unit returns read-only protected connection
+            // then there is a difference between calling getConnection on writable data unit - we get read-write connection
+            // and calling getConnection on data unit - we get read only connection
+            if (connection == null) {
+                connection = writableDataUnit.getConnection();
+            }
+            return super.getMap(symbolicName, mapName);
+        }
+
+        @Override
         public void putMap(String symbolicName, String mapName, Map<String, String> map) throws DataUnitException {
             if (connection == null) {
-                connection = dataUnit.getConnection();
+                connection = writableDataUnit.getConnection();
             }
             final ValueFactory valueFactory = connection.getValueFactory();
             final DatasetImpl dataset = new DatasetImpl();
-            dataset.setDefaultInsertGraph(dataUnit.getMetadataWriteGraphname());
-            dataset.addDefaultRemoveGraph(dataUnit.getMetadataWriteGraphname());
+            dataset.setDefaultInsertGraph(writableDataUnit.getMetadataWriteGraphname());
+            dataset.addDefaultRemoveGraph(writableDataUnit.getMetadataWriteGraphname());
 
             try {
                 //
