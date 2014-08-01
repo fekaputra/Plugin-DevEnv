@@ -28,6 +28,8 @@ import java.util.Set;
  * Provides easy way how to set/get metadata (predicate/object) for given
  * symbolic name.
  * 
+ * <strong>This class in not accessible in UV environment, do not use!</strong>
+ *
  * @author Škoda Petr
  */
 public class MetadataHelpers {
