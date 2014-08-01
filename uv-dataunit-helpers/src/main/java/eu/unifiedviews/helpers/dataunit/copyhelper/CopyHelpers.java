@@ -48,7 +48,7 @@ public class CopyHelpers {
         protected static final String UPDATE = 
                 "INSERT {?s ?p ?o} WHERE {"
                         + "?s ?p ?o."
-                        + "?s <http://unifiedviews.eu/DataUnit/MetadataDataUnit/symbolicName> ?" + SYMBOLIC_NAME_BINDING + "."
+                        + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + "."
                         + "}";
 
         private final Logger LOG = LoggerFactory.getLogger(CopyHelperImpl.class);
