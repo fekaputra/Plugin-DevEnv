@@ -1,5 +1,9 @@
 package eu.unifiedviews.helpers.dataunit.copyhelper;
 
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.Update;
@@ -8,10 +12,6 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
 
 public class CopyHelpers {
     private static final CopyHelpers selfie = new CopyHelpers();
@@ -22,18 +22,6 @@ public class CopyHelpers {
 
     public static CopyHelper create(MetadataDataUnit source, WritableMetadataDataUnit destination) {
         return selfie.new CopyHelperImpl(source, destination);
-    }
-
-    public static void copyMetadataAndContents(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
-        CopyHelper helper = null;
-        try {
-            helper = create(source, destination);
-            helper.copyMetadataAndContents(symbolicName);
-        } finally {
-            if (helper != null) {
-                helper.close();
-            }
-        }
     }
 
     public static void copyMetadata(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
@@ -68,18 +56,14 @@ public class CopyHelpers {
                 if (connection == null) {
                     connection = source.getConnection();
                 }
+                // Select all triples <bnode> symbolicName "symbolicName"
+                // add all of them to destination data unit (we use source connection - both run on same storage).
+
                 Update update = connection.prepareUpdate(QueryLanguage.SPARQL, "");
                 update.execute();
             } catch (RepositoryException | UpdateExecutionException | MalformedQueryException ex) {
                 throw new DataUnitException("", ex);
-            } finally {
-
             }
-        }
-
-        @Override
-        public void copyMetadataAndContents(String symbolicName) {
-
         }
 
         @Override
