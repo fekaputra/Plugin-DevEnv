@@ -171,6 +171,7 @@ public class MapHelpers {
                         + "} WHERE {"
                         + "?root <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
                         + "FILTER NOT EXISTS {"
+                        + "?root <" + MapHelper.PREDICATE_HAS_MAP + "> ?map. "
                         + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
                         + "} }";
 
