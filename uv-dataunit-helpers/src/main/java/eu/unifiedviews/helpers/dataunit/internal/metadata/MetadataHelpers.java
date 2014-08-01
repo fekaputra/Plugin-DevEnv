@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dataunit.metadata;
+package eu.unifiedviews.helpers.dataunit.internal.metadata;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;

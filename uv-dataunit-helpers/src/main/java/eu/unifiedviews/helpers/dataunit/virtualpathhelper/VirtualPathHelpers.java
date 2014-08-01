@@ -3,8 +3,8 @@ package eu.unifiedviews.helpers.dataunit.virtualpathhelper;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.metadata.MetadataHelper;
-import eu.unifiedviews.helpers.dataunit.metadata.MetadataHelpers;
+import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelper;
+import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelpers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
