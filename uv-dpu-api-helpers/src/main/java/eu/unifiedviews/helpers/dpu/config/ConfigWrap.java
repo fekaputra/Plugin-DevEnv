@@ -89,10 +89,12 @@ public class ConfigWrap<C> {
             }
         };
         this.xstream.setClassLoader(configClass.getClassLoader());
+        this.xstream.alias("DPUConfig", configClass);
 
         // save always in utf8
         this.xstreamUTF = new XStream(new DomDriver("UTF-8"));
         this.xstreamUTF.setClassLoader(configClass.getClassLoader());
+        this.xstreamUTF.alias("DPUConfig", configClass);
     }
 
     /**
