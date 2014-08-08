@@ -1,19 +1,23 @@
 package eu.unifiedviews.helpers.dataunit.copyhelper;
 
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+
+import org.openrdf.model.URI;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.Update;
 import org.openrdf.query.UpdateExecutionException;
+import org.openrdf.query.impl.DatasetImpl;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-
 public class CopyHelpers {
+    private static final Logger LOG = LoggerFactory.getLogger(CopyHelpers.class);
+
     private static final CopyHelpers selfie = new CopyHelpers();
 
     private CopyHelpers() {
@@ -24,19 +28,35 @@ public class CopyHelpers {
         return selfie.new CopyHelperImpl(source, destination);
     }
 
-    public static void copyMetadataAndContents(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
-        CopyHelper helper = create(source, destination);
-        helper.copyMetadataAndContents(symbolicName);
-        helper.close();
-    }
-
     public static void copyMetadata(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
-        CopyHelper helper = create(source, destination);
-        helper.copyMetadata(symbolicName);
-        helper.close();
+        CopyHelper helper = null;
+        try {
+            helper = create(source, destination);
+            helper.copyMetadata(symbolicName);
+        } finally {
+            if (helper != null) {
+                try {
+                    helper.close();
+                } catch (DataUnitException ex) {
+                    LOG.warn("Error in close.", ex);
+                }
+            }
+        }
     }
 
     private class CopyHelperImpl implements CopyHelper {
+
+        protected static final String SYMBOLIC_NAME_BINDING = "symbolicName";
+        
+        /**
+         * Copy only first level.
+         */
+        protected static final String UPDATE = 
+                "INSERT {?s ?p ?o} WHERE {"
+                        + "?s ?p ?o."
+                        + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + "."
+                        + "}";
+
         private final Logger LOG = LoggerFactory.getLogger(CopyHelperImpl.class);
 
         private MetadataDataUnit source;
@@ -53,21 +73,31 @@ public class CopyHelpers {
         @Override
         public void copyMetadata(String symbolicName) throws DataUnitException {
             try {
-               if (connection == null) {
-                   connection = source.getConnection();
-               }
-               Update update = connection.prepareUpdate(QueryLanguage.SPARQL,"");
-               update.execute();
+                if (connection == null) {
+                    connection = source.getConnection();
+                }
+                // Select all triples <bnode> symbolicName "symbolicName"
+                // add all of them to destination data unit
+                // (we use source connection - both run on same storage).
+
+                final Update update = connection.prepareUpdate(
+                        QueryLanguage.SPARQL, UPDATE);
+
+                update.setBinding(SYMBOLIC_NAME_BINDING, 
+                        connection.getValueFactory().createLiteral(symbolicName));
+
+                final DatasetImpl dataset = new DatasetImpl();
+                for (URI item : source.getMetadataGraphnames()) {
+                    dataset.addDefaultGraph(item);
+                }
+                dataset.setDefaultInsertGraph(
+                        destination.getMetadataWriteGraphname());
+
+                update.setDataset(dataset);
+                update.execute();
             } catch (RepositoryException | UpdateExecutionException | MalformedQueryException ex) {
                 throw new DataUnitException("", ex);
-            } finally {
-                
             }
-        }
-
-        @Override
-        public void copyMetadataAndContents(String symbolicName) {
-
         }
 
         @Override

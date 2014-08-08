@@ -1,5 +1,7 @@
 package eu.unifiedviews.dataunit;
 
+import org.openrdf.model.URI;
+
 /**
  * Basic metadata writable data unit interface.
  *
@@ -16,4 +18,11 @@ public interface WritableMetadataDataUnit extends MetadataDataUnit {
      */
     void addEntry(String symbolicName) throws DataUnitException;
 
+    /**
+     * Return graph name where all new metadata created by DPU should be written.
+     * 
+     * @return URI of the graph
+     * @throws DataUnitException
+     */
+    URI getMetadataWriteGraphname() throws DataUnitException;
 }

@@ -31,7 +31,6 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
  * @param <C>
  */
 public class ConfigWrap<C> {
-
     private static final Logger LOG = LoggerFactory.getLogger(ConfigWrap.class);
 
     /**
@@ -89,10 +88,14 @@ public class ConfigWrap<C> {
             }
         };
         this.xstream.setClassLoader(configClass.getClassLoader());
+        this.xstream.alias("Configuration", configClass);
+        this.xstream.alias("ConfigurationVersion", ConfigurationVersion.class);
 
         // save always in utf8
         this.xstreamUTF = new XStream(new DomDriver("UTF-8"));
         this.xstreamUTF.setClassLoader(configClass.getClassLoader());
+        this.xstreamUTF.alias("Configuration", configClass);
+        this.xstreamUTF.alias("ConfigurationVersion", ConfigurationVersion.class);
     }
 
     /**
@@ -134,7 +137,7 @@ public class ConfigWrap<C> {
                 configStr.getBytes(Charset.forName("UTF-8")));
                 ObjectInputStream objIn = xstream
                         .createObjectInputStream(byteIn)) {
-
+            ConfigurationVersion configurationVersion = (ConfigurationVersion) objIn.readObject();
             Object obj = objIn.readObject();
             config = (C) obj;
         } catch (IOException e) {
@@ -195,6 +198,11 @@ public class ConfigWrap<C> {
             try (ObjectOutputStream objOut = xstreamUTF
                     .createObjectOutputStream(
                     byteOut)) {
+                ConfigurationVersion configurationVersion =  new ConfigurationVersion();
+                configurationVersion.setClassName(config.getClass().getCanonicalName());
+                configurationVersion.setVersion(1);
+                
+                objOut.writeObject(configurationVersion);
                 objOut.writeObject(config);
             }
             result = byteOut.toByteArray();

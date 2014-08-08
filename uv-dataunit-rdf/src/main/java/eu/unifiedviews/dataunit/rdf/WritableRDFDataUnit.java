@@ -37,18 +37,4 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * @throws DataUnitException
      */
     URI addNewDataGraph(String symbolicName) throws DataUnitException;
-    
-    /**
-     * Add all data from given DataUnit into this DataUnit. The method must not
-     * modify the current parameter (unit).
-     *
-     * @param dataunit {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} to add
-     * from
-     * @throws eu.unifiedviews.dataunit.DataUnitException
-     * @throws IllegalArgumentException if some property of an element of the
-     * specified dataunit prevents it from being added to this dataunit
-     */
-    @Deprecated
-    void addAll(RDFDataUnit dataunit) throws DataUnitException;
-
 }

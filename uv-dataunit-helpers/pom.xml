@@ -18,6 +18,16 @@
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dataunit-rdf</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dataunit-files</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
@@ -69,7 +79,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Import-Package>eu.unifiedviews.dataunit;provide:=true,*</Import-Package>
+						<Import-Package>eu.unifiedviews.dataunit;provide:=true,eu.unifiedviews.dataunit.rdf;provide:=true,*</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
