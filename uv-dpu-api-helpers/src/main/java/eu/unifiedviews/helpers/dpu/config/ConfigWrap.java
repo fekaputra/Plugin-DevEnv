@@ -78,7 +78,9 @@ public class ConfigWrap<C> {
                         }
 
                         if (super.shouldSerializeMember(definedIn, fieldName)) {
-                            loadedFields.add(fieldName);
+                            if (ConfigWrap.this.configClass.equals(definedIn)) {
+                                loadedFields.add(fieldName);
+                            }
                             return true;
                         } else {
                             return false;
