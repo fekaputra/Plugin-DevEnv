@@ -44,6 +44,10 @@ public class RDFHelper {
     }
     
     public static Dataset getDatasetWithDefaultGraphs(RDFDataUnit rdfDataUnit) throws DataUnitException {
-        return new DatasetBuilder().withDefaultGraphs(RDFHelper.getGraphsURISet(rdfDataUnit)).build();
+        Set<URI> graphsUriSet = RDFHelper.getGraphsURISet(rdfDataUnit);
+        if (graphsUriSet.isEmpty()) {
+            throw new DataUnitException("Trying to build dataset from dataunit, which contains no data graphs");
+        }
+        return new DatasetBuilder().withDefaultGraphs(graphsUriSet).build();
     }
 }
