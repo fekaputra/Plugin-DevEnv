@@ -1,9 +1,7 @@
 package eu.unifiedviews.helpers.dataunit.maphelper;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openrdf.model.ValueFactory;
 import org.openrdf.query.BindingSet;
@@ -21,8 +19,10 @@ import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
 public class MapHelpers {
     private static final Logger LOG = LoggerFactory.getLogger(MapHelpers.class);
@@ -209,6 +209,7 @@ public class MapHelpers {
 
         public WritableMapHelperImpl(WritableMetadataDataUnit dataUnit) {
             super(dataUnit);
+            this.writableDataUnit = dataUnit;
         }
 
         @Override
