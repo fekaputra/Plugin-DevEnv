@@ -8,13 +8,12 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
 /**
  * Class which should be used by DPU developer as a base class from which his
  * DPU's configuration dialog is derived.
- * 
- * @author petyr
+ *
  * @param <C>
  *            Particular configuration object of the DPU
  */
 public abstract class BaseConfigDialog<C>
-        extends AbstractConfigDialog<C> {
+extends AbstractConfigDialog<C> {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseConfigDialog.class);
 
@@ -36,7 +35,7 @@ public abstract class BaseConfigDialog<C>
 
     /**
      * Initialize {@link BaseConfigDialog} for given configuration class.
-     * 
+     *
      * @param configClass
      *            Configuration class.
      */
@@ -136,8 +135,8 @@ public abstract class BaseConfigDialog<C>
 
     /**
      * Set dialog interface according to passed configuration. If the passed
- configuration is invalid DPUConfigException can be thrown.
-     * 
+    configuration is invalid DPUConfigException can be thrown.
+     *
      * @param conf
      *            Configuration object.
      * @throws DPUConfigException
@@ -146,8 +145,8 @@ public abstract class BaseConfigDialog<C>
 
     /**
      * Get configuration from dialog. In case of presence invalid configuration
- in dialog throw DPUConfigException.
-     * 
+    in dialog throw DPUConfigException.
+     *
      * @return Configuration object.
      * @throws cz.cuni.mff.xrg.odcs.commons.configuration.DPUConfigException
      */
