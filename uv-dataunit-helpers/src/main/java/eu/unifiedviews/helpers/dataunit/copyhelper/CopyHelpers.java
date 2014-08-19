@@ -1,9 +1,5 @@
 package eu.unifiedviews.helpers.dataunit.copyhelper;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-
 import org.openrdf.model.URI;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryLanguage;
@@ -15,6 +11,26 @@ import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+
+/**
+ * Static helper nutshell for {@link CopyHelper}.
+ * <p>
+ * The helper can be used in two ways:
+ * <ul>
+ * <li>static (and ineffective), quick and dirty way {@code CopyHelpers.copyMetadata("name", sourceDataUnit, destinationDataUnit)}.
+ * This does the job, but every call opens new connection to the underlying storage and then closes the connection adding a little overhead.</li>
+ * <li>dynamic way, {@code
+ * //first create helper over dataunits
+ * CopyHelper helper = CopyHelpers.create(sourceDataUnit, destinationDataUnit);
+ * // copy many times (helper holds its connections open)
+ * helper.copyMetadata("some symbolic name");
+ * }
+ * <li>
+ * </ul>
+ */
 public class CopyHelpers {
     private static final Logger LOG = LoggerFactory.getLogger(CopyHelpers.class);
 
@@ -47,11 +63,11 @@ public class CopyHelpers {
     private class CopyHelperImpl implements CopyHelper {
 
         protected static final String SYMBOLIC_NAME_BINDING = "symbolicName";
-        
+
         /**
          * Copy only first level.
          */
-        protected static final String UPDATE = 
+        protected static final String UPDATE =
                 "INSERT {?s ?p ?o} WHERE {"
                         + "?s ?p ?o."
                         + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + "."
@@ -83,7 +99,7 @@ public class CopyHelpers {
                 final Update update = connection.prepareUpdate(
                         QueryLanguage.SPARQL, UPDATE);
 
-                update.setBinding(SYMBOLIC_NAME_BINDING, 
+                update.setBinding(SYMBOLIC_NAME_BINDING,
                         connection.getValueFactory().createLiteral(symbolicName));
 
                 final DatasetImpl dataset = new DatasetImpl();
