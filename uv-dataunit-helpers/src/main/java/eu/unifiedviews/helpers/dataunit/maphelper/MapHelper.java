@@ -3,17 +3,76 @@ package eu.unifiedviews.helpers.dataunit.maphelper;
 import java.util.Map;
 
 import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
 
+/**
+ * Helper providing easy way to attach a Map<String, String> (usually called properties map) as a metadata to
+ * particular {@link MetadataDataUnit.Entry}.
+ * <p>
+ * Each entry can have unlimited number of maps attached to it, each map is identified by unique mapName (string) when
+ * retrieving and saving.
+ * <p>
+ * For example usage see {@link MapHelpers}
+ * <p>
+ * Each instance has to be closed after using it.
+ * <p>
+ * Internal storage format of the map:
+ * {@code
+ * <subject> p:symbolicName "name"
+ * <subject> <http://unifiedviews.eu/MapHelper/hasMap> <generatedUniqueUriOrBlankNode1>
+ * <generatedUniqueUriOrBlankNode1> <http://unifiedviews.eu/MapHelper/map/title> "literal containing mapName"
+ * <generatedUniqueUriOrBlankNode1> <http://unifiedviews.eu/MapHelper/map/contains> <generatedUniqueUriOrBlankNode2>
+ * <generatedUniqueUriOrBlankNode2> <http://unifiedviews.eu/MapHelper/map/entry/key> "key literal"
+ * <generatedUniqueUriOrBlankNode2> <http://unifiedviews.eu/MapHelper/map/entry/key> "value literal"
+ * ...
+ * }
+ */
 public interface MapHelper extends AutoCloseable {
+    /**
+     * Predicate used to attach map to entry, triple doing this is:
+     * {@code
+     * <subject> <http://unifiedviews.eu/MapHelper/hasMap> <generatedUniqueUriOrBlankNode1>
+     * }
+     */
     public static final String PREDICATE_HAS_MAP = "http://unifiedviews.eu/MapHelper/hasMap";
-    // Consider using dcterms:title
-    public static final String PREDICATE_MAP_TITLE = "http://unifiedviews.eu/MapHelper/map/title"; 
+
+    /**
+     * Predicate used to specify mapName property of map
+     */
+    public static final String PREDICATE_MAP_TITLE = "http://unifiedviews.eu/MapHelper/map/title";
+
+    /**
+     * Predicate used to attache key-value pair to map.
+     */
     public static final String PREDICATE_MAP_CONTAINS = "http://unifiedviews.eu/MapHelper/map/contains";
+
+    /**
+     * Key predicate
+     */
     public static final String PREDICATE_MAP_ENTRY_KEY = "http://unifiedviews.eu/MapHelper/map/entry/key";
+
+    /**
+     * Value predicate
+     */
     public static final String PREDICATE_MAP_ENTRY_VALUE = "http://unifiedviews.eu/MapHelper/map/entry/value";
-    
+
+    /**
+     * Obtain map named mapName attached to metadata entry named symbolicName.
+     *
+     * @param symbolicName entry's symbolic name
+     * @param mapName name of map (its id)
+     * @return metadata map or null if no such map exists
+     * @throws DataUnitException
+     */
     Map<String, String> getMap(String symbolicName, String mapName) throws DataUnitException;
 
+    /**
+     * Attach map 'map', named mapName to metadata entry named symbolicName. Any previously attached map with same mapName will be replaced with new one.
+     * @param symbolicName entry's symbolic name
+     * @param mapName name of map (its id)
+     * @param map the map
+     * @throws DataUnitException
+     */
     void putMap(String symbolicName, String mapName, Map<String, String> map) throws DataUnitException;
 
     @Override

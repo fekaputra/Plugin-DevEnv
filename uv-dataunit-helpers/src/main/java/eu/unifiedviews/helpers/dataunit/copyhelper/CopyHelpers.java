@@ -26,7 +26,11 @@ import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
  * //first create helper over dataunits
  * CopyHelper helper = CopyHelpers.create(sourceDataUnit, destinationDataUnit);
  * // copy many times (helper holds its connections open)
- * helper.copyMetadata("some symbolic name");
+ * try {
+ *   helper.copyMetadata("some symbolic name");
+ * } finally {
+ *   helper.close();
+ * }
  * }
  * <li>
  * </ul>
@@ -40,10 +44,24 @@ public class CopyHelpers {
 
     }
 
+    /**
+     * Create new {@link CopyHelper} using source and destination dataunits.
+     * @param source data unit to copy metadata from
+     * @param destination data unit to copy metadata to
+     * @return new {@link CopyHelper} instance, don't forget to close it after usage
+     */
     public static CopyHelper create(MetadataDataUnit source, WritableMetadataDataUnit destination) {
         return selfie.new CopyHelperImpl(source, destination);
     }
 
+    /**
+     * Just copy what i need and don't bother me with create/close. May be ineffective (each call = 1 connection opened+closed).
+     *
+     * @param symbolicName which metadata unit entry will copied
+     * @param source data unit to copy metadata from
+     * @param destination data unit to copy metadata to
+     * @throws DataUnitException
+     */
     public static void copyMetadata(String symbolicName, MetadataDataUnit source, WritableMetadataDataUnit destination) throws DataUnitException {
         CopyHelper helper = null;
         try {
