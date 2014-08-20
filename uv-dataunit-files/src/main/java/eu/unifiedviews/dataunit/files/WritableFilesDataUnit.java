@@ -16,12 +16,12 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * and thus their URI locations are prefixed by {@link WritableFilesDataUnit#getBaseFileURIString()}.
      * <p>
      * Example usage:
-     * {@code
+     * <p><blockquote><pre>
      * String newOutputFileURI = outputDataUnit.getBaseFileURIString() + "/" + "myData.csv";
      * File outFile = new File(java.net.URI.create(newOutputFileURI));
      * // write data to outFile
      * outputDataUnit.addExistingFile("some symbolic name", newOutputFileURI);
-     * }
+     * </pre></blockquote></p>
      * <p>
      * When the real fileURI is not needed to be controlled in this precise way, it is easier and more comfortable to use
      * {@link WritableFilesDataUnit#addNewFile(String)}.
@@ -44,15 +44,15 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
     void addExistingFile(String symbolicName, String existingFileURIString) throws DataUnitException;
 
     /**
-     * Generates unique file under the {@link WritableFilesDataUnit#getBaseURIString()}.
+     * Generates unique file under the {@link WritableFilesDataUnit#getBaseFileURIString()}.
      * Returns the newly generated full file path URI (as string) to work with.
      * It does create the file on the disk, and it does add the file into the dataunit under provided symbolicName.
      *
      * Typical usage:
-     * {@code
+     * <p><blockquote><pre>
      * String htmlFileOutFilename = outputFileDataUnit.addNewFile("mydata");
      * new HTMLWriter(new File(htmlFileOutFilename)).dumpMyData(data);
-     * }
+     * </pre></blockquote></p>
      * @return URI (as string) of real location of the newly created file
      * @throws DataUnitException
      */

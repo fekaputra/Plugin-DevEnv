@@ -12,22 +12,23 @@ import eu.unifiedviews.dpu.DPU;
 /**
  * Represents data which is decorated by RDF metadata. Contains many data entries, each entry is decorated at least by single metadata
  * triple
- * {@code
- * <subject> p:symbolicName "name literal"
- * } where <subject> is unknown to the {@link MetadataDataUnit}'s user (may also be stored as blank node by application) and is only used to group metadata
+ * <p><blockquote><pre>
+ * &lt;subject&gt; {@value eu.unifiedviews.dataunit.MetadataDataUnit#PREDICATE_SYMBOLIC_NAME} "name literal"
+ * </pre></blockquote></p>
+ * where &lt;subject&gt; is unknown to the {@link MetadataDataUnit}'s user (may also be stored as blank node by application) and is only used to group metadata
  * triples related to a single data entry.
  * <p>
- * Symbolic name predicate (see {@link MetadataDataUnit.PREDICATE_SYMBOLIC_NAME}) is used to give an arbitrary (user
+ * Symbolic name predicate (see {@value #PREDICATE_SYMBOLIC_NAME}) is used to give an arbitrary (user
  * chosen) name to data entry. Symbolic name can be used to present data entry to user, to let the user configure {@link DPU} to process specifically named data
  * entry (filter, selector). Symbolic name is meant as ID or primary key to the data entry in scope of {@link MetadataDataUnit}.
  * <p>
  * The triples which represent the
  * metadata itself, are stored inside {@link Repository}, but for the user of this dataunit only {@link RepositoryConnection} can be obtained to work with raw
  * metadata triples. Triples can be spread in one or more Graphs inside {@link Repository}, so to query them one has to obtain all the graphnames to work with
- * by using {@link MetadataDataUnit.getMetadataGraphnames}.
+ * by using {@link MetadataDataUnit#getMetadataGraphnames()}.
  * <p>
  * <b>Example 1: typical work pattern with metadata entries</b>
- * {@code
+ * <p><blockquote><pre>
  * // Setup our iteration variable
  * MetadataDataUnit.Iteration iteration = null;
  * try {
@@ -53,10 +54,10 @@ import eu.unifiedviews.dpu.DPU;
  *       }
  *     }
  *   }
- * }
+ * </pre></blockquote></p>
  * <p>
  * <b>Example 2: typical work pattern with raw connection and graphs</b>
- * {@code
+ * </pre></blockquote></p>
  * // Setup our connection variable
  * RepositoryConnection connection = null;
  * try {
@@ -108,15 +109,16 @@ import eu.unifiedviews.dpu.DPU;
  *     }
  *   }
  * }
- * }
+ * </pre></blockquote></p>
  */
 public interface MetadataDataUnit extends DataUnit {
 
     /**
      * Symbolic name given to the data entry is stored in {@link Repository} as a single triple
-     * {@code
-     * <subject> <http://unifiedviews.eu/DataUnit/MetadataDataUnit/symbolicName> "name"
-     * } so this predicate is here (and public) to enable users of this
+     * <p><blockquote><pre>
+     * &lt;subject&gt; &lt;{@value #PREDICATE_SYMBOLIC_NAME}&gt; "name"
+     * </pre></blockquote></p>
+     * so this predicate is here (and public) to enable users of this
      * class to access entries by using raw connection and SPARQL querying the database.
      */
     final String PREDICATE_SYMBOLIC_NAME = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/symbolicName";

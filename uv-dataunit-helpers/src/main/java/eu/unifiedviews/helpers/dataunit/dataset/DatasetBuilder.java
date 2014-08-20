@@ -11,7 +11,7 @@ import org.openrdf.query.impl.DatasetImpl;
  * Dynamic creational class for creating {@link Dataset} instances in .withX() notation.
  * <p>
  * Example usage:
- * {@code
+ * <p><blockquote><pre>
  * Set<URI> someSet = obtainRemoveGraphsSomehow();
  * Query query = connection.prepareQuery();
  * query.setDataset(new DatasetBuilder()
@@ -20,7 +20,7 @@ import org.openrdf.query.impl.DatasetImpl;
  *   .addDefaultGraph("http://nondefault")
  *   .build());
  * query.evaluate();
- * }
+ * </pre></blockquote></p>
  * <p>
  * Fields are by default empty (empty set or null in case of insert graph).
  */
@@ -80,7 +80,7 @@ public class DatasetBuilder {
     /**
      * @deprecated Do not use. Wrong name! Will be removed in future versions.
      * @param defaultGraph
-     * @return
+     * @return this
      */
     @Deprecated
     public DatasetBuilder addDefaultGraphs(URI defaultGraph) {

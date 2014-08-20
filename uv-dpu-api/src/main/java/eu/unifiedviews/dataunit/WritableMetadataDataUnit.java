@@ -11,9 +11,10 @@ public interface WritableMetadataDataUnit extends MetadataDataUnit {
      * Adds a data piece with symbolic name to the data unit. The
      * symbolic name must be unique in scope of this data unit.
      *
-     * Inserts at least one metadata triple in form {@code
-     * <subject> p:symbolicName "name literal"
-     * }
+     * Inserts at least one metadata triple in form
+     * <p><blockquote><pre>
+     * &lt;subject&gt; {@value eu.unifiedviews.dataunit.MetadataDataUnit#PREDICATE_SYMBOLIC_NAME}  "name literal"
+     * </pre></blockquote></p>
      * See {@link MetadataDataUnit} for RDF format description.
      *
      * @param symbolicName symbolic name under which the data will be stored

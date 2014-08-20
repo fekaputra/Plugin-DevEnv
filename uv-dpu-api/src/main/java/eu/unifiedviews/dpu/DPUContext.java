@@ -93,8 +93,7 @@ public interface DPUContext {
 
     /**
      * Return true if the execution of current {@link DPU} should be stopped as soon as
-     * possible. After the {@link DPU#execute(DPUContext)} method finished the
-     * {@link DPU#cleanUp()} will be called.
+     * possible.
      *
      * @return True if the execution should stop.
      */

@@ -11,11 +11,12 @@ import eu.unifiedviews.dataunit.MetadataDataUnit;
 public interface RDFDataUnit extends MetadataDataUnit {
 
     /**
-     * Predicate used to store URI or data graph which holds the data itself. Format of RDF metadata (see {@link MetadataDataUnit}) is then extended to at least two triples:
-     * {@code
-     * <subject> p:symbolicName "name literal"
-     * <subject> p:datagraphURI <http://some.uri/and/it/is/unique
-     * }
+     * Value: {@value #PREDICATE_DATAGRAPH_URI}, predicate used to store URI or data graph which holds the data itself.
+     * Format of RDF metadata (see {@link MetadataDataUnit}) is then extended to at least two triples:
+     * <p><blockquote><pre>
+     * &lt;subject&gt; &lt;{@value eu.unifiedviews.dataunit.MetadataDataUnit#PREDICATE_SYMBOLIC_NAME}&gt; "name literal"
+     * &lt;subject&gt &lt;{@value #PREDICATE_DATAGRAPH_URI}&gt; &lt;http://some.uri/and/it/is/unique&gt;
+     * </pre></blockquote></p>
      */
     static final String PREDICATE_DATAGRAPH_URI = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/RDFDataUnit/dataGraphURI";
 

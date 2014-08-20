@@ -20,10 +20,10 @@ import eu.unifiedviews.helpers.dataunit.rdfhelper.RDFHelper;
  * Addition is done using succesive "ADD <> TO <>" SPARQL update queries on the storage.
  * <p>
  * Example usage:
- * {@code
+ * <p><blockquote><pre>
  * AddAllHelper.addAll(inputDataUnit, outputDataUnit);
  * // outputDataUnit now contains all triples from all data graphs from input data unit, stored as one graph with symbolic name "all"
- * }
+ * </pre></blockquote></p>
  */
 public class AddAllHelper {
     private static final Logger LOG = LoggerFactory.getLogger(AddAllHelper.class);

@@ -11,8 +11,8 @@ import eu.unifiedviews.dataunit.files.FilesDataUnit;
  */
 public class FilesHelper {
     /**
-     * Exhaust {@link FilesDataUnit.Iteration} (obtained using {@link FilesDataUnit#getIteration()}) into one {@link Set} of entries.
-     * Beware - if the {@link FilesDataUnit} contains milions or more entries, storing all of this in single {@link Set} is not a good idea.
+     * Exhaust {@link eu.unifiedviews.dataunit.files.FilesDataUnit.Iteration} (obtained using {@link eu.unifiedviews.dataunit.files.FilesDataUnit#getIteration()}) into one {@link Set} of entries.
+     * Beware - if the {@link eu.unifiedviews.dataunit.files.FilesDataUnit} contains milions or more entries, storing all of this in single {@link Set} is not a good idea.
      * Only suitable for work with ~100000 of entries (files)
      *
      * @param filesDataUnit data unit from which the iteration will be obtained and exhausted

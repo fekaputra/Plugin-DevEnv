@@ -1,7 +1,6 @@
 package eu.unifiedviews.helpers.dataunit.copyhelper;
 
 import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
 
 /**
  * Helper for copying all metadata related to single symbolicName, that is these triples:
@@ -19,7 +18,7 @@ import eu.unifiedviews.dataunit.MetadataDataUnit;
 public interface CopyHelper extends AutoCloseable {
     /**
      * Copy all metadata related to single symbolicName
-     * @param symbolicName key to {@link MetadataDataUnit.Entry} which will be copied
+     * @param symbolicName key to {@link eu.unifiedviews.dataunit.MetadataDataUnit.Entry} which will be copied
      * @throws DataUnitException
      */
     void copyMetadata(String symbolicName) throws DataUnitException;

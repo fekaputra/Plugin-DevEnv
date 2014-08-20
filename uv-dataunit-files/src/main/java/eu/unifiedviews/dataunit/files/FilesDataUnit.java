@@ -10,12 +10,12 @@ import eu.unifiedviews.dataunit.MetadataDataUnit;
 public interface FilesDataUnit extends MetadataDataUnit {
 
     /**
-     * Predicate used to store metadata about file (the URI location of the file) inside storage.
+     * Value: {@value #PREDICATE_FILE_URI}, predicate used to store metadata about file (the URI location of the file) inside storage.
      * Each metadata entry is then represented at least by triples:
-     * {@code
-     * <subject> p:symbolicName "name"
-     * <subject> p:fileUri <file://c:/Users/uv/some/location/main.xls>
-     * }
+     * <p><blockquote><pre>
+     * &lt;subject&gt &lt;{@value eu.unifiedviews.dataunit.MetadataDataUnit#PREDICATE_SYMBOLIC_NAME}&gt; "name literal"
+     * &lt;subject&gt; &lt;{@value #PREDICATE_FILE_URI}&gt; &lt;file://c:/Users/uv/some/location/main.xls&gt;
+     * </pre></blockquote></p>
      */
     static final String PREDICATE_FILE_URI = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/FilesDataUnit/fileURI";
 
@@ -39,7 +39,7 @@ public interface FilesDataUnit extends MetadataDataUnit {
     /**
      * List the files.
      *
-     * @return
+     * @return iteration
      * @throws DataUnitException
      */
     @Override

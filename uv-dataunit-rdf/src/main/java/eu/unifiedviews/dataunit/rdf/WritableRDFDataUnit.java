@@ -12,9 +12,9 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
 
     /**
      * Get URI prefix which is unique for this data unit. For generating graph names use
-     * {@code
+     * <p><blockquote><pre>
      * getBaseDataGraphURI() + "/" + "myName"
-     * }
+     * </pre></blockquote></p>
      * to avoid any graph name conflicts (as the prefix is unique already).
      *
      * @return URI-prefix to be used when generating graph names manually (and then adding them by {@link WritableRDFDataUnit#addExistingDataGraph(String, URI)}

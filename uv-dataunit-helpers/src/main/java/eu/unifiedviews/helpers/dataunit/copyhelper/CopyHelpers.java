@@ -22,7 +22,8 @@ import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
  * <ul>
  * <li>static (and ineffective), quick and dirty way {@code CopyHelpers.copyMetadata("name", sourceDataUnit, destinationDataUnit)}.
  * This does the job, but every call opens new connection to the underlying storage and then closes the connection adding a little overhead.</li>
- * <li>dynamic way, {@code
+ * <li>dynamic way,
+ * <p><blockquote><pre>
  * //first create helper over dataunits
  * CopyHelper helper = CopyHelpers.create(sourceDataUnit, destinationDataUnit);
  * // copy many times (helper holds its connections open)
@@ -31,8 +32,8 @@ import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
  * } finally {
  *   helper.close();
  * }
- * }
- * <li>
+ * </pre></blockquote></p>
+ * </li>
  * </ul>
  */
 public class CopyHelpers {
