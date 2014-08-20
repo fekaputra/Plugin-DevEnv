@@ -4,7 +4,7 @@ import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 
 /**
- * Derived from {@link MetadataDataUnit}, {@link FilesDataUnit} stores metadata entries and each entry is enhanced by file location.
+ * {@link FilesDataUnit} stores metadata entries and each entry is enhanced by file location.
  * This data unit stores files therefore, along with any metadata attached to file entries.
  */
 public interface FilesDataUnit extends MetadataDataUnit {

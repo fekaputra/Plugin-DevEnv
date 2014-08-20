@@ -17,7 +17,7 @@ import eu.unifiedviews.helpers.dataunit.rdfhelper.RDFHelper;
 
 /**
  * Helper to add all triples from one data unit into destination data unit under the "all" symbolic name.
- * Addition is done using succesive "ADD <> TO <>" SPARQL update queries on the storage.
+ * Addition is done using succesive {@code "ADD <> TO <>"} SPARQL update queries on the storage.
  * <p>
  * Example usage:
  * <p><blockquote><pre>

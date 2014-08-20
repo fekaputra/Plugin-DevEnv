@@ -28,7 +28,6 @@ import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelpers;
  *   helper.close();
  * }
  * </pre></blockquote></p>
- * <li>
  * </ul>
  */
 public class VirtualPathHelpers {

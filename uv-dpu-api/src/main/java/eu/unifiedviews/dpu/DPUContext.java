@@ -8,7 +8,7 @@ import eu.unifiedviews.dataunit.DataUnit;
 /**
  * Context used by {@link DPU} during their execution process. The context
  * provide functions that enable DPU communicate with containment application.
- * The{@link #sendMessage} method should be used to notify user about more serious
+ * The {@link #sendMessage(MessageType, String)} method should be used to notify user about more serious
  * events like: changing configuration, the fatal error. It is shown to user in UI.
  * The number of the massage emitted by single execution should
  * be reasonable small to preserve readability of the message log (~10 messages per execution, only main phases notice).

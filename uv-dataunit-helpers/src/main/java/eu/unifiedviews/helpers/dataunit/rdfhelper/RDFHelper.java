@@ -73,8 +73,7 @@ public class RDFHelper {
      * Useful for methods from {@link RepositoryConnection} which are varargs. Such as
      * <p><blockquote><pre>
      * connection.add(statement, RDFHelper.getGraphsURIArray(outputDataUnit));
-     * }</pre>
-     * <p>
+     * </pre></blockquote></p>
      * @param rdfDataUnit data unit from which the iteration will be obtained and exhausted
      * @return array of URIs containing all graphs from the rdfDataUnit
      * @throws DataUnitException

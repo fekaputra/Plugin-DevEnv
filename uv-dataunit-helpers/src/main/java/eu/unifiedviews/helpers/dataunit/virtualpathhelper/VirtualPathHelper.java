@@ -20,7 +20,7 @@ import eu.unifiedviews.dpu.DPU;
  * |                |      |              |      |              |      |              |
  * ------------------      ----------------      ----------------      ----------------
  * </pre>
- * <ul>
+ * <ol>
  * <li> E-HttpDownload downloads example file http://example.com/new/things/list.rdf and adds it as entry to FilesDataUnit with
  * symbolicName "list" and virtualPath "new/things/list.rdf". </li>
  * <li> T-FilesToRdf extracts the contents of the file to triplestore, it creates graph with symbolicName "list",
@@ -31,7 +31,7 @@ import eu.unifiedviews.dpu.DPU;
  * virtual path metadata set on the entry, we know everything we need. So it copies the file contents on remote host into file
  * ${configurationBaseDirectory}/new/things/list.rdf
  * </li>
- * </ul>
+ * </ol>
  * Thats it. And pipeline designer can configure {@link DPU}s using the shorter symbolic name "list" in configuration dialogs, it does not
  * interfere with the virtualPath which smoothly passes by all {@link DPU}s on the way.
  * <p>

@@ -43,7 +43,6 @@ import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
  *   helper.close();
  * }
  * </pre></blockquote></p>
- * <li>
  * </ul>
  */
 public class MapHelpers {
@@ -138,18 +137,18 @@ public class MapHelpers {
 
         protected static final String SELECT =
                 "SELECT ?key ?value WHERE { "
-                // use symbolic name to pick a node
-                + "?root <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
-                // select all it's maps
-                + "?root <" + MapHelper.PREDICATE_HAS_MAP + "> ?map. "
-                // select the map with given name
-                + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
-                // select pair
-                + "?map <" + MapHelper.PREDICATE_MAP_CONTAINS + "> ?entry. "
-                // select key and value
-                + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_KEY + "> ?" + KEY_BINDING + ". "
-                + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_VALUE + "> ?" + VALUE_BINDING + ". "
-                + "}";
+                        // use symbolic name to pick a node
+                        + "?root <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
+                        // select all it's maps
+                        + "?root <" + MapHelper.PREDICATE_HAS_MAP + "> ?map. "
+                        // select the map with given name
+                        + "?map <" + MapHelper.PREDICATE_MAP_TITLE + "> ?" + TITLE_BINDING + ". "
+                        // select pair
+                        + "?map <" + MapHelper.PREDICATE_MAP_CONTAINS + "> ?entry. "
+                        // select key and value
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_KEY + "> ?" + KEY_BINDING + ". "
+                        + "?entry <" + MapHelper.PREDICATE_MAP_ENTRY_VALUE + "> ?" + VALUE_BINDING + ". "
+                        + "}";
 
         public MapHelperImpl(MetadataDataUnit dataUnit) {
             this.dataUnit = dataUnit;

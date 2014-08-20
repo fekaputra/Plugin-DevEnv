@@ -4,12 +4,11 @@ import eu.unifiedviews.dataunit.DataUnitException;
 
 /**
  * Helper for copying all metadata related to single symbolicName, that is these triples:
- * <ul>
- *  <li>&ltsubject&gt p:symbolicName "name"</li>
- *  <li>&ltsubject&gt ?p ?v</li>
- * <ul>
- * <p>
- * In future versions it will be improved to copy whole triple-tree rooted at &lt;subject%gt;
+ * <p><blockquote><pre>
+ *  &ltsubject&gt &lt;{@value eu.unifiedviews.dataunit.MetadataDataUnit#PREDICATE_SYMBOLIC_NAME}&gt; "name"
+ *  &ltsubject&gt ?p ?v
+ * </pre></blockquote></pre>
+ * In future versions it will be improved to copy whole triple-tree rooted at &lt;subject&gt;
  * <p>
  * User of the helper is obliged to close this helper after he finished work with it (closes underlying connections).
  * <p>

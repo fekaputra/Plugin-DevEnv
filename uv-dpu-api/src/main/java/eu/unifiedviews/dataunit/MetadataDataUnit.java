@@ -23,8 +23,8 @@ import eu.unifiedviews.dpu.DPU;
  * entry (filter, selector). Symbolic name is meant as ID or primary key to the data entry in scope of {@link MetadataDataUnit}.
  * <p>
  * The triples which represent the
- * metadata itself, are stored inside {@link Repository}, but for the user of this dataunit only {@link RepositoryConnection} can be obtained to work with raw
- * metadata triples. Triples can be spread in one or more Graphs inside {@link Repository}, so to query them one has to obtain all the graphnames to work with
+ * metadata itself, are stored inside {@link org.openrdf.repository.Repository}, but for the user of this dataunit only {@link org.openrdf.repository.RepositoryConnection} can be obtained to work with raw
+ * metadata triples. Triples can be spread in one or more Graphs inside {@link org.openrdf.repository.Repository}, so to query them one has to obtain all the graphnames to work with
  * by using {@link MetadataDataUnit#getMetadataGraphnames()}.
  * <p>
  * <b>Example 1: typical work pattern with metadata entries</b>
@@ -57,7 +57,7 @@ import eu.unifiedviews.dpu.DPU;
  * </pre></blockquote></p>
  * <p>
  * <b>Example 2: typical work pattern with raw connection and graphs</b>
- * </pre></blockquote></p>
+ * <pre><blockquote><p>
  * // Setup our connection variable
  * RepositoryConnection connection = null;
  * try {
@@ -114,7 +114,7 @@ import eu.unifiedviews.dpu.DPU;
 public interface MetadataDataUnit extends DataUnit {
 
     /**
-     * Symbolic name given to the data entry is stored in {@link Repository} as a single triple
+     * Value: {@value #PREDICATE_SYMBOLIC_NAME}, symbolic name given to the data entry is stored in {@link Repository} as a single triple
      * <p><blockquote><pre>
      * &lt;subject&gt; &lt;{@value #PREDICATE_SYMBOLIC_NAME}&gt; "name"
      * </pre></blockquote></p>
@@ -124,7 +124,7 @@ public interface MetadataDataUnit extends DataUnit {
     final String PREDICATE_SYMBOLIC_NAME = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/symbolicName";
 
     /**
-     * Returns connection to the {@link Repository} where the metadata entries are stored. Connection is returned initialized and open, user is obliged to close
+     * Returns connection to the {@link org.openrdf.repository.Repository} where the metadata entries are stored. Connection is returned initialized and open, user is obliged to close
      * the connection after he has done work with it. See {@link MetadataDataUnit}:Example 2 for example usage.
      *
      * @return Connection to repository.
@@ -141,7 +141,7 @@ public interface MetadataDataUnit extends DataUnit {
     Set<URI> getMetadataGraphnames() throws DataUnitException;
 
     /**
-     * Interface describing one piece of data which can be decorated by metadata. See {@link MetadataDataUnit}:Example 1 for example usage.
+     * Interface describing one piece of data which can be decorated by metadata. See <b>Example 1</b> at {@link MetadataDataUnit} for example usage.
      */
     interface Entry {
 
@@ -155,7 +155,7 @@ public interface MetadataDataUnit extends DataUnit {
     }
 
     /**
-     * Iteration over data pieces. Has to be closed in finally blocks. See {@link MetadataDataUnit}:Example 1 for example usage.
+     * Iteration over data pieces. Has to be closed in finally blocks. See <b>Example 1</b> at {@link MetadataDataUnit} for example usage.
      */
     interface Iteration extends AutoCloseable {
         /**
