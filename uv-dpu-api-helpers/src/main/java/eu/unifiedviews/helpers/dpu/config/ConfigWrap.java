@@ -1,18 +1,12 @@
 package eu.unifiedviews.helpers.dpu.config;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +20,7 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
 /**
  * Class provides functionality to serialize, deserialize and create instance config which is serialized as XML, using
  * XStream.
- * 
+ *
  * @author Petyr
  * @param <C>
  */
@@ -55,7 +49,7 @@ public class ConfigWrap<C> {
 
     /**
      * Create configuration wrap for given configuration class.
-     * 
+     *
      * @param configClass
      *            Configuration class.
      */
@@ -103,7 +97,7 @@ public class ConfigWrap<C> {
     /**
      * Create instance generic ConfigSerializer object. In case of error return
      * null.
-     * 
+     *
      * @return Object instance or null.
      */
     public C createInstance() {
@@ -118,7 +112,7 @@ public class ConfigWrap<C> {
     /**
      * Deserialize configuration. If the parameter is null or empty then null is
      * returned.
-     * 
+     *
      * @param configStr
      *            Serialized configuration.
      * @return Deserialized configuration.
@@ -150,39 +144,13 @@ public class ConfigWrap<C> {
             throw new DPUConfigException(e);
         }
 
-        // TODO: use Commons BeanUtils
-        final int loadedFieldsSize = loadedFields.size();
-        final int configClassFieldsSize = configClass.getDeclaredFields().length;
-        if (loadedFieldsSize < configClassFieldsSize) {
-            // get fields that have not been loaded
-            LinkedList<String> toCopy = new LinkedList<>();
-            final Field[] declaredFields = configClass.getDeclaredFields();
-            for (Field field : declaredFields) {
-                if (loadedFields.contains(field.getName())) {
-                    // ok, has been loaded
-                } else {
-                    // has not been loaded, we have to copy it
-                    toCopy.add(field.getName());
-                }
-            }
-            // some fields have been skipped, we have to load them 
-            // from default configuration
-            C configDefault = createInstance();
-            if (configDefault != null) {
-                copyFields(configDefault, config, toCopy);
-            } else {
-                // no default configuration
-                LOG.warn("The missing fields will not be set.");
-            }
-        }
-
         return config;
     }
 
     /**
      * Serialized actual stored configuration. Can return null if configuration
      * is null.
-     * 
+     *
      * @param config
      *            Configuration to serialize.
      * @return Serialized configuration, can be null.
@@ -200,10 +168,10 @@ public class ConfigWrap<C> {
             try (ObjectOutputStream objOut = xstreamUTF
                     .createObjectOutputStream(
                     byteOut)) {
-                ConfigurationVersion configurationVersion =  new ConfigurationVersion();
+                ConfigurationVersion configurationVersion = new ConfigurationVersion();
                 configurationVersion.setClassName(config.getClass().getCanonicalName());
                 configurationVersion.setVersion(1);
-                
+
                 objOut.writeObject(configurationVersion);
                 objOut.writeObject(config);
             }
@@ -213,45 +181,4 @@ public class ConfigWrap<C> {
         }
         return new String(result, Charset.forName("UTF-8"));
     }
-
-    /**
-     * Copy values of certain fields from source to target.
-     * 
-     * @param source
-     * @param target
-     * @param fieldNames
-     *            Names of fields to copy.
-     */
-    void copyFields(C source, C target, List<String> fieldNames) {
-        for (String fieldName : fieldNames) {
-            try {
-                Method readMethod = new PropertyDescriptor(fieldName,
-                        configClass).getReadMethod();
-                Method writeMethod = new PropertyDescriptor(fieldName,
-                        configClass).getWriteMethod();
-
-                if (readMethod == null) {
-                    LOG.warn("Missing getter for {}.{}",
-                            configClass.getSimpleName(), fieldName);
-                    continue;
-                }
-                if (writeMethod == null) {
-                    LOG.warn("Missing setter for {}.{}",
-                            configClass.getSimpleName(), fieldName);
-                    continue;
-                }
-                // get
-                Object value = readMethod.invoke(source);
-                // set
-                writeMethod.invoke(target, value);
-            } catch (IntrospectionException ex) {
-                LOG.error("Failed to set class value for: {}.{} ",
-                        configClass.getSimpleName(), fieldName, ex);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                LOG.error("Failed to set class value for: {}.{} ",
-                        configClass.getSimpleName(), fieldName, ex);
-            }
-        }
-    }
-
 }

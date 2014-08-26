@@ -1,11 +1,8 @@
 package eu.unifiedviews.helpers.dpu.config;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
-
-import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +11,7 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
 
 /**
  * Test suite for {@link ConfigWrap} class.
- * 
+ *
  * @author Petyr
  */
 public class ConfigWrapTest {
@@ -36,22 +33,6 @@ public class ConfigWrapTest {
     public void serialisationNull() throws DPUConfigException {
         String serialized = configWrap.serialize(null);
         assertNull(serialized);
-    }
-
-    @Test
-    public void fieldCopy() {
-        SampleConfig source = new SampleConfig();
-        source.setSecond("2");
-        SampleConfig target = new SampleConfig();
-
-        LinkedList<String> fieldNames = new LinkedList<>();
-        fieldNames.add("second");
-
-        configWrap = new ConfigWrap(SampleConfig.class);
-        configWrap.copyFields(source, target, fieldNames);
-
-        assertEquals("f", target.getFirst());
-        assertEquals("2", target.getSecond());
     }
 
 }
