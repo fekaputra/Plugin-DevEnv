@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
@@ -225,6 +226,11 @@ public class ConfigWrap<C> {
     void copyFields(C source, C target, List<String> fieldNames) {
         for (String fieldName : fieldNames) {
             try {
+                final int modifiers = configClass.getDeclaredField(fieldName).getModifiers();
+                // we do not set static or final
+                if (Modifier.isFinal(modifiers) || Modifier.isStatic(modifiers)) {
+                    continue;
+                }
                 Method readMethod = new PropertyDescriptor(fieldName,
                         configClass).getReadMethod();
                 Method writeMethod = new PropertyDescriptor(fieldName,
@@ -247,7 +253,7 @@ public class ConfigWrap<C> {
             } catch (IntrospectionException ex) {
                 LOG.error("Failed to set class value for: {}.{} ",
                         configClass.getSimpleName(), fieldName, ex);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 LOG.error("Failed to set class value for: {}.{} ",
                         configClass.getSimpleName(), fieldName, ex);
             }
