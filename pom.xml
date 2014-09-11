@@ -16,6 +16,7 @@
 	</properties>
 
 	<modules>
+		<module>dpu-base-pom</module>
 		<!-- commons -->
 		<module>uv-dpu-api</module>
 		<!-- api helpers and support libraries -->
