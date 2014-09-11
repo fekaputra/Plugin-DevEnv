@@ -133,5 +133,48 @@
 			<!-- https://maven.apache.org/pom.html#Licenses -->
 		</license>
 	</licenses>
+
+        <profiles>
+                <profile> <!-- copy the plugin to the DPU's directory by default -->
+                        <id>extract-jar</id>
+                        <activation>
+                                <property>
+                                        <name>profile</name>
+                                        <value>extract-jar</value>
+                                </property>
+                        </activation>
+
+                        <build>
+                                <plugins>
+                                        <plugin>
+                                                <groupId>org.apache.maven.plugins</groupId>
+                                                <artifactId>maven-resources-plugin</artifactId>
+                                                <version>2.6</version>
+                                                <executions>
+                                                        <execution>
+                                                                <phase>install</phase>
+                                                                <goals>
+                                                                        <goal>copy-resources</goal>
+                                                                </goals>
+                                                                <configuration>
+                                                                        <outputDirectory>${project.build.directory}/../../target/dpu/${project.artifactId}</outputDirectory>
+                                                                        <resources>
+                                                                                <resource>
+                                                                                        <directory>${project.build.directory}</directory>
+                                                                                        <includes>
+                                                                                                <!-- copy just output jar file -->
+                                                                                                <include>${project.artifactId}-${project.version}.jar</include>
+                                                                                        </includes>
+                                                                                </resource>
+                                                                        </resources>
+                                                                </configuration>
+                                                        </execution>
+                                                </executions>
+                                        </plugin>
+                                </plugins>
+                        </build>
+                </profile>
+        </profiles>
+
 </project>
 
