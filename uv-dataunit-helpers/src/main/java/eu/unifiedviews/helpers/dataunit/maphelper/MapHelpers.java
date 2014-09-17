@@ -1,9 +1,7 @@
 package eu.unifiedviews.helpers.dataunit.maphelper;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openrdf.model.ValueFactory;
 import org.openrdf.query.BindingSet;
@@ -21,9 +19,32 @@ import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
+/**
+ * Static helper nutshell for {@link MapHelper}
+ * <p>
+ * The helper can be used in two ways:
+ * <ul>
+ * <li>static (and ineffective), quick and dirty way {@code MapHelpers.getMap(dataUnit, "symbolicName", "mapName")}.
+ * This does the job, but every call opens new connection to the underlying storage and then closes the connection adding a little overhead.</li>
+ * <li>dynamic way,
+ * <p><blockquote><pre>
+ * //first create helper over dataunit
+ * MapHelper helper = MapHelpers.create(dataUnit);
+ * try {
+ *   // use many times (helper holds its connections open)
+ *   Map<String, String> map = helper.getMap("symbolicName", "mapName");
+ *   helper.putMap("symbolicName", "mapName", map);
+ * } finally {
+ *   helper.close();
+ * }
+ * </pre></blockquote></p>
+ * </ul>
+ */
 public class MapHelpers {
     private static final Logger LOG = LoggerFactory.getLogger(MapHelpers.class);
 
@@ -33,14 +54,34 @@ public class MapHelpers {
 
     }
 
+    /**
+     * Create read-only {@link MapHelper} using {@link MetadataDataUnit}, method {@link MapHelper#putMap(String, String, Map)} is unsupported in this instance.
+     * @param dataUnit data unit to work with
+     * @return instance of {@link MapHelper}, don't forget to close it after using it
+     */
     public static MapHelper create(MetadataDataUnit dataUnit) {
         return selfie.new MapHelperImpl(dataUnit);
     }
 
+    /**
+     * Create read-write{@link MapHelper} using {@link WritableMetadataDataUnit}.
+     * @param dataUnit data unit to work with
+     * @return instance of {@link MapHelper}, don't forget to close it after using it
+     */
     public static MapHelper create(WritableMetadataDataUnit dataUnit) {
         return selfie.new WritableMapHelperImpl(dataUnit);
     }
 
+    /**
+     * Just do the job, get map from given symbolicName saved under the mapName (id, key of the map).
+     * Opens and closes connection to storage each time it is called.
+     *
+     * @param dataUnit unit to work with
+     * @param symbolicName to which the map is binded
+     * @param mapName key of the map
+     * @return map
+     * @throws DataUnitException
+     */
     public static Map<String, String> getMap(MetadataDataUnit dataUnit, String symbolicName, String mapName) throws DataUnitException {
         MapHelper helper = null;
         Map<String, String> result = null;
@@ -59,6 +100,14 @@ public class MapHelpers {
         return result;
     }
 
+    /**
+     * Just put the map to given symbolicName under the mapName.
+     * @param dataUnit unit to work with
+     * @param symbolicName to which the map is binded
+     * @param mapName key of the map
+     * @param map map to save
+     * @throws DataUnitException
+     */
     public static void putMap(WritableMetadataDataUnit dataUnit, String symbolicName, String mapName, Map<String, String> map) throws DataUnitException {
         MapHelper helper = null;
         try {
@@ -209,6 +258,7 @@ public class MapHelpers {
 
         public WritableMapHelperImpl(WritableMetadataDataUnit dataUnit) {
             super(dataUnit);
+            this.writableDataUnit = dataUnit;
         }
 
         @Override

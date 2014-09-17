@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-dpu-api-helpers</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>bundle</packaging>
 
     <properties>
@@ -29,7 +29,7 @@
         <dependency> <!-- dpi-api project -->
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -114,6 +114,41 @@
                         <Import-Package>eu.unifiedviews.dpu;provide:=true,eu.unifiedviews.dpu.config;provide:=true,*</Import-Package>
                     </instructions>
                 </configuration>
+            </plugin>
+
+           <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+            </plugin>
+ 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 

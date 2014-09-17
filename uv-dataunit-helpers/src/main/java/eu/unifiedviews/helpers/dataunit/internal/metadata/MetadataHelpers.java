@@ -1,9 +1,6 @@
 package eu.unifiedviews.helpers.dataunit.internal.metadata;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
-import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
+import java.util.Set;
 
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -22,15 +19,16 @@ import org.openrdf.repository.RepositoryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
+import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
+import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
 /**
  * Provides easy way how to set/get metadata (predicate/object) for given
  * symbolic name.
- * 
- * <strong>This class in not accessible in UV environment, do not use!</strong>
  *
- * @author Škoda Petr
+ * <strong>This class in not accessible in UV environment, do not use!</strong>
  */
 public class MetadataHelpers {
 
@@ -80,7 +78,7 @@ public class MetadataHelpers {
      * Set metadata under given predicate.
      * If the predicate is already set then the value is replaced. To add multiple metadata under the same predicate use
      * {@link #add(eu.unifiedviews.dataunit.WritableMetadataDataUnit, java.lang.String, java.lang.String, java.lang.String)}.
-     * 
+     *
      * @param dataUnit
      * @param symbolicName
      * @param predicate
@@ -106,11 +104,11 @@ public class MetadataHelpers {
     /**
      * Add metadata for given symbolic name. The old data under same predicate
      * are not deleted. Use to add multiple metadata of same meaning.
-     * 
+     *
      * @param dataUnit
      * @param symbolicName
      * @param predicate
-     * @param object
+     * @param newValue
      * @throws DataUnitException
      */
     public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate, String newValue) throws DataUnitException {
@@ -131,9 +129,8 @@ public class MetadataHelpers {
 
     /**
      * For debug purpose.
-     * 
-     * @param connection
-     * @param uris
+     *
+     * @param dataUnit
      * @throws DataUnitException
      */
     public static void dump(MetadataDataUnit dataUnit) throws DataUnitException {
@@ -152,7 +149,7 @@ public class MetadataHelpers {
             r = connection.getStatements(null, null, null,
                     true, uris.toArray(new URI[0]));
             while (r.hasNext()) {
-                Statement s = (Statement) r.next();
+                Statement s = r.next();
 
                 message.append("'");
                 message.append(s.getSubject().stringValue());

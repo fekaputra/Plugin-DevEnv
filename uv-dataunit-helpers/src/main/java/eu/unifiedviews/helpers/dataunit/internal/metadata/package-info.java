@@ -5,5 +5,5 @@
  * this package and all sub-packages are not accessible in application
  * environment.
  */
-package eu.unifiedviews.helpers.dataunit.internal;
+package eu.unifiedviews.helpers.dataunit.internal.metadata;
 

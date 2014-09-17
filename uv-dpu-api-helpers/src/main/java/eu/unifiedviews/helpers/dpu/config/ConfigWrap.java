@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +27,7 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
 /**
  * Class provides functionality to serialize, deserialize and create instance config which is serialized as XML, using
  * XStream.
- * 
+ *
  * @author Petyr
  * @param <C>
  */
@@ -55,7 +56,7 @@ public class ConfigWrap<C> {
 
     /**
      * Create configuration wrap for given configuration class.
-     * 
+     *
      * @param configClass
      *            Configuration class.
      */
@@ -103,7 +104,7 @@ public class ConfigWrap<C> {
     /**
      * Create instance generic ConfigSerializer object. In case of error return
      * null.
-     * 
+     *
      * @return Object instance or null.
      */
     public C createInstance() {
@@ -118,7 +119,7 @@ public class ConfigWrap<C> {
     /**
      * Deserialize configuration. If the parameter is null or empty then null is
      * returned.
-     * 
+     *
      * @param configStr
      *            Serialized configuration.
      * @return Deserialized configuration.
@@ -165,7 +166,7 @@ public class ConfigWrap<C> {
                     toCopy.add(field.getName());
                 }
             }
-            // some fields have been skipped, we have to load them 
+            // some fields have been skipped, we have to load them
             // from default configuration
             C configDefault = createInstance();
             if (configDefault != null) {
@@ -182,7 +183,7 @@ public class ConfigWrap<C> {
     /**
      * Serialized actual stored configuration. Can return null if configuration
      * is null.
-     * 
+     *
      * @param config
      *            Configuration to serialize.
      * @return Serialized configuration, can be null.
@@ -200,10 +201,10 @@ public class ConfigWrap<C> {
             try (ObjectOutputStream objOut = xstreamUTF
                     .createObjectOutputStream(
                     byteOut)) {
-                ConfigurationVersion configurationVersion =  new ConfigurationVersion();
+                ConfigurationVersion configurationVersion = new ConfigurationVersion();
                 configurationVersion.setClassName(config.getClass().getCanonicalName());
                 configurationVersion.setVersion(1);
-                
+
                 objOut.writeObject(configurationVersion);
                 objOut.writeObject(config);
             }
@@ -216,15 +217,20 @@ public class ConfigWrap<C> {
 
     /**
      * Copy values of certain fields from source to target.
-     * 
+     *
      * @param source
      * @param target
      * @param fieldNames
-     *            Names of fields to copy.
+     * Names of fields to copy.
      */
     void copyFields(C source, C target, List<String> fieldNames) {
         for (String fieldName : fieldNames) {
             try {
+                final int modifiers = configClass.getDeclaredField(fieldName).getModifiers();
+                // we do not set static or final
+                if (Modifier.isFinal(modifiers) || Modifier.isStatic(modifiers)) {
+                    continue;
+                }
                 Method readMethod = new PropertyDescriptor(fieldName,
                         configClass).getReadMethod();
                 Method writeMethod = new PropertyDescriptor(fieldName,
@@ -247,7 +253,7 @@ public class ConfigWrap<C> {
             } catch (IntrospectionException ex) {
                 LOG.error("Failed to set class value for: {}.{} ",
                         configClass.getSimpleName(), fieldName, ex);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 LOG.error("Failed to set class value for: {}.{} ",
                         configClass.getSimpleName(), fieldName, ex);
             }

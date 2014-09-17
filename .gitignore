@@ -3,6 +3,7 @@
 .project
 .settings/
 .classpath
+.pmd
 
 # Netbeans files #
 nbactions.xml

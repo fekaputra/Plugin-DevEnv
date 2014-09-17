@@ -14,7 +14,7 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
 
 /**
  * Test suite for {@link ConfigWrap} class.
- * 
+ *
  * @author Petyr
  */
 public class ConfigWrapTest {

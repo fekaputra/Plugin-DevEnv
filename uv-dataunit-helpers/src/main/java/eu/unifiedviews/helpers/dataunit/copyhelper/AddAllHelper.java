@@ -15,25 +15,28 @@ import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dataunit.rdf.WritableRDFDataUnit;
 import eu.unifiedviews.helpers.dataunit.rdfhelper.RDFHelper;
 
+/**
+ * Helper to add all triples from one data unit into destination data unit under the "all" symbolic name.
+ * Addition is done using succesive {@code "ADD <> TO <>"} SPARQL update queries on the storage.
+ * <p>
+ * Example usage:
+ * <p><blockquote><pre>
+ * AddAllHelper.addAll(inputDataUnit, outputDataUnit);
+ * // outputDataUnit now contains all triples from all data graphs from input data unit, stored as one graph with symbolic name "all"
+ * </pre></blockquote></p>
+ */
 public class AddAllHelper {
     private static final Logger LOG = LoggerFactory.getLogger(AddAllHelper.class);
-    
+
     /**
-     * Add all data from source DataUnit into destination DataUnit. The method must not
-     * modify the current parameter (unit).
+     * Add all data from source DataUnit into destination DataUnit into one data graph with symbolic name "all".
+     * The method does not modify sources.
      *
-     * @param dataunit {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} to add
-     * from
+     * @param source {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} to add from
+     * @param destination {@link RDFDataUnit} to add to
      * @throws eu.unifiedviews.dataunit.DataUnitException
-     * @throws IllegalArgumentException if some property of an element of the
-     * specified dataunit prevents it from being added to this dataunit
      */
     public static void addAll(RDFDataUnit source, WritableRDFDataUnit destination) throws DataUnitException {
-        if (!destination.getClass().equals(source.getClass())) {
-            throw new IllegalArgumentException("Incompatible DataUnit class. This DataUnit is of class "
-                    + destination.getClass().getCanonicalName() + " and it cannot merge other DataUnit of class " + source.getClass().getCanonicalName() + ".");
-        }
-
         RepositoryConnection connection = null;
         try {
             connection = destination.getConnection();

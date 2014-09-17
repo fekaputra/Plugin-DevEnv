@@ -1,139 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>eu.unifiedviews</groupId>
-    <artifactId>uv-plugin-devenv</artifactId>
-    <version>1.0.0</version>
-    <packaging>pom</packaging>
-    <description/>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>eu.unifiedviews</groupId>
+	<artifactId>uv-plugin-devenv</artifactId>
+	<version>1.0.1</version>
+	<packaging>pom</packaging>
+	<description />
 
-    <properties>
-        <!-- specify java build version for commons?, backend and frontend -->
-        <project.java.version>1.7</project.java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+	<properties>
+		<!-- specify java build version for commons?, backend and frontend -->
+		<project.java.version>1.7</project.java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 
-    <modules>
-        <!-- commons -->
-        <module>uv-dpu-api</module>
-        <!-- api helpers and support libraries -->
-        <module>uv-dpu-api-helpers</module>
-        <!-- dataunits -->
-        <module>uv-dataunit-files</module>
-        <module>uv-dataunit-rdf</module>
-        <!-- dataunit helpers and support libraries -->
-        <module>uv-dataunit-helpers</module>
-    </modules>
+	<modules>
+		<module>dpu-base-pom</module>
+		<!-- commons -->
+		<module>uv-dpu-api</module>
+		<!-- api helpers and support libraries -->
+		<module>uv-dpu-api-helpers</module>
+		<!-- dataunits -->
+		<module>uv-dataunit-files</module>
+		<module>uv-dataunit-rdf</module>
+		<!-- dataunit helpers and support libraries -->
+		<module>uv-dataunit-helpers</module>
+	</modules>
 
-    <scm>
-        <url/>
-        <connection/>
-        <developerConnection/>
-    </scm>
+	<scm>
+		<url />
+		<connection />
+		<developerConnection />
+	</scm>
 
-    <developers>
-        <!-- <developer> <id></id> <name></name> <email></email> <roles> <role>developer</role>
-        </roles> </developer> -->
-    </developers>
+	<developers>
+		<!-- <developer> <id></id> <name></name> <email></email> <roles> <role>developer</role> 
+			</roles> </developer> -->
+	</developers>
 
-    <contributors>
-        <contributor>
-            <name>Tomas Knap</name>
-            <email>knap@ksi.mff.cuni.cz</email>
-            <roles>
-                <role>project supervisor</role>
-            </roles>
-            <url>http://www.ksi.mff.cuni.cz/~knap</url>
-            <organization>Faculty of Mathematics and Physics, Charles University in Prague</organization>
-        </contributor>
-    </contributors>
+	<contributors>
+		<contributor>
+			<name>Tomas Knap</name>
+			<email>knap@ksi.mff.cuni.cz</email>
+			<roles>
+				<role>project supervisor</role>
+			</roles>
+			<url>http://www.ksi.mff.cuni.cz/~knap</url>
+			<organization>Faculty of Mathematics and Physics, Charles University in Prague</organization>
+		</contributor>
+	</contributors>
 
-    <repositories>
-        <repository>
-            <id>cz.cuni.mff.ms.xrg.odcl</id>
-            <url>http://gd.projekty.ms.mff.cuni.cz:9123/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>cz.cuni.mff.ms.xrg.odcl.thirdparty</id>
-            <url>http://gd.projekty.ms.mff.cuni.cz:9123/nexus/content/repositories/thirdparty/</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>maven.eea.sk</id>
+			<name>maven.eea.sk-public</name>
+			<url>http://maven.eea.sk/artifactory/public/</url>
+		</repository>
+	</repositories>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>${project.java.version}</source>
-                        <target>${project.java.version}</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${project.java.version}</source>
+						<target>${project.java.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 
-        <plugins>
-            <!-- integration tests (*SysTest) are disabled by default; use SYSTESTS profile to enable it -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+		<plugins>
+			<!-- integration tests (*SysTest) are disabled by default; use SYSTESTS 
+				profile to enable it -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.17</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*SysTest.java</exclude>
-                        <exclude>**/*DoesntPassTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.1</version>
-            </plugin>
+				<configuration>
+					<excludes>
+						<exclude>**/*SysTest.java</exclude>
+						<exclude>**/*DoesntPassTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.1</version>
+			</plugin>
 
 
-            <!-- JRebel plugin for instant redeploy -->
-            <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <version>1.1.5</version>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<!-- JRebel plugin for instant redeploy -->
+			<plugin>
+				<groupId>org.zeroturnaround</groupId>
+				<artifactId>jrebel-maven-plugin</artifactId>
+				<version>1.1.5</version>
+				<executions>
+					<execution>
+						<id>generate-rebel-xml</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<!-- Default configuration for all reports -->
+					<detectLinks>true</detectLinks>
+					<links>
+						<link>http://openrdf.callimachus.net/sesame/2.7/apidocs</link>
+					</links>
+				</configuration>
+				<executions>
+					<execution>
+						<id>aggregate</id>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<phase>site</phase>
+						<configuration>
+							<!-- Specific configuration for the aggregate report -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
-    </build>
+	</build>
 
-    <profiles>
-        <!-- profile to enable integration (system) tests -->
-        <profile>
-            <id>SYSTESTS</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <exclude>none</exclude>
-                            </excludes>
-                            <includes>
-                                <include>**/*SysTest.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+	<profiles>
+		<!-- profile to enable integration (system) tests -->
+		<profile>
+			<id>SYSTESTS</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>**/*SysTest.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
