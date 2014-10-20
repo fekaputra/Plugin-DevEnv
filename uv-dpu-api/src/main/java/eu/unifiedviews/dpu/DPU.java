@@ -41,11 +41,20 @@ public interface DPU {
     }
 
     /**
+     * Used to mark DPU as a Quality. Use on main DPU class ie.
+     * {@link eu.unifiedviews.dpu.DPU}.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface AsQuality {
+    }
+
+    /**
      * Main DPU execution method. DPU developer has to implement this method to make the job done.
      * Application then calls the method after it had set up any dataunit fields inside DPU class.
      *
      * If any exception is thrown then the DPU execution is considered to failed.
-     * Use only checked exceptions of type (or derived) {@link DPUException} to report checked execptions.
+     * Use only checked exceptions of type (or derived) {@link DPUException} to report checked execetions.
      * Avoid throwing new {@link RuntimeException} and derived, but of course if any {@link RuntimeException} occurs
      * in third-party code, pass it by.
      *
