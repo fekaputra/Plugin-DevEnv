@@ -25,6 +25,9 @@ public class RDFHelper {
      * @throws DataUnitException
      */
     public static Set<RDFDataUnit.Entry> getGraphs(RDFDataUnit rdfDataUnit) throws DataUnitException {
+        if (rdfDataUnit == null) {
+            return new LinkedHashSet<>();
+        }
         RDFDataUnit.Iteration iteration = rdfDataUnit.getIteration();
         Set<RDFDataUnit.Entry> resultSet = new LinkedHashSet<>();
         try {
@@ -52,6 +55,9 @@ public class RDFHelper {
      * @throws DataUnitException
      */
     public static Set<URI> getGraphsURISet(RDFDataUnit rdfDataUnit) throws DataUnitException {
+        if (rdfDataUnit == null) {
+            return new LinkedHashSet<>();
+        }
         RDFDataUnit.Iteration iteration = rdfDataUnit.getIteration();
         Set<URI> resultSet = new LinkedHashSet<>();
         try {
