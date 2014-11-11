@@ -5,7 +5,6 @@ import java.util.Set;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
-import org.openrdf.query.Dataset;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.QueryLanguage;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
 
 /**
  * Provides easy way how to set/get metadata (predicate/object) for given
@@ -194,9 +192,9 @@ public class MetadataHelpers {
 
         protected static final String OBJECT_BINDING = "object";
 
-        protected static final String SELECT = "SELECT ?" + OBJECT_BINDING + " WHERE { "
-                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ";"
-                + "?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + ". "
+        protected static final String SELECT = "SELECT ?" + OBJECT_BINDING + " %s WHERE { "
+                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " ;"
+                + "?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + " . "
                 + "}";
 
         public MetadataHelperImpl(MetadataDataUnit dataUnit) {
@@ -211,14 +209,25 @@ public class MetadataHelpers {
             String methodResult = null;
             TupleQueryResult queryResult = null;
             try {
+                // In this case we can select from multiple graphs.
+                final StringBuilder fromPart = new StringBuilder();
+                for (URI graph : dataUnit.getMetadataGraphnames()) {
+                    fromPart.append("FROM <");
+                    fromPart.append(graph.stringValue());
+                    fromPart.append("> ");
+                }
+
+                final String selectQuery = String.format(SELECT, fromPart.toString());
+                LOG.debug("get({},{}) -> {}", symbolicName, predicate, selectQuery);
+
                 final ValueFactory valueFactory = connection.getValueFactory();
-                final TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, SELECT);
+                final TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, selectQuery);
                 tupleQuery.setBinding(SYMBOLIC_NAME_BINDING,
                         valueFactory.createLiteral(symbolicName));
                 tupleQuery.setBinding(PREDICATE_BINDING,
                         valueFactory.createURI(predicate));
 
-                tupleQuery.setDataset(new DatasetBuilder().withDefaultGraphs(dataUnit.getMetadataGraphnames()).build());
+//                tupleQuery.setDataset(new DatasetBuilder().withDefaultGraphs(dataUnit.getMetadataGraphnames()).build());
 
                 queryResult = tupleQuery.evaluate();
                 if (queryResult.hasNext()) {
@@ -267,16 +276,14 @@ public class MetadataHelpers {
 
         private WritableMetadataDataUnit writableDataUnit;
 
-        private static final String UPDATE = "DELETE {?s ?" + PREDICATE_BINDING + " ?o} "
-                + "INSERT {?s ?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + "} "
+        private static final String INSERT = "INSERT INTO <%s> { ?s ?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + " } "
                 + "WHERE { "
-                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
-                + "OPTIONAL {?s ?" + PREDICATE_BINDING + " ?o} "
+                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " . "
                 + " } ";
 
-        private static final String INSERT = "INSERT {?s ?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + "} "
+        private static final String DELETE = "DELETE FROM <%s> { ?s ?" + PREDICATE_BINDING + " ?o } "
                 + "WHERE { "
-                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + ". "
+                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?o . "
                 + " } ";
 
         public WritableMetadataHelperImpl(WritableMetadataDataUnit writableDataUnit) {
@@ -304,23 +311,23 @@ public class MetadataHelpers {
             final ValueFactory valueFactory = connection.getValueFactory();
             Update update;
             try {
-                update = connection.prepareUpdate(QueryLanguage.SPARQL, UPDATE);
+                final String deleteSparql = String.format(DELETE, writableDataUnit.getMetadataWriteGraphname());
+
+                update = connection.prepareUpdate(QueryLanguage.SPARQL, deleteSparql);
 
                 update.setBinding(SYMBOLIC_NAME_BINDING,
                         valueFactory.createLiteral(symbolicName));
                 update.setBinding(PREDICATE_BINDING,
                         valueFactory.createURI(predicate));
-                update.setBinding(OBJECT_BINDING,
-                        valueFactory.createLiteral(newValue));
 
-                Dataset dataset = new DatasetBuilder().withInsertGraph(writableDataUnit.getMetadataWriteGraphname())
-                        .addDefaultRemoveGraph(writableDataUnit.getMetadataWriteGraphname()).build();
-                update.setDataset(dataset);
+                LOG.info("set.delete({}, {}, {}) -> {}", symbolicName, predicate, newValue, deleteSparql);
 
                 update.execute();
             } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
                 throw new DataUnitException(ex);
             }
+            // Remvoed, now we add the new value.
+            add(symbolicName, predicate, newValue);
         }
 
         @Override
@@ -329,8 +336,10 @@ public class MetadataHelpers {
                 connection = writableDataUnit.getConnection();
             }
             try {
+                final String updateSparql = String.format(INSERT, writableDataUnit.getMetadataWriteGraphname());
+
                 final ValueFactory valueFactory = connection.getValueFactory();
-                final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, INSERT);
+                final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
                 update.setBinding(SYMBOLIC_NAME_BINDING,
                         valueFactory.createLiteral(symbolicName));
                 update.setBinding(PREDICATE_BINDING,
@@ -338,9 +347,7 @@ public class MetadataHelpers {
                 update.setBinding(OBJECT_BINDING,
                         valueFactory.createLiteral(newValue));
 
-                Dataset dataset = new DatasetBuilder().withInsertGraph(writableDataUnit.getMetadataWriteGraphname()).
-                        addDefaultRemoveGraph(writableDataUnit.getMetadataWriteGraphname()).build();
-                update.setDataset(dataset);
+                LOG.info("add({}, {}, {}) -> {}", symbolicName, predicate, newValue, updateSparql);
 
                 update.execute();
 
