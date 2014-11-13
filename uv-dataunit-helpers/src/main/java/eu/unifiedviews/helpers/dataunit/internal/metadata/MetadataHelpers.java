@@ -180,9 +180,10 @@ public class MetadataHelpers {
     }
 
     private class MetadataHelperImpl implements MetadataHelper {
+
         private final Logger LOG = LoggerFactory.getLogger(MetadataHelperImpl.class);
 
-        private MetadataDataUnit dataUnit;
+        private final MetadataDataUnit dataUnit;
 
         protected RepositoryConnection connection = null;
 
@@ -218,17 +219,12 @@ public class MetadataHelpers {
                 }
 
                 final String selectQuery = String.format(SELECT, fromPart.toString());
-                LOG.debug("get({},{}) -> {}", symbolicName, predicate, selectQuery);
+                LOG.debug("get({},{}) ->\n {}", symbolicName, predicate, selectQuery);
 
                 final ValueFactory valueFactory = connection.getValueFactory();
                 final TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, selectQuery);
-                tupleQuery.setBinding(SYMBOLIC_NAME_BINDING,
-                        valueFactory.createLiteral(symbolicName));
-                tupleQuery.setBinding(PREDICATE_BINDING,
-                        valueFactory.createURI(predicate));
-
-//                tupleQuery.setDataset(new DatasetBuilder().withDefaultGraphs(dataUnit.getMetadataGraphnames()).build());
-
+                tupleQuery.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                tupleQuery.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
                 queryResult = tupleQuery.evaluate();
                 if (queryResult.hasNext()) {
                     methodResult = queryResult.next().getBinding(OBJECT_BINDING).getValue()
@@ -274,17 +270,21 @@ public class MetadataHelpers {
 
     private class WritableMetadataHelperImpl extends MetadataHelperImpl {
 
-        private WritableMetadataDataUnit writableDataUnit;
+        private final WritableMetadataDataUnit writableDataUnit;
 
-        private static final String INSERT = "INSERT INTO <%s> { ?s ?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + " } "
+        private static final String INSERT = "WITH <%s>\n"
+                + "INSERT { ?entry ?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + " }\n"
                 + "WHERE { "
-                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " . "
+                + "?entry <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " . "
                 + " } ";
 
-        private static final String DELETE = "DELETE FROM <%s> { ?s ?" + PREDICATE_BINDING + " ?o } "
+        private static final String UPDATE = "WITH <%s> \n"
+                + "DELETE { ?entry ?" + PREDICATE_BINDING + " ?value }\n"
+                + "INSERT { ?entry ?" + PREDICATE_BINDING + " ?" + OBJECT_BINDING + " }\n"
                 + "WHERE { "
-                + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?o . "
-                + " } ";
+                + "?entry <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " ; "
+                + "?" + PREDICATE_BINDING + " ?value . "
+                + "}";
 
         public WritableMetadataHelperImpl(WritableMetadataDataUnit writableDataUnit) {
             super(writableDataUnit);
@@ -311,22 +311,18 @@ public class MetadataHelpers {
             final ValueFactory valueFactory = connection.getValueFactory();
             Update update;
             try {
-                final String deleteSparql = String.format(DELETE, writableDataUnit.getMetadataWriteGraphname());
+                final String updateSparql = String.format(UPDATE, writableDataUnit.getMetadataWriteGraphname());
+                LOG.info("set({}, {}, {}) ->\n {}", symbolicName, predicate, newValue, updateSparql);
 
-                update = connection.prepareUpdate(QueryLanguage.SPARQL, deleteSparql);
-
-                update.setBinding(SYMBOLIC_NAME_BINDING,
-                        valueFactory.createLiteral(symbolicName));
-                update.setBinding(PREDICATE_BINDING,
-                        valueFactory.createURI(predicate));
-
-                LOG.info("set.delete({}, {}, {}) -> {}", symbolicName, predicate, newValue, deleteSparql);
-
+                update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
+                update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                update.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
+                update.setBinding(OBJECT_BINDING, valueFactory.createLiteral(newValue));
                 update.execute();
             } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
                 throw new DataUnitException(ex);
             }
-            // Remvoed, now we add the new value.
+            // We have removed the old value we can insert new.
             add(symbolicName, predicate, newValue);
         }
 
@@ -337,20 +333,14 @@ public class MetadataHelpers {
             }
             try {
                 final String updateSparql = String.format(INSERT, writableDataUnit.getMetadataWriteGraphname());
-
                 final ValueFactory valueFactory = connection.getValueFactory();
+                LOG.info("add({}, {}, {}) ->\n {}", symbolicName, predicate, newValue, updateSparql);
+
                 final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
-                update.setBinding(SYMBOLIC_NAME_BINDING,
-                        valueFactory.createLiteral(symbolicName));
-                update.setBinding(PREDICATE_BINDING,
-                        valueFactory.createURI(predicate));
-                update.setBinding(OBJECT_BINDING,
-                        valueFactory.createLiteral(newValue));
-
-                LOG.info("add({}, {}, {}) -> {}", symbolicName, predicate, newValue, updateSparql);
-
+                update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                update.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
+                update.setBinding(OBJECT_BINDING, valueFactory.createLiteral(newValue));
                 update.execute();
-
             } catch (MalformedQueryException | RepositoryException | UpdateExecutionException ex) {
                 throw new DataUnitException("Failed to execute update.", ex);
             }
