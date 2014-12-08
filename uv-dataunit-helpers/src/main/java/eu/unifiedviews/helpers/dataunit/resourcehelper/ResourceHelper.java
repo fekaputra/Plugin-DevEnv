@@ -50,5 +50,5 @@ public interface ResourceHelper extends AutoCloseable {
     void setResource(String symbolicName, Map<String, String> resource) throws DataUnitException;
 
     @Override
-    public void close() throws DataUnitException;
+    public void close();
 }

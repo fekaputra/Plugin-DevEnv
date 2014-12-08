@@ -46,8 +46,6 @@ import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
  * </ul>
  */
 public class MapHelpers {
-    private static final Logger LOG = LoggerFactory.getLogger(MapHelpers.class);
-
     private static final MapHelpers selfie = new MapHelpers();
 
     private MapHelpers() {
@@ -90,11 +88,7 @@ public class MapHelpers {
             result = helper.getMap(symbolicName, mapName);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
         return result;
@@ -204,7 +198,7 @@ public class MapHelpers {
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             if (connection != null) {
                 try {
                     connection.close();

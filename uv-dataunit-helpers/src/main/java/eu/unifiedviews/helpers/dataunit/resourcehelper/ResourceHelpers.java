@@ -2,9 +2,6 @@ package eu.unifiedviews.helpers.dataunit.resourcehelper;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
@@ -33,8 +30,6 @@ import eu.unifiedviews.helpers.dataunit.maphelper.MapHelpers;
  * </ul>
  */
 public class ResourceHelpers {
-    private static final Logger LOG = LoggerFactory.getLogger(ResourceHelpers.class);
-
     private static final ResourceHelpers selfie = new ResourceHelpers();
 
     private ResourceHelpers() {
@@ -76,11 +71,7 @@ public class ResourceHelpers {
             result = helper.getResource(symbolicName);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
         return result;
@@ -123,7 +114,7 @@ public class ResourceHelpers {
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             mapHelper.close();
         }
     }
@@ -146,7 +137,7 @@ public class ResourceHelpers {
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             mapHelper.close();
         }
     }

@@ -64,5 +64,5 @@ public interface VirtualPathHelper extends AutoCloseable {
     void setVirtualPath(String symbolicName, String virtualPath) throws DataUnitException;
 
     @Override
-    public void close() throws DataUnitException;
+    public void close();
 }

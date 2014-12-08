@@ -75,5 +75,5 @@ public interface MapHelper extends AutoCloseable {
     void putMap(String symbolicName, String mapName, Map<String, String> map) throws DataUnitException;
 
     @Override
-    public void close() throws DataUnitException;
+    public void close();
 }
