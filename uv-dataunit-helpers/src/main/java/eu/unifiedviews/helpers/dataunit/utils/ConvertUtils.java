@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ConvertUtils {
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS000";
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     public static String dateToString(Date date) {
         DateFormat df = new SimpleDateFormat(DATE_FORMAT);
