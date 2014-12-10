@@ -1,7 +1,5 @@
 package eu.unifiedviews.helpers.dataunit.resourcehelper;
 
-import java.util.Map;
-
 import eu.unifiedviews.dataunit.DataUnitException;
 
 /**
@@ -14,40 +12,36 @@ import eu.unifiedviews.dataunit.DataUnitException;
  * <p>
  * Each instance has to be closed after using it.
  * <p>
- * Internal storage format of the resource:
- * <p><blockquote><pre>
- * &lt;subject&gt; {@value eu.unifiedviews.dataunit.MetadataDataUnit#PREDICATE_SYMBOLIC_NAME} <>
- * &lt;subject&gt; &lt;{@value #PREDICATE_HAS_MAP}&gt; &lt;generatedUniqueUriOrBlankNode1&gt;
- * &lt;generatedUniqueUriOrBlankNode1&gt; &lt;{@value #PREDICATE_MAP_TITLE}&gt; "literal mapName"
- * &lt;generatedUniqueUriOrBlankNode1&gt; &lt;{@value #PREDICATE_MAP_CONTAINS}&gt; &lt;generatedUniqueUriOrBlankNode2&gt;
- * &lt;generatedUniqueUriOrBlankNode2&gt; &lt;{@value #PREDICATE_MAP_ENTRY_KEY}&gt; "key literal"
- * &lt;generatedUniqueUriOrBlankNode2&gt; &lt;{@value #PREDICATE_MAP_ENTRY_VALUE}&gt; "value literal"
- * ...
- * </pre></blockquote></p>
  */
 public interface ResourceHelper extends AutoCloseable {
 
     /**
-     * Value: {@value #STORAGE_MAP_NAME}, value used to specify mapName property of underlying storage map.
+     * Value: {@value #RESOURCE_STORAGE_MAP_NAME}, value used to specify mapName property of underlying storage map.
      */
-    public static final String STORAGE_MAP_NAME = "http://unifiedviews.eu/ResourceHelper/mapName";
+    public static final String RESOURCE_STORAGE_MAP_NAME = "http://unifiedviews.eu/ResourceHelper/resourceMap";
+
+    /**
+     * Value: {@value #EXTRAS_STORAGE_MAP_NAME}, value used to specify mapName property of underlying storage map.
+     */
+    public static final String EXTRAS_STORAGE_MAP_NAME = "http://unifiedviews.eu/ResourceHelper/resourceMapExtras";
 
     /**
      * Obtain Resource entity attached to metadata entry named symbolicName.
      *
      * @param symbolicName entry's symbolic name
-     * @return metadata map or null if no such map exists
+     * @return resource metadata bean or null if no resource exists
      * @throws DataUnitException
      */
-    Map<String, String> getResource(String symbolicName) throws DataUnitException;
+    Resource getResource(String symbolicName) throws DataUnitException;
 
     /**
      * Attach Resource entity to metadata entry named symbolicName. Any previously attached Resource entity will be replaced with new one.
+     * Therefore, correct usage is to obtain the resource, make any changes and save it back.
      * @param symbolicName entry's symbolic name
-     * @param resource the key-value map representing resource
+     * @param resource entity representing resource
      * @throws DataUnitException
      */
-    void setResource(String symbolicName, Map<String, String> resource) throws DataUnitException;
+    void setResource(String symbolicName, Resource resource) throws DataUnitException;
 
     @Override
     public void close();
