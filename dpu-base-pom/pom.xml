@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews.plugins</groupId>
 	<artifactId>dpu-base-pom</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -67,11 +67,14 @@
 		<!-- add license from LICENSE.md to the generated JAR file -->
 		<resources>
 			<resource>
-				<directory>${basedir}</directory>
+				<directory>src/main/resources</directory>
 				<!-- this is default dir -->
 				<includes>
 					<include>LICENSE.md</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 
