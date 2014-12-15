@@ -44,4 +44,18 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * @throws DataUnitException when symbolicName is not unique or something goes wrong
      */
     URI addNewDataGraph(String symbolicName) throws DataUnitException;
+
+    /**
+     * Update an existing graph symbolic name with new existingDataGraphURI
+     * The symbolic name must be unique in scope of this data unit.
+     * The symbolic name must exist in data unit prior the execution.
+     *
+     * The graph should be URI-rooted under the {@link WritableRDFDataUnit#getBaseDataGraphURI()} but it is not enforced
+     * (and that is useful for advanced usage - when graphs are loaded externally).
+     *
+     * @param symbolicName symbolic name under which the graph will be stored (must be unique in scope of this data unit)
+     * @param newDataGraphURI new real graph name
+     * @throws DataUnitException when symbolicName is not unique or something goes wrong
+     */
+    void updateExistingDataGraph(String symbolicName, URI newDataGraphURI) throws DataUnitException;
 }
