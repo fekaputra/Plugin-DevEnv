@@ -20,6 +20,9 @@ public class FilesHelper {
      * @throws DataUnitException
      */
     public static Set<FilesDataUnit.Entry> getFiles(FilesDataUnit filesDataUnit) throws DataUnitException {
+        if (filesDataUnit == null) {
+            return new LinkedHashSet<>();
+        }
         FilesDataUnit.Iteration iteration = filesDataUnit.getIteration();
         Set<FilesDataUnit.Entry> resultSet = new LinkedHashSet<>();
         try {

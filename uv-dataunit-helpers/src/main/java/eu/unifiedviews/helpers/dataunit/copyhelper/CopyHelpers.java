@@ -37,8 +37,6 @@ import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
  * </ul>
  */
 public class CopyHelpers {
-    private static final Logger LOG = LoggerFactory.getLogger(CopyHelpers.class);
-
     private static final CopyHelpers selfie = new CopyHelpers();
 
     private CopyHelpers() {
@@ -70,11 +68,7 @@ public class CopyHelpers {
             helper.copyMetadata(symbolicName);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
     }
@@ -136,7 +130,7 @@ public class CopyHelpers {
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             if (connection != null) {
                 try {
                     connection.close();

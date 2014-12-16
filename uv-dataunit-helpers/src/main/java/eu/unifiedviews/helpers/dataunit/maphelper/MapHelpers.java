@@ -1,6 +1,6 @@
 package eu.unifiedviews.helpers.dataunit.maphelper;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.openrdf.model.ValueFactory;
@@ -46,8 +46,6 @@ import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
  * </ul>
  */
 public class MapHelpers {
-    private static final Logger LOG = LoggerFactory.getLogger(MapHelpers.class);
-
     private static final MapHelpers selfie = new MapHelpers();
 
     private MapHelpers() {
@@ -90,11 +88,7 @@ public class MapHelpers {
             result = helper.getMap(symbolicName, mapName);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
         return result;
@@ -159,7 +153,7 @@ public class MapHelpers {
             if (connection == null) {
                 connection = dataUnit.getConnection();
             }
-            final Map<String, String> resultMap = new HashMap<>();
+            final Map<String, String> resultMap = new LinkedHashMap<>();
             final ValueFactory valueFactory = connection.getValueFactory();
             final Dataset dataset = new DatasetBuilder().withDefaultGraphs(dataUnit.getMetadataGraphnames()).build();
 
@@ -204,7 +198,7 @@ public class MapHelpers {
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             if (connection != null) {
                 try {
                     connection.close();
@@ -275,6 +269,9 @@ public class MapHelpers {
 
         @Override
         public void putMap(String symbolicName, String mapName, Map<String, String> map) throws DataUnitException {
+            if (map == null) {
+                throw new IllegalArgumentException("Map can not be null");
+            }
             if (connection == null) {
                 connection = writableDataUnit.getConnection();
             }

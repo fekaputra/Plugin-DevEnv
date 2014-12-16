@@ -23,5 +23,5 @@ public interface CopyHelper extends AutoCloseable {
     void copyMetadata(String symbolicName) throws DataUnitException;
 
     @Override
-    public void close() throws DataUnitException;
+    public void close();
 }
