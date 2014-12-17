@@ -13,7 +13,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<embed.transitive>false</embed.transitive>
-		<import.package>*</import.package>
 		<dpu.package></dpu.package>
 		<dpu.mainClass></dpu.mainClass>
 		<sesame.version>2.7.14</sesame.version>
@@ -119,7 +118,6 @@
 						<DPU-Package>${dpu.package}</DPU-Package>
 						<DPU-MainClass>${dpu.mainClass}</DPU-MainClass>
 						<Build-Time>${maven.build.timestamp}</Build-Time>
-						<Import-Package>${import.package}</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
