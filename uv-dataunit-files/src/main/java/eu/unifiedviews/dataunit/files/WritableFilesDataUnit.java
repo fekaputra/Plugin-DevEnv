@@ -67,5 +67,5 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * @param newFileURIString new real file location, example: http://example.com/myFile.exe, file://c:/Users/example/docs/doc.doc
      * @throws DataUnitException
      */
-    void updateExistingFileURIString(String symbolicName, String newFileURIString) throws DataUnitException;
+    void updateExistingFileURI(String symbolicName, String newFileURIString) throws DataUnitException;
 }
