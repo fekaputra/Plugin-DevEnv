@@ -1,8 +1,6 @@
 package eu.unifiedviews.helpers.dataunit.resourcehelper;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Represents a single resource within a Dataset
@@ -12,7 +10,7 @@ public class Resource {
 
     private String description;
 
-    private Map<String, String> extras = new LinkedHashMap<>();
+    private Extras extras;
 
     private String format;
 
@@ -51,11 +49,11 @@ public class Resource {
         this.description = description;
     }
 
-    public Map<String, String> getExtras() {
+    public Extras getExtras() {
         return extras;
     }
 
-    public void setExtras(Map<String, String> extras) {
+    public void setExtras(Extras extras) {
         this.extras = extras;
     }
 
