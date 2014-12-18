@@ -10,7 +10,7 @@ public class Resource {
 
     private String description;
 
-    private Extras extras;
+    private Extras extras = new Extras();
 
     private String format;
 
