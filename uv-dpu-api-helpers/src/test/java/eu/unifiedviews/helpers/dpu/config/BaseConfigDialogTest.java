@@ -6,12 +6,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import eu.unifiedviews.dpu.config.DPUConfigException;
-import eu.unifiedviews.helpers.dpu.config.BaseConfigDialog;
-import eu.unifiedviews.helpers.dpu.config.ConfigWrap;
 
 /**
  * Test suite for {@link BaseConfigDialog} class.
- * 
+ *
  * @author Petyr
  */
 public class BaseConfigDialogTest extends BaseConfigDialog<SimpleTestConfig> {
@@ -52,7 +50,7 @@ public class BaseConfigDialogTest extends BaseConfigDialog<SimpleTestConfig> {
 
         // set configuration
         this.setConfig(configString);
-        // change configuration in dialog .. 
+        // change configuration in dialog ..
         this.actualConfiguration = cEqual;
 
         assertFalse(this.hasConfigChanged());
@@ -70,6 +68,11 @@ public class BaseConfigDialogTest extends BaseConfigDialog<SimpleTestConfig> {
         // as we do not change it after this
         this.setConfig(configString);
         assertFalse(this.hasConfigChanged());
+    }
+
+    @Override
+    public void initialize() {
+
     }
 
 }

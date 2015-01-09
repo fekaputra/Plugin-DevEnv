@@ -10,7 +10,12 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
  * @param <C>
  */
 public abstract class AbstractConfigDialog<C>
-extends CustomComponent {
+        extends CustomComponent {
+
+    /**
+     * Initialize the layout
+     */
+    public abstract void initialize();
 
     /**
      * Set context to the dialog. This method is called only once
