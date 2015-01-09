@@ -14,8 +14,8 @@ public class Messages {
 
     private final ResourceBundle RESOURCE_BUNDLE;
 
-    public Messages(Locale locale) {
-        RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale);
+    public Messages(Locale locale, ClassLoader classLoader) {
+        RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale, classLoader);
     }
 
     /**

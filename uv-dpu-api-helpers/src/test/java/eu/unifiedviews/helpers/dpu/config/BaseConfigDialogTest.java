@@ -69,10 +69,4 @@ public class BaseConfigDialogTest extends BaseConfigDialog<SimpleTestConfig> {
         this.setConfig(configString);
         assertFalse(this.hasConfigChanged());
     }
-
-    @Override
-    public void initialize() {
-
-    }
-
 }

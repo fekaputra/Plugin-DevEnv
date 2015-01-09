@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.dpu.config.DPUConfigException;
-import eu.unifiedviews.helpers.dpu.localization.Messages;
 
 /**
  * Class which should be used by DPU developer as a base class from which his
@@ -35,11 +34,6 @@ public abstract class BaseConfigDialog<C>
     private ConfigDialogContext context;
 
     /**
-     * Our messages
-     */
-    protected Messages messages;
-
-    /**
      * Initialize {@link BaseConfigDialog} for given configuration class.
      *
      * @param configClass
@@ -53,7 +47,6 @@ public abstract class BaseConfigDialog<C>
     @Override
     public void setContext(ConfigDialogContext newContext) {
         this.context = newContext;
-        this.messages = new Messages(newContext.getLocale());
     }
 
     @Override

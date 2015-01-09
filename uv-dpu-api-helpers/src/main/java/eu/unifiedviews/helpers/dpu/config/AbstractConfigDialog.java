@@ -13,11 +13,6 @@ public abstract class AbstractConfigDialog<C>
         extends CustomComponent {
 
     /**
-     * Initialize the layout
-     */
-    public abstract void initialize();
-
-    /**
      * Set context to the dialog. This method is called only once
      * before any other method.
      *
