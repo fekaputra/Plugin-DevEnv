@@ -76,6 +76,9 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<includes>
+					<include>resources*.properties</include>
+				</includes>
 			</resource>
 		</resources>
 
