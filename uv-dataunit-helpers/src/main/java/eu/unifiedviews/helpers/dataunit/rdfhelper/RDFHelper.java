@@ -1,6 +1,8 @@
 package eu.unifiedviews.helpers.dataunit.rdfhelper;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.openrdf.model.URI;
@@ -15,6 +17,32 @@ import eu.unifiedviews.helpers.dataunit.dataset.DatasetBuilder;
  * Helper to make various tasks with {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} friendly.
  */
 public class RDFHelper {
+    /**
+     * Exhaust {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit.Iteration} (obtained using {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit#getIteration()}) into one {@link Map} of entries.
+     * Beware - if the {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} contains milions or more entries, storing all of this in single {@link Map} is not a good idea.
+     * Only suitable for work with ~100000 of entries (graphs)
+     *
+     * @param rdfDataUnit data unit from which the iteration will be obtained and exhausted
+     * @return {@link Map} containing all entries, symbolic names are used as keys
+     * @throws DataUnitException
+     */
+    public static Map<String, RDFDataUnit.Entry> getGraphsMap(RDFDataUnit rdfDataUnit) throws DataUnitException {
+        if (rdfDataUnit == null) {
+            return new LinkedHashMap<>();
+        }
+        RDFDataUnit.Iteration iteration = rdfDataUnit.getIteration();
+        Map<String, RDFDataUnit.Entry> resultMap = new LinkedHashMap<>();
+        try {
+            while (iteration.hasNext()) {
+                RDFDataUnit.Entry entry = iteration.next();
+                resultMap.put(entry.getSymbolicName(), entry);
+            }
+        } finally {
+            iteration.close();
+        }
+        return resultMap;
+    }
+
     /**
      * Exhaust {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit.Iteration} (obtained using {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit#getIteration()}) into one {@link Set} of entries.
      * Beware - if the {@link eu.unifiedviews.dataunit.rdf.RDFDataUnit} contains milions or more entries, storing all of this in single {@link Set} is not a good idea.
