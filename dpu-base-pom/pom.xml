@@ -12,7 +12,7 @@
 		<project.java.version>1.7</project.java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<embed.transitive>false</embed.transitive>
+		<embed.transitive>true</embed.transitive>
 		<import.package>*</import.package>
 		<dpu.package></dpu.package>
 		<dpu.mainClass></dpu.mainClass>
@@ -65,20 +65,9 @@
 	</dependencies>
 
 	<build>
-		<!-- add license from LICENSE.md to the generated JAR file -->
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<!-- this is default dir -->
-				<includes>
-					<include>LICENSE.md</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>resources*.properties</include>
-				</includes>
 			</resource>
 		</resources>
 
