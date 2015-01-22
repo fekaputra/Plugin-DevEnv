@@ -11,6 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <embed.transitive>true</embed.transitive>
+        <import.package>*</import.package>
         <dpu.package></dpu.package>
         <dpu.mainClass></dpu.mainClass>
         <sesame.version>2.7.13</sesame.version>
