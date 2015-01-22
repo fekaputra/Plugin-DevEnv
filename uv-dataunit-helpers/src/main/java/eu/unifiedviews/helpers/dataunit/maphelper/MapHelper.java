@@ -60,7 +60,7 @@ public interface MapHelper extends AutoCloseable {
      *
      * @param symbolicName entry's symbolic name
      * @param mapName name of map (its id)
-     * @return metadata map or null if no such map exists
+     * @return metadata map or empty map if no such map exists
      * @throws DataUnitException
      */
     Map<String, String> getMap(String symbolicName, String mapName) throws DataUnitException;
@@ -69,11 +69,11 @@ public interface MapHelper extends AutoCloseable {
      * Attach map 'map', named mapName to metadata entry named symbolicName. Any previously attached map with same mapName will be replaced with new one.
      * @param symbolicName entry's symbolic name
      * @param mapName name of map (its id)
-     * @param map the map
+     * @param map the map, can not be null
      * @throws DataUnitException
      */
     void putMap(String symbolicName, String mapName, Map<String, String> map) throws DataUnitException;
 
     @Override
-    public void close() throws DataUnitException;
+    public void close();
 }

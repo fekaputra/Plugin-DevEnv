@@ -73,11 +73,7 @@ public class VirtualPathHelpers {
             result = helper.getVirtualPath(symbolicName);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
         return result;
@@ -98,11 +94,7 @@ public class VirtualPathHelpers {
             helper.setVirtualPath(symbolicName, virtualPath);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
     }
@@ -131,7 +123,7 @@ public class VirtualPathHelpers {
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             if (metadataHelper != null) {
                 try {
                     metadataHelper.close();

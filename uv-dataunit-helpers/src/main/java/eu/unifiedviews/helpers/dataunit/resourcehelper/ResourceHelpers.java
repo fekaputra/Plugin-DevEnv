@@ -1,9 +1,7 @@
 package eu.unifiedviews.helpers.dataunit.resourcehelper;
 
+import java.text.ParseException;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
@@ -24,7 +22,7 @@ import eu.unifiedviews.helpers.dataunit.maphelper.MapHelpers;
  * ResourceHelper helper = ResourceHelpers.create(dataUnit);
  * try {
  *   // use many times (helper holds its connections open)
- *   Map<String, String> resource = helper.getResource("symbolicName");
+ *   Resource resource = helper.getResource("symbolicName");
  *   helper.setResource("symbolicName", resource);
  * } finally {
  *   helper.close();
@@ -33,8 +31,6 @@ import eu.unifiedviews.helpers.dataunit.maphelper.MapHelpers;
  * </ul>
  */
 public class ResourceHelpers {
-    private static final Logger LOG = LoggerFactory.getLogger(ResourceHelpers.class);
-
     private static final ResourceHelpers selfie = new ResourceHelpers();
 
     private ResourceHelpers() {
@@ -68,19 +64,15 @@ public class ResourceHelpers {
      * @return map
      * @throws DataUnitException
      */
-    public static Map<String, String> getResource(MetadataDataUnit dataUnit, String symbolicName) throws DataUnitException {
+    public static Resource getResource(MetadataDataUnit dataUnit, String symbolicName) throws DataUnitException {
         ResourceHelper helper = null;
-        Map<String, String> result = null;
+        Resource result = null;
         try {
             helper = create(dataUnit);
             result = helper.getResource(symbolicName);
         } finally {
             if (helper != null) {
-                try {
-                    helper.close();
-                } catch (DataUnitException ex) {
-                    LOG.warn("Error in close.", ex);
-                }
+                helper.close();
             }
         }
         return result;
@@ -93,7 +85,7 @@ public class ResourceHelpers {
      * @param resource map to save
      * @throws DataUnitException
      */
-    public static void setResource(WritableMetadataDataUnit dataUnit, String symbolicName, Map<String, String> resource) throws DataUnitException {
+    public static void setResource(WritableMetadataDataUnit dataUnit, String symbolicName, Resource resource) throws DataUnitException {
         ResourceHelper helper = null;
         try {
             helper = create(dataUnit);
@@ -113,17 +105,24 @@ public class ResourceHelpers {
         }
 
         @Override
-        public Map<String, String> getResource(String symbolicName) throws DataUnitException {
-            return mapHelper.getMap(symbolicName, ResourceHelper.STORAGE_MAP_NAME);
+        public Resource getResource(String symbolicName) throws DataUnitException {
+            Resource resource;
+            try {
+                resource = ResourceConverter.fromMap(mapHelper.getMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME));
+            } catch (ParseException ex) {
+                throw new DataUnitException("Invalid format", ex);
+            }
+            resource.setExtras(mapHelper.getMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME));
+            return resource;
         }
 
         @Override
-        public void setResource(String symbolicName, Map<String, String> resource) throws DataUnitException {
+        public void setResource(String symbolicName, Resource resource) throws DataUnitException {
             throw new UnsupportedOperationException("Cannot set resource into read only dataunit");
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             mapHelper.close();
         }
     }
@@ -136,17 +135,25 @@ public class ResourceHelpers {
         }
 
         @Override
-        public Map<String, String> getResource(String symbolicName) throws DataUnitException {
-            return mapHelper.getMap(symbolicName, ResourceHelper.STORAGE_MAP_NAME);
+        public Resource getResource(String symbolicName) throws DataUnitException {
+            Resource resource;
+            try {
+                resource = ResourceConverter.fromMap(mapHelper.getMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME));
+            } catch (ParseException ex) {
+                throw new DataUnitException("Invalid format", ex);
+            }
+            resource.setExtras(mapHelper.getMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME));
+            return resource;
         }
 
         @Override
-        public void setResource(String symbolicName, Map<String, String> resource) throws DataUnitException {
-            mapHelper.putMap(symbolicName, ResourceHelper.STORAGE_MAP_NAME, resource);
+        public void setResource(String symbolicName, Resource resource) throws DataUnitException {
+            mapHelper.putMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME, ResourceConverter.toMap(resource));
+            mapHelper.putMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME, resource.getExtras());
         }
 
         @Override
-        public void close() throws DataUnitException {
+        public void close() {
             mapHelper.close();
         }
     }
