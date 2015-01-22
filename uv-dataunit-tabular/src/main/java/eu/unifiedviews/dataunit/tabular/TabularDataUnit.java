@@ -1,5 +1,7 @@
 package eu.unifiedviews.dataunit.tabular;
 
+import java.sql.Connection;
+
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 
@@ -43,6 +45,14 @@ public interface TabularDataUnit extends MetadataDataUnit {
      */
     @Override
     TabularDataUnit.Iteration getIteration() throws DataUnitException;
+    
+    /**
+     * Returns connection to relational database, which is used to store tabular data of this data unit
+     * @return Connection to database where database tables are stored 
+     * @throws DataUnitException
+     */
+    Connection getDatabaseConnection() throws DataUnitException;
+    
     
 
 }
