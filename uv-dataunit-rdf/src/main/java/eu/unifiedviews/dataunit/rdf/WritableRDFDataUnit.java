@@ -40,6 +40,7 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * Returns the newly generated full graph URI to work with.
      * It does create the graph in storage, and it does add the graph metadata entry into the dataunit under provided symbolicName.
      *
+     * @param symbolicName
      * @return URI of newly created data graph
      * @throws DataUnitException when symbolicName is not unique or something goes wrong
      */
@@ -56,6 +57,9 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * @param symbolicName symbolic name under which the graph will be stored (must be unique in scope of this data unit)
      * @param newDataGraphURI new real graph name
      * @throws DataUnitException when symbolicName is not unique or something goes wrong
+     * @deprecated Do not use, may be removed soon and replaced by proper helper.
      */
+    @Deprecated
     void updateExistingDataGraph(String symbolicName, URI newDataGraphURI) throws DataUnitException;
 }
+
