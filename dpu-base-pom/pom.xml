@@ -10,7 +10,7 @@
         <project.java.version>1.7</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <embed.transitive>true</embed.transitive>
+        <embed.transitive>false</embed.transitive>
         <import.package>*</import.package>
         <dpu.package></dpu.package>
         <dpu.mainClass></dpu.mainClass>
@@ -61,120 +61,5 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>${project.java.version}</source>
-						<target>${project.java.version}</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
-				<configuration>
-					<excludes>
-						<exclude>**/*SysTest.java</exclude>
-						<exclude>**/*DoesntPassTest.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin> <!-- main build plugin for modules -->
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Embed-Dependency>*;scope=compile|runtime|system</Embed-Dependency>
-						<!-- use provided for dependencies that are provided by application -->
-						<Embed-Transitive>${embed.transitive}</Embed-Transitive>
-						<!-- using true cause adding new imports for new packages !! -->
-						<!-- dependencies location in output file -->
-						<Embed-Directory>dependency</Embed-Directory>
-						<Embed-StripGroup>false</Embed-StripGroup>
-						<!-- information for ODCleanStore -->
-						<DPU-Package>${dpu.package}</DPU-Package>
-						<DPU-MainClass>${dpu.mainClass}</DPU-MainClass>
-						<Build-Time>${maven.build.timestamp}</Build-Time>
-						<Import-Package>${import.package}</Import-Package>
-					</instructions>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.1</version>
-			</plugin>
-
-		</plugins>
-	</build>
-
-	<!-- define license -->
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License, Version 3</name>
-			<url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
-			<distribution>repo</distribution>
-			<!-- https://maven.apache.org/pom.html#Licenses -->
-		</license>
-	</licenses>
-
-	<profiles>
-		<profile> <!-- copy the plugin to the DPU's directory by default -->
-			<id>extract-jar</id>
-			<activation>
-				<property>
-					<name>profile</name>
-					<value>extract-jar</value>
-				</property>
-			</activation>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-resources-plugin</artifactId>
-						<version>2.6</version>
-						<executions>
-							<execution>
-								<phase>install</phase>
-								<goals>
-									<goal>copy-resources</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${project.build.directory}/../../target/dpu/${project.artifactId}</outputDirectory>
-									<resources>
-										<resource>
-											<directory>${project.build.directory}</directory>
-											<includes>
-												<!-- copy just output jar file -->
-												<include>${project.artifactId}-${project.version}.jar</include>
-											</includes>
-										</resource>
-									</resources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
 
