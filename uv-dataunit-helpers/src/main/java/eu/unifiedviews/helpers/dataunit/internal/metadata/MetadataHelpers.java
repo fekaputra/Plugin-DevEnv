@@ -23,7 +23,8 @@ import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
 
 /**
- * Provides easy way how to set/get metadata (predicate/object) for given symbolic name.
+ * Provides easy way how to set/get metadata (predicate/object) for given
+ * symbolic name.
  *
  * <strong>This class in not accessible in UV environment, do not use!</strong>
  */
@@ -45,8 +46,8 @@ public class MetadataHelpers {
     }
 
     /**
-     * Get the metadata under given predicate. If the data is not set, null is returned.
-     *
+     * Get the metadata under given predicate.
+     * If the data is not set, null is returned.
      * @param dataUnit
      * @param symbolicName
      * @param predicate
@@ -72,8 +73,8 @@ public class MetadataHelpers {
     }
 
     /**
-     * Set metadata under given predicate. If the predicate is already set then the value is replaced. To add
-     * multiple metadata under the same predicate use
+     * Set metadata under given predicate.
+     * If the predicate is already set then the value is replaced. To add multiple metadata under the same predicate use
      * {@link #add(eu.unifiedviews.dataunit.WritableMetadataDataUnit, java.lang.String, java.lang.String, java.lang.String)}.
      *
      * @param dataUnit
@@ -82,8 +83,7 @@ public class MetadataHelpers {
      * @param newValue
      * @throws DataUnitException
      */
-    public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
-            String newValue) throws DataUnitException {
+    public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate, String newValue) throws DataUnitException {
         MetadataHelper helper = null;
         try {
             helper = create(dataUnit);
@@ -100,8 +100,8 @@ public class MetadataHelpers {
     }
 
     /**
-     * Add metadata for given symbolic name. The old data under same predicate are not deleted. Use to add
-     * multiple metadata of same meaning.
+     * Add metadata for given symbolic name. The old data under same predicate
+     * are not deleted. Use to add multiple metadata of same meaning.
      *
      * @param dataUnit
      * @param symbolicName
@@ -109,8 +109,7 @@ public class MetadataHelpers {
      * @param newValue
      * @throws DataUnitException
      */
-    public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
-            String newValue) throws DataUnitException {
+    public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate, String newValue) throws DataUnitException {
         MetadataHelper helper = null;
         try {
             helper = create(dataUnit);
@@ -210,53 +209,39 @@ public class MetadataHelpers {
             }
             String methodResult = null;
             TupleQueryResult queryResult = null;
-            
-            for (int i = 0; i < 100000; ++i) {
-                try {
-                    // In this case we can select from multiple graphs.
-                    final StringBuilder fromPart = new StringBuilder();
-                    for (URI graph : dataUnit.getMetadataGraphnames()) {
-                        fromPart.append("FROM <");
-                        fromPart.append(graph.stringValue());
-                        fromPart.append("> ");
-                    }
+            try {
+                // In this case we can select from multiple graphs.
+                final StringBuilder fromPart = new StringBuilder();
+                for (URI graph : dataUnit.getMetadataGraphnames()) {
+                    fromPart.append("FROM <");
+                    fromPart.append(graph.stringValue());
+                    fromPart.append("> ");
+                }
 
-                    final String selectQuery = String.format(SELECT, fromPart.toString());
-                    LOG.debug("get({},{}) ->\n {}", symbolicName, predicate, selectQuery);
+                final String selectQuery = String.format(SELECT, fromPart.toString());
+                LOG.debug("get({},{}) ->\n {}", symbolicName, predicate, selectQuery);
 
-                    final ValueFactory valueFactory = connection.getValueFactory();
-                    final TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL,
-                            selectQuery);
-                    tupleQuery.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
-                    tupleQuery.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
-                    queryResult = tupleQuery.evaluate();
-                    if (queryResult.hasNext()) {
-                        methodResult = queryResult.next().getBinding(OBJECT_BINDING).getValue().stringValue();
-                    }
-                    return methodResult;
-                } catch (QueryEvaluationException | MalformedQueryException ex) {
-                    throw new DataUnitException(ex);
-                } catch (RepositoryException ex) {
-                    // Try again.
-                    LOG.error("Problem with repository ...", ex);
-                } finally {
-                    if (queryResult != null) {
-                        try {
-                            queryResult.close();
-                        } catch (QueryEvaluationException ex) {
-                            LOG.warn("Error in close.", ex);
-                        }
+                final ValueFactory valueFactory = connection.getValueFactory();
+                final TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, selectQuery);
+                tupleQuery.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                tupleQuery.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
+                queryResult = tupleQuery.evaluate();
+                if (queryResult.hasNext()) {
+                    methodResult = queryResult.next().getBinding(OBJECT_BINDING).getValue()
+                            .stringValue();
+                }
+            } catch (QueryEvaluationException | RepositoryException | MalformedQueryException ex) {
+                throw new DataUnitException(ex);
+            } finally {
+                if (queryResult != null) {
+                    try {
+                        queryResult.close();
+                    } catch (QueryEvaluationException ex) {
+                        LOG.warn("Error in close.", ex);
                     }
                 }
-                // Get new connection as the existing is probably broken.
-                try {
-                    connection.close();
-                } catch (RepositoryException ex) {
-
-                }
-                connection = dataUnit.getConnection();
             }
-            throw new RuntimeException();
+            return methodResult;
         }
 
         @Override
@@ -325,35 +310,20 @@ public class MetadataHelpers {
             }
             final ValueFactory valueFactory = connection.getValueFactory();
             Update update;
-            for (int i = 0; i < 100000; ++i) {
-                try {
-                    final String updateSparql = String.format(UPDATE, writableDataUnit.getMetadataWriteGraphname());
-                    LOG.info("set({}, {}, {}) ->\n {}", symbolicName, predicate, newValue, updateSparql);
+            try {
+                final String updateSparql = String.format(UPDATE, writableDataUnit.getMetadataWriteGraphname());
+                LOG.info("set({}, {}, {}) ->\n {}", symbolicName, predicate, newValue, updateSparql);
 
-                    update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
-                    update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
-                    update.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
-                    update.setBinding(OBJECT_BINDING, valueFactory.createLiteral(newValue));
-                    update.execute();
-
-                    // Insert new value here.
-                    add(symbolicName, predicate, newValue);
-                    return;
-                } catch (MalformedQueryException | UpdateExecutionException ex) {
-                    throw new DataUnitException(ex);
-                } catch (RepositoryException ex) {
-                    // Try again.
-                    LOG.error("Problem with repository ...", ex);
-                }
-                // Get new connection as the existing is probably broken.
-                try {
-                    connection.close();
-                } catch (RepositoryException ex) {
-
-                }
-                connection = writableDataUnit.getConnection();
+                update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
+                update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                update.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
+                update.setBinding(OBJECT_BINDING, valueFactory.createLiteral(newValue));
+                update.execute();
+            } catch (RepositoryException | MalformedQueryException | UpdateExecutionException ex) {
+                throw new DataUnitException(ex);
             }
-            throw new RuntimeException();
+            // We have removed the old value we can insert new.
+            add(symbolicName, predicate, newValue);
         }
 
         @Override
@@ -361,34 +331,19 @@ public class MetadataHelpers {
             if (connection == null) {
                 connection = writableDataUnit.getConnection();
             }
-            for (int i = 0; i < 100000; ++i) {
-                try {
-                    final String updateSparql = String.format(INSERT, writableDataUnit
-                            .getMetadataWriteGraphname());
-                    final ValueFactory valueFactory = connection.getValueFactory();
-                    LOG.info("add({}, {}, {}) ->\n {}", symbolicName, predicate, newValue, updateSparql);
+            try {
+                final String updateSparql = String.format(INSERT, writableDataUnit.getMetadataWriteGraphname());
+                final ValueFactory valueFactory = connection.getValueFactory();
+                LOG.info("add({}, {}, {}) ->\n {}", symbolicName, predicate, newValue, updateSparql);
 
-                    final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
-                    update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
-                    update.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
-                    update.setBinding(OBJECT_BINDING, valueFactory.createLiteral(newValue));
-                    update.execute();
-                    return;
-                } catch (MalformedQueryException | UpdateExecutionException ex) {
-                    throw new DataUnitException("Failed to execute update.", ex);
-                } catch (RepositoryException ex) {
-                    // Try again.
-                    LOG.error("Problem with repository ...", ex);
-                }
-                // Get new connection as the existing is probably broken.
-                try {
-                    connection.close();
-                } catch (RepositoryException ex) {
-
-                }
-                connection = writableDataUnit.getConnection();
+                final Update update = connection.prepareUpdate(QueryLanguage.SPARQL, updateSparql);
+                update.setBinding(SYMBOLIC_NAME_BINDING, valueFactory.createLiteral(symbolicName));
+                update.setBinding(PREDICATE_BINDING, valueFactory.createURI(predicate));
+                update.setBinding(OBJECT_BINDING, valueFactory.createLiteral(newValue));
+                update.execute();
+            } catch (MalformedQueryException | RepositoryException | UpdateExecutionException ex) {
+                throw new DataUnitException("Failed to execute update.", ex);
             }
-            throw new RuntimeException();
         }
     }
 }
