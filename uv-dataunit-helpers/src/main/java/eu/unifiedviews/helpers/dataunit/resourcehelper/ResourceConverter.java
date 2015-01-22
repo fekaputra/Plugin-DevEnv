@@ -7,7 +7,7 @@ import java.util.Map;
 import eu.unifiedviews.helpers.dataunit.utils.ConvertUtils;
 
 public class ResourceConverter {
-    public static Map<String, String> toMap(Resource resource) {
+    public static Map<String, String> resourceToMap(Resource resource) {
         Map<String, String> result = new LinkedHashMap<>();
         if (resource.getCreated() != null) {
             result.put("created", ConvertUtils.dateToString(resource.getCreated()));
@@ -45,7 +45,7 @@ public class ResourceConverter {
         return result;
     }
 
-    public static Resource fromMap(Map<String, String> map) throws ParseException {
+    public static Resource resourceFromMap(Map<String, String> map) throws ParseException {
         Resource resource = new Resource();
         if (map.containsKey("created")) {
             resource.setCreated(ConvertUtils.stringToDate(map.get("created")));
@@ -82,4 +82,24 @@ public class ResourceConverter {
         }
         return resource;
     }
+
+    public static Map<String, String> extrasToMap(Extras extras) {
+        Map<String, String> result = new LinkedHashMap<>();
+        if (extras.getSource() != null) {
+            result.put("source", extras.getSource());
+        }
+        result.putAll(extras.getMap());
+        return result;
+    }
+
+    public static Extras extrasFromMap(Map<String, String> map) throws ParseException {
+        Extras extras = new Extras();
+        if (map.containsKey("source")) {
+            extras.setSource(map.get("source"));
+            map.remove("source");
+        }
+        extras.getMap().putAll(map);
+        return extras;
+    }
+
 }

@@ -108,11 +108,11 @@ public class ResourceHelpers {
         public Resource getResource(String symbolicName) throws DataUnitException {
             Resource resource;
             try {
-                resource = ResourceConverter.fromMap(mapHelper.getMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME));
+                resource = ResourceConverter.resourceFromMap(mapHelper.getMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME));
+                resource.setExtras(ResourceConverter.extrasFromMap(mapHelper.getMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME)));
             } catch (ParseException ex) {
                 throw new DataUnitException("Invalid format", ex);
             }
-            resource.setExtras(mapHelper.getMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME));
             return resource;
         }
 
@@ -138,18 +138,18 @@ public class ResourceHelpers {
         public Resource getResource(String symbolicName) throws DataUnitException {
             Resource resource;
             try {
-                resource = ResourceConverter.fromMap(mapHelper.getMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME));
+                resource = ResourceConverter.resourceFromMap(mapHelper.getMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME));
+                resource.setExtras(ResourceConverter.extrasFromMap(mapHelper.getMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME)));
             } catch (ParseException ex) {
                 throw new DataUnitException("Invalid format", ex);
             }
-            resource.setExtras(mapHelper.getMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME));
             return resource;
         }
 
         @Override
         public void setResource(String symbolicName, Resource resource) throws DataUnitException {
-            mapHelper.putMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME, ResourceConverter.toMap(resource));
-            mapHelper.putMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME, resource.getExtras());
+            mapHelper.putMap(symbolicName, ResourceHelper.RESOURCE_STORAGE_MAP_NAME, ResourceConverter.resourceToMap(resource));
+            mapHelper.putMap(symbolicName, ResourceHelper.EXTRAS_STORAGE_MAP_NAME, ResourceConverter.extrasToMap(resource.getExtras()));
         }
 
         @Override

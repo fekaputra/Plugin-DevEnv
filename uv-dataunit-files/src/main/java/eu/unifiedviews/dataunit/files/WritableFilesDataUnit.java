@@ -70,5 +70,5 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * @deprecated Do not use, may be removed soon and replaced by proper helper.
      */
     @Deprecated
-    void updateExistingFile(String symbolicName, String newFileURIString) throws DataUnitException;
+    void updateExistingFileURI(String symbolicName, String newFileURIString) throws DataUnitException;
 }
