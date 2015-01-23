@@ -24,6 +24,7 @@
 		<!-- dataunits -->
 		<module>uv-dataunit-files</module>
 		<module>uv-dataunit-rdf</module>
+		<module>uv-dataunit-tabular</module>
 		<!-- dataunit helpers and support libraries -->
 		<module>uv-dataunit-helpers</module>
 	</modules>
