@@ -16,7 +16,7 @@ public class TabularHelper {
     /**
      * Exhaust {@link eu.unifiedviews.dataunit.tabular.TabularDataUnit.Iteration} (obtained using {@link eu.unifiedviews.dataunit.tabular.TabularDataUnit#getIteration()}) into one {@link Map} of entries.
      * Beware - if the {@link eu.unifiedviews.dataunit.tabular.TabularDataUnit} contains milions or more entries, storing all of this in single {@link Map} is not a good idea.
-     * Only suitable for work with ~100000 of entries (files)
+     * Only suitable for work with ~100000 of entries (tables)
      *
      * @param tabularDataUnit data unit from which the iteration will be obtained and exhausted
      * @return {@link Map} containing all entries, keys are symbolic names
@@ -42,13 +42,13 @@ public class TabularHelper {
     /**
      * Exhaust {@link eu.unifiedviews.dataunit.tabular.TabularDataUnit.Iteration} (obtained using {@link eu.unifiedviews.dataunit.tabular.TabularDataUnit#getIteration()}) into one {@link Set} of entries.
      * Beware - if the {@link eu.unifiedviews.dataunit.tabular.TabularDataUnit} contains milions or more entries, storing all of this in single {@link Set} is not a good idea.
-     * Only suitable for work with ~100000 of entries (files)
+     * Only suitable for work with ~100000 of entries (tables)
      *
      * @param tabularDataUnit data unit from which the iteration will be obtained and exhausted
      * @return {@link Set} containing all entries, keys are symbolic names
      * @throws DataUnitException
      */
-    public static Set<TabularDataUnit.Entry> getFiles(TabularDataUnit tabularDataUnit) throws DataUnitException {
+    public static Set<TabularDataUnit.Entry> getTables(TabularDataUnit tabularDataUnit) throws DataUnitException {
         if (tabularDataUnit == null) {
             return new LinkedHashSet<>();
         }
