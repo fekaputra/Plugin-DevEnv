@@ -1,10 +1,10 @@
-package eu.unifiedviews.dataunit.tabular;
+package eu.unifiedviews.dataunit.relational;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
 import eu.unifiedviews.dpu.DPU;
 
-public interface WritableTabularDataUnit extends TabularDataUnit, WritableMetadataDataUnit {
+public interface WritableRelationalDataUnit extends RelationalDataUnit, WritableMetadataDataUnit {
     
     /**
      * Get base database table name (string) which should be used to create all new database tables.
@@ -26,7 +26,7 @@ public interface WritableTabularDataUnit extends TabularDataUnit, WritableMetada
     void addExistingDbTable(String symbolicName, String dbTableName) throws DataUnitException;
     
     /**
-     * Generates unique database table with prefix {@link WritableTabularDataUnit#getBaseDbTableName()}
+     * Generates unique database table with prefix {@link WritableRelationalDataUnit#getBaseDbTableName()}
      * Returns generated database table name
      * Creates a new database table with an unique name and adds it into data unit 
      * @param symbolicName 

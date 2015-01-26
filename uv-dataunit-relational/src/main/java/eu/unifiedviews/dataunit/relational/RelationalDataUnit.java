@@ -1,4 +1,4 @@
-package eu.unifiedviews.dataunit.tabular;
+package eu.unifiedviews.dataunit.relational;
 
 import java.sql.Connection;
 
@@ -6,10 +6,10 @@ import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 
 /**
- * {@link TabularDataUnit} stores metadata entries and each entry is enhanced by database table name.
+ * {@link RelationalDataUnit} stores metadata entries and each entry is enhanced by database table name.
  *  This data unit stores db tables, along with any metadata attached to table entries.
  */
-public interface TabularDataUnit extends MetadataDataUnit {
+public interface RelationalDataUnit extends MetadataDataUnit {
     
     /**
      * Value: {@value #PREDICATE_DB_TABLE_NAME}, predicate used to store metadata about the dataunit (DB table name).
@@ -19,7 +19,7 @@ public interface TabularDataUnit extends MetadataDataUnit {
      * &lt;subject&gt &lt;{@value #PREDICATE_DB_TABLE_NAME}&gt; &lt;some_unique_db_table_name&gt;
      * </pre></blockquote></p>
      */
-    static final String PREDICATE_DB_TABLE_NAME = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/TabularDataUnit/dbTableName";
+    static final String PREDICATE_DB_TABLE_NAME = "http://unifiedviews.eu/DataUnit/MetadataDataUnit/RelationalDataUnit/dbTableName";
     
     interface Entry extends MetadataDataUnit.Entry {
         /**
@@ -34,7 +34,7 @@ public interface TabularDataUnit extends MetadataDataUnit {
     interface Iteration extends MetadataDataUnit.Iteration {
 
         @Override
-        TabularDataUnit.Entry next() throws DataUnitException;
+        RelationalDataUnit.Entry next() throws DataUnitException;
     }
 
     /**
@@ -44,10 +44,10 @@ public interface TabularDataUnit extends MetadataDataUnit {
      * @throws DataUnitException
      */
     @Override
-    TabularDataUnit.Iteration getIteration() throws DataUnitException;
+    RelationalDataUnit.Iteration getIteration() throws DataUnitException;
     
     /**
-     * Returns connection to relational database, which is used to store tabular data of this data unit
+     * Returns connection to relational database, which is used to store Relational data of this data unit
      * @return Connection to database where database tables are stored 
      * @throws DataUnitException
      */

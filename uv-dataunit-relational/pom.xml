@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.unifiedviews</groupId>
-  <artifactId>uv-dataunit-tabular</artifactId>
+  <artifactId>uv-dataunit-relational</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <description>Definition of tabular dataunit</description>
+  <description>Definition of relational dataunit</description>
   
   <properties>
 		<project.java.version>1.7</project.java.version>
@@ -18,6 +18,16 @@
 			<version>1.1.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	
+	<!-- define license -->
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License, Version 3</name>
+			<url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+			<distribution>repo</distribution>
+			<!-- https://maven.apache.org/pom.html#Licenses -->
+		</license>
+	</licenses>
 	
 	<build>
 		<pluginManagement>

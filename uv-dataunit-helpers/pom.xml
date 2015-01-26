@@ -29,7 +29,7 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.unifiedviews</groupId>
-			<artifactId>uv-dataunit-tabular</artifactId>
+			<artifactId>uv-dataunit-relational</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
