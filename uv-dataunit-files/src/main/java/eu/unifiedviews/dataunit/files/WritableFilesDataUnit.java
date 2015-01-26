@@ -53,6 +53,7 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * String htmlFileOutFilename = outputFileDataUnit.addNewFile("mydata");
      * new HTMLWriter(new File(htmlFileOutFilename)).dumpMyData(data);
      * </pre></blockquote></p>
+     * @param symbolicName
      * @return URI (as string) of real location of the newly created file
      * @throws DataUnitException
      */
@@ -66,6 +67,8 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * @param symbolicName symbolic name under which the file is be stored (must be unique in scope of this data unit)
      * @param newFileURIString new real file location, example: http://example.com/myFile.exe, file://c:/Users/example/docs/doc.doc
      * @throws DataUnitException
+     * @deprecated Do not use, may be removed soon and replaced by proper helper.
      */
+    @Deprecated
     void updateExistingFileURI(String symbolicName, String newFileURIString) throws DataUnitException;
 }
