@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews.plugins</groupId>
 	<artifactId>dpu-base-pom</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -13,45 +13,46 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<embed.transitive>false</embed.transitive>
+		<import.package>*</import.package>
 		<dpu.package></dpu.package>
 		<dpu.mainClass></dpu.mainClass>
-		<sesame.version>2.7.14</sesame.version>
-		<module-test.version>1.5.0</module-test.version>
+		<sesame.version>2.7.13</sesame.version>
+		<module-test.version>1.5.5</module-test.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dpu-api</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dpu-api-helpers</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dataunit-rdf</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dataunit-files</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>eu.unifiedviews</groupId>
 			<artifactId>uv-dataunit-helpers</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -67,10 +68,16 @@
 		<!-- add license from LICENSE.md to the generated JAR file -->
 		<resources>
 			<resource>
-				<directory>${basedir}</directory>
+				<directory>src/main/resources</directory>
 				<!-- this is default dir -->
 				<includes>
 					<include>LICENSE.md</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>resources*.properties</include>
 				</includes>
 			</resource>
 		</resources>
@@ -107,7 +114,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Dependency>*;scope=compile|runtime|system</Embed-Dependency>
 						<!-- use provided for dependencies that are provided by application -->
 						<Embed-Transitive>${embed.transitive}</Embed-Transitive>
 						<!-- using true cause adding new imports for new packages !! -->
@@ -118,6 +125,7 @@
 						<DPU-Package>${dpu.package}</DPU-Package>
 						<DPU-MainClass>${dpu.mainClass}</DPU-MainClass>
 						<Build-Time>${maven.build.timestamp}</Build-Time>
+						<Import-Package>${import.package}</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -125,6 +133,33 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.8.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>

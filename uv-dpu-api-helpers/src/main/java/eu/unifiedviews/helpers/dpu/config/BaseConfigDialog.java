@@ -13,7 +13,7 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
  *            Particular configuration object of the DPU
  */
 public abstract class BaseConfigDialog<C>
-extends AbstractConfigDialog<C> {
+        extends AbstractConfigDialog<C> {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseConfigDialog.class);
 

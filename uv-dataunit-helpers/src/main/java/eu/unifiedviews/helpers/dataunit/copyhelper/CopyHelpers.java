@@ -81,9 +81,26 @@ public class CopyHelpers {
          * Copy only first level.
          */
         protected static final String UPDATE =
-                "INSERT {?s ?p ?o} WHERE {"
-                        + "?s ?p ?o."
-                        + "?s <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + "."
+                "INSERT { ?sA1 ?pA1 ?oA1 . ?oB1 ?pB2 ?oB2 . ?oC2 ?pC3 ?oC3 } WHERE { "
+                        + "{ "
+                        + "?sA1 ?pA1 ?oA1 . "
+                        + "?sA1 <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " . "
+                        + "} "
+                        + "UNION "
+                        + "{ "
+                        + "?oB1 ?pB2 ?oB2 . "
+                        + "?sB1 ?pB1 ?oB1 . "
+                        + "?sB1 <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " . "
+                        + "FILTER ((isURI(?oB1) || isBlank(?oB1))) "
+                        + "} "
+                        + "UNION "
+                        + "{ "
+                        + "?oC2 ?pC3 ?oC3 . "
+                        + "?oC1 ?pC2 ?oC2 . "
+                        + "?sC1 ?pC1 ?oC1 . "
+                        + "?sC1 <" + MetadataDataUnit.PREDICATE_SYMBOLIC_NAME + "> ?" + SYMBOLIC_NAME_BINDING + " . "
+                        + "FILTER ((isURI(?oC1) || isBlank(?oC1)) && (isURI(?oC2) || isBlank(?oC2))) "
+                        + "} "
                         + "}";
 
         private final Logger LOG = LoggerFactory.getLogger(CopyHelperImpl.class);

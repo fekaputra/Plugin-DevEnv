@@ -1,8 +1,10 @@
 package eu.unifiedviews.helpers.dpu.config;
 
+import java.util.Locale;
+
 /**
  * Context for {@link AbstractConfigDialog}.
- * 
+ *
  * @author Petyr
  */
 public interface ConfigDialogContext {
@@ -12,4 +14,8 @@ public interface ConfigDialogContext {
      */
     boolean isTemplate();
 
+    /**
+     * Get the current locale
+     */
+    Locale getLocale();
 }

@@ -57,4 +57,15 @@ public interface WritableFilesDataUnit extends FilesDataUnit, WritableMetadataDa
      * @throws DataUnitException
      */
     String addNewFile(String symbolicName) throws DataUnitException;
+
+    /**
+     * Update an existing file symbolic name with new existingFileURIString.
+     * The symbolic name must exists in data prior to calling this method.
+     * The real file should be located under the {@link WritableFilesDataUnit#getBaseFileURIString()} but it is not enforced (and that is useful for advanced usage).
+     *
+     * @param symbolicName symbolic name under which the file is be stored (must be unique in scope of this data unit)
+     * @param newFileURIString new real file location, example: http://example.com/myFile.exe, file://c:/Users/example/docs/doc.doc
+     * @throws DataUnitException
+     */
+    void updateExistingFileURI(String symbolicName, String newFileURIString) throws DataUnitException;
 }
