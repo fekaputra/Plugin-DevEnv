@@ -1,66 +1,68 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>eu.unifiedviews.plugins</groupId>
-    <artifactId>dpu-base-pom</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>eu.unifiedviews.plugins</groupId>
+	<artifactId>dpu-base-pom</artifactId>
+	<version>1.3.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-    <properties>
-        <project.java.version>1.7</project.java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<project.java.version>1.7</project.java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <embed.transitive>false</embed.transitive>
-        <import.package>*</import.package>
-        <dpu.package></dpu.package>
-        <dpu.mainClass></dpu.mainClass>
-        <sesame.version>2.7.13</sesame.version>
-        <module-test.version>1.6.0-SNAPSHOT</module-test.version>
-    </properties>
+		<embed.transitive>false</embed.transitive>
+		<import.package>*</import.package>
+		<dpu.package></dpu.package>
+		<dpu.mainClass></dpu.mainClass>
+		<sesame.version>2.7.13</sesame.version>
+		<module-test.version>1.6.0-SNAPSHOT</module-test.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>eu.unifiedviews</groupId>
-            <artifactId>uv-dpu-api</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dpu-api</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>eu.unifiedviews</groupId>
-            <artifactId>uv-dpu-api-helpers</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dpu-api-helpers</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>eu.unifiedviews</groupId>
-            <artifactId>uv-dataunit-rdf</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dataunit-rdf</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>eu.unifiedviews</groupId>
-            <artifactId>uv-dataunit-files</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dataunit-files</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>eu.unifiedviews</groupId>
-            <artifactId>uv-dataunit-helpers</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>eu.unifiedviews</groupId>
+			<artifactId>uv-dataunit-helpers</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.7</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<resources>
