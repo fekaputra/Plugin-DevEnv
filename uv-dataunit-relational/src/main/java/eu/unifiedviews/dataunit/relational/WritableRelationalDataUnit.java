@@ -31,6 +31,17 @@ public interface WritableRelationalDataUnit extends RelationalDataUnit, Writable
      * Update an existing table symbolic name with a new real database table name
      * The symbolic name must exists in data unit prior to calling this method.
      * 
+     * The typical use for this method is when it is necessary to copy entry from input data unit to output data unit
+     * while retaining its symbolic name and all the metadata, but the target physical table has to be different
+     * from the source one - the data changed. To realize this, CopyHelper is used and then WritableRelationalDataUnit.updateExistingTableName() is called.
+     * 
+     * An alternative to WritableRelationalDataUnit.updateExistingTableName(sn, dbTable) would be to call
+     * addExistingDbTable(sn, dbTable) and then use CopyHelper to copy all metadata except of the physical table name from input to output.
+     * But this approach has the problems that: current implementation of addExistingDbTable(sn, dbTable) will add second entry
+     * with the same symbolic name (which is not what is intended), and, further, the entry in the output data unit
+     * will have different ID to which metadata properties are attached, so simple CopyHelper is not enough, but cloning is needed.
+     * The alternative approach is possible future work.
+     * 
      * @param symbolicName
      *            symbolic name under which the table is stored (must be unique in scope of this data unit)
      * @param dbTableName
