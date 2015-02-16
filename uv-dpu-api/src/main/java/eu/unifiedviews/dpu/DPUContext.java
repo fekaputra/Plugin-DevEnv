@@ -3,6 +3,7 @@ package eu.unifiedviews.dpu;
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import eu.unifiedviews.dataunit.DataUnit;
 
@@ -164,6 +165,12 @@ public interface DPUContext {
      * @return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324)
      */
     String getDpuInstanceDirectory();
+
+    /**
+     * Return the execution environment variables
+     * @return
+     */
+    Map<String, String> getEnvironment();
 
     /**
      * Return the current locale
