@@ -74,7 +74,7 @@
             <resource>
                 <directory>${basedir}</directory>
                 <includes>
-                    <include>license.md</include>
+                    <include>LICENSE.md</include>
                 </includes>
             </resource>
         </resources>        

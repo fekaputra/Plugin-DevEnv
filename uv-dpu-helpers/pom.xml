@@ -80,6 +80,12 @@
                     <include>**/*.*</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>LICENSE.md</include>
+                </includes>
+            </resource>
         </resources>        
     </build>
 
