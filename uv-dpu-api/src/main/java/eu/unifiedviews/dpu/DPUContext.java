@@ -169,4 +169,19 @@ public interface DPUContext {
      * Return the current locale
      */
     Locale getLocale();
+
+    /**
+     * Return the current pipeline id
+     */
+    Long getPipelineId();
+
+    /**
+     * Return the current pipeline execution id
+     */
+    Long getPipelineExecutionId();
+
+    /**
+     * Return the current DPU instance id
+     */
+    Long getDpuInstanceId();
 }
