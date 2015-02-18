@@ -277,6 +277,7 @@ public class MapHelpers {
             }
             final ValueFactory valueFactory = connection.getValueFactory();
             final DatasetImpl dataset = new DatasetImpl();
+            dataset.addDefaultGraph(writableDataUnit.getMetadataWriteGraphname());
             dataset.setDefaultInsertGraph(writableDataUnit.getMetadataWriteGraphname());
             dataset.addDefaultRemoveGraph(writableDataUnit.getMetadataWriteGraphname());
 
