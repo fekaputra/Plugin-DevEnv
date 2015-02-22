@@ -149,27 +149,16 @@ public class DatasetBuilder {
      */
     public Dataset build() {
         DatasetImpl dataset = new DatasetImpl();
-
-        LOG.info("DatasetBuilder.build: <{}>", defaultInsertGraph);
-
-        LOG.info("\tremove:");
         for (URI graphURI : defaultRemoveGraphs) {
             dataset.addDefaultRemoveGraph(graphURI);
-            LOG.info("\t\t{}", graphURI.toString());
         }
-
         dataset.setDefaultInsertGraph(defaultInsertGraph);
-        LOG.info("\tdefault:");
         for (URI graphURI : defaultGraphs) {
             dataset.addDefaultGraph(graphURI);
-            LOG.info("\t\t{}", graphURI.toString());
         }
-        LOG.info("\tnamed:");
         for (URI graphURI : namedGraphs) {
             dataset.addNamedGraph(graphURI);
-            LOG.info("\t\t{}", graphURI.toString());
         }
-
         return dataset;
     }
 }
