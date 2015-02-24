@@ -70,12 +70,12 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     @Override
-    public void initialize() {
+    public void initialize() throws DPUConfigException {
         try {
             context = new DialogContext(this, dialogContextHolder, dpuClass, null);
         } catch (DPUException ex) {
             LOG.error("Can't create dialog context!", ex);
-            throw new RuntimeException("Dialog initialization failed!", ex);
+            throw new DPUConfigException("Dialog initialization failed!", ex);
         }
         // Build main layout.
         buildMainLayout();

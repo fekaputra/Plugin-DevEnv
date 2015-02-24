@@ -1,9 +1,15 @@
 package eu.unifiedviews.dpu.config.vaadin;
 
+import eu.unifiedviews.dpu.config.DPUConfigException;
+
 public interface InitializableConfigDialog {
 
     /**
-     * Initialize the layout
+     * Called once dialog context {@link ConfigDialogContext} is set. In this call dialog should
+     * construct it's layout.
+     *
+     * @throws DPUConfigException
      */
-    public void initialize();
+    public void initialize() throws DPUConfigException;
+
 }
