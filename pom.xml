@@ -20,7 +20,7 @@
         <!-- DPU templates and base projects. -->
         <module>uv-dpu-template-base</module>
         <!-- Other pom projects. -->
-        <module>uv-pom-lib</module>
+        <module>uv-pom-helpers</module>
         <module>uv-pom-dpu</module>
         <!-- Helpers and utilities. -->
         <module>uv-dataunit-helpers</module>

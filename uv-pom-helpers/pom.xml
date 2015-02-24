@@ -8,10 +8,10 @@
         <relativePath>../uv-pom/pom.xml</relativePath>
     </parent>
     <groupId>eu.unifiedviews</groupId>
-    <artifactId>uv-pom-lib</artifactId>
+    <artifactId>uv-pom-helpers</artifactId>
     <version>1.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>uv-pom-lib</name>
+    <name>uv-pom-helpers</name>
     <description>Base project for libraries.</description>
 
     <properties>
