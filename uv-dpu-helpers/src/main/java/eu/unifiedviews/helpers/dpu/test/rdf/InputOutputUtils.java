@@ -1,6 +1,6 @@
-package eu.unifiedviews.helpers.test.rdf;
+package eu.unifiedviews.helpers.dpu.test.rdf;
 
-import eu.unifiedviews.helpers.test.resources.ResourceUtils;
+import eu.unifiedviews.helpers.dpu.test.resources.ResourceUtils;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dataunit.rdf.WritableRDFDataUnit;

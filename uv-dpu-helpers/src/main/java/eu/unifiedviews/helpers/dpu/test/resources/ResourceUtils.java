@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.test.resources;
+package eu.unifiedviews.helpers.dpu.test.resources;
 
 import java.io.File;
 import java.net.URL;

@@ -25,7 +25,6 @@
         <module>uv-pom-dpu</module>
         <!-- Helpers and utilities. -->
         <module>uv-dataunit-helpers</module>
-        <module>uv-dpu-test-helpers</module>
         <module>uv-dpu-helpers</module>        
 	</modules>
 

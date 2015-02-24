@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dpu.test;
+package eu.unifiedviews.helpers.dpu.test.config;
 
 import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
 import eu.unifiedviews.helpers.dpu.config.ConfigException;
