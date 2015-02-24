@@ -94,6 +94,11 @@ public interface DPUContext {
     boolean isDebugging();
 
     /**
+     * Return the pipeline owner user id
+     */
+    String getPipelineOwner();
+
+    /**
      * Return true if the execution of current {@link DPU} should be stopped as soon as
      * possible.
      *
