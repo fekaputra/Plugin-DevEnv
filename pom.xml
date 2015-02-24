@@ -18,7 +18,6 @@
 		<module>uv-dataunit-relational</module>
 		<module>uv-dpu-config-vaadin</module>
         <!-- DPU templates and base projects. -->
-		<module>dpu-base-pom</module>
         <module>uv-dpu-template-base</module>
         <!-- Other pom projects. -->
         <module>uv-pom-lib</module>
