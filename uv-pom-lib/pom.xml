@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
-            <artifactId>uv-dpu-api-helpers</artifactId>
+            <artifactId>uv-dpu-config-vaadin</artifactId>
             <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>

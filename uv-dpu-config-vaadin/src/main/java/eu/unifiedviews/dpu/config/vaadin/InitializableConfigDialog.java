@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dpu.config;
+package eu.unifiedviews.dpu.config.vaadin;
 
 public interface InitializableConfigDialog {
 

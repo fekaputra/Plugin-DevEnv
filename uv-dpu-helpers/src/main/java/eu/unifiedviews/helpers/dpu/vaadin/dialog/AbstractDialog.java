@@ -7,15 +7,15 @@ import com.vaadin.ui.TabSheet.Tab;
 import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
 import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
 import eu.unifiedviews.dpu.config.DPUConfigException;
-import eu.unifiedviews.helpers.dpu.config.AbstractConfigDialog;
-import eu.unifiedviews.helpers.dpu.config.ConfigDialogContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
 import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 import eu.unifiedviews.dpu.DPUException;
-import eu.unifiedviews.helpers.dpu.config.InitializableConfigDialog;
+import eu.unifiedviews.dpu.config.vaadin.AbstractConfigDialog;
+import eu.unifiedviews.dpu.config.vaadin.ConfigDialogContext;
+import eu.unifiedviews.dpu.config.vaadin.InitializableConfigDialog;
 
 import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
 
@@ -25,8 +25,8 @@ import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
  * @author Škoda Petr
  * @param <CONFIG>
  */
-public abstract class AbstractDialog<CONFIG>
-        extends AbstractConfigDialog<MasterConfigObject> implements InitializableConfigDialog {
+public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<MasterConfigObject>
+        implements InitializableConfigDialog {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDialog.class);
 

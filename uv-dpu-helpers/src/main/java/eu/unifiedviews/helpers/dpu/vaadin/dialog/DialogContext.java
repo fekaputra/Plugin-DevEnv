@@ -6,7 +6,7 @@ import java.util.List;
 import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
 import eu.unifiedviews.helpers.dpu.context.Context;
 import eu.unifiedviews.dpu.DPUException;
-import eu.unifiedviews.helpers.dpu.config.ConfigDialogContext;
+import eu.unifiedviews.dpu.config.vaadin.ConfigDialogContext;
 
 /**
  *

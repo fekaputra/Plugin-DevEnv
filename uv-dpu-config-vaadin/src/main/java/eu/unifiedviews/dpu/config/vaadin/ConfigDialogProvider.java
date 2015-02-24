@@ -1,11 +1,11 @@
-package eu.unifiedviews.helpers.dpu.config;
+package eu.unifiedviews.dpu.config.vaadin;
 
 
 /**
  * Interface which provides graphical configuration dialog associated with the
  * given DPU
  * 
- * @author Petyr
+ * @author Petr Škoda
  * @param <C>
  */
 public interface ConfigDialogProvider<C> {

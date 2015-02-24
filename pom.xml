@@ -16,7 +16,7 @@
 		<module>uv-dataunit-files</module>
 		<module>uv-dataunit-rdf</module>
 		<module>uv-dataunit-relational</module>
-		<module>uv-dpu-api-helpers</module>
+		<module>uv-dpu-config-vaadin</module>
         <!-- DPU templates and base projects. -->
 		<module>dpu-base-pom</module>
         <module>uv-dpu-template-base</module>
@@ -25,8 +25,8 @@
         <module>uv-pom-dpu</module>
         <!-- Helpers and utilities. -->
         <module>uv-dataunit-helpers</module>
-        <module>uv-dpu-helpers</module>        
-	</modules>
+        <module>uv-dpu-helpers</module>
+  </modules>
 
 	<contributors>
 		<contributor>

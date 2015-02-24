@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dpu.config;
+package eu.unifiedviews.dpu.config.vaadin;
 
 import com.vaadin.ui.CustomComponent;
 
@@ -7,10 +7,10 @@ import eu.unifiedviews.dpu.config.DPUConfigException;
 /**
  * Base abstract class for a configuration dialog.
  *
+ * @author Petr Škoda
  * @param <C>
  */
-public abstract class AbstractConfigDialog<C>
-        extends CustomComponent {
+public abstract class AbstractConfigDialog<C> extends CustomComponent {
 
     /**
      * Set context to the dialog. This method is called only once

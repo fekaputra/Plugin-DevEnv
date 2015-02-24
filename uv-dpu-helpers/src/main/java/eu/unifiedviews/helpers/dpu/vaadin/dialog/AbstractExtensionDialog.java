@@ -5,7 +5,7 @@ import com.vaadin.ui.CustomComponent;
 import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
 import eu.unifiedviews.helpers.dpu.config.ConfigManager;
 import eu.unifiedviews.dpu.config.DPUConfigException;
-import eu.unifiedviews.helpers.dpu.config.ConfigDialogContext;
+import eu.unifiedviews.dpu.config.vaadin.ConfigDialogContext;
 
 /**
  * Base dialog for extensions.

@@ -1,11 +1,11 @@
-package eu.unifiedviews.helpers.dpu.config;
+package eu.unifiedviews.dpu.config.vaadin;
 
 import java.util.Locale;
 
 /**
  * Context for {@link AbstractConfigDialog}.
  *
- * @author Petyr
+ * @author Petr Škoda
  */
 public interface ConfigDialogContext {
 

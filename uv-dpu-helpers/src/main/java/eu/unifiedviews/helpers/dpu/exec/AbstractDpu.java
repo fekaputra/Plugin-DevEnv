@@ -9,10 +9,11 @@ import eu.unifiedviews.dpu.DPUContext.MessageType;
 import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.dpu.config.DPUConfigException;
 import eu.unifiedviews.dpu.config.DPUConfigurable;
-import eu.unifiedviews.helpers.dpu.config.ConfigDialogProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.unifiedviews.dpu.config.vaadin.AbstractConfigDialog;
+import eu.unifiedviews.dpu.config.vaadin.ConfigDialogProvider;
 import eu.unifiedviews.helpers.dpu.config.ConfigException;
 import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
 import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
@@ -21,7 +22,6 @@ import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractDialog;
 import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
 import eu.unifiedviews.helpers.dpu.serialization.SerializationUtils;
 import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
-import eu.unifiedviews.helpers.dpu.config.AbstractConfigDialog;
 
 /**
  * Base class for DPUs.
