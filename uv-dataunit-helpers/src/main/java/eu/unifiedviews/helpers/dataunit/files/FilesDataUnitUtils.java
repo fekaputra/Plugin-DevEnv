@@ -6,7 +6,7 @@ import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtils;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.files.FilesDataUnit;
 import eu.unifiedviews.dataunit.files.WritableFilesDataUnit;
-import eu.unifiedviews.helpers.dataunit.virtualpathhelper.VirtualPathHelper;
+import eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper;
 
 /**
  *

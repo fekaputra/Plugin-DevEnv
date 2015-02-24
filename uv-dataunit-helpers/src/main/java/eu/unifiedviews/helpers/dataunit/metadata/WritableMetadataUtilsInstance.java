@@ -1,7 +1,6 @@
 package eu.unifiedviews.helpers.dataunit.metadata;
 
 import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
 import java.util.Set;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;

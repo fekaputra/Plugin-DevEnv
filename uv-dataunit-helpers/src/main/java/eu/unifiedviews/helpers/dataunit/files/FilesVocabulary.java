@@ -3,7 +3,8 @@ package eu.unifiedviews.helpers.dataunit.files;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.ValueFactoryImpl;
-import eu.unifiedviews.helpers.dataunit.virtualpathhelper.VirtualPathHelper;
+
+import eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper;
 
 /**
  * Vocabulary definition for files.
