@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dpu.context;
+package eu.unifiedviews.helpers.dpu.localization;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
  *
  * @author Škoda Petr
  */
-public class Localization {
+public class Messages {
 
     /**
      * File name for DPU's localization.
@@ -35,7 +35,7 @@ public class Localization {
     public void setLocale(Locale locale, ClassLoader classLoader) {
         resourceBundleDpu = ResourceBundle.getBundle(BUNDLE_NAME_DPU, locale, classLoader);
         resourceBundleLib = ResourceBundle.getBundle(BUNDLE_NAME_LIB, locale,
-            Localization.class.getClassLoader());
+            Messages.class.getClassLoader());
     }
 
     /**

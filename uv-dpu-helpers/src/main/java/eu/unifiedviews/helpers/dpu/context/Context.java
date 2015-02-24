@@ -1,5 +1,6 @@
 package eu.unifiedviews.helpers.dpu.context;
 
+import eu.unifiedviews.helpers.dpu.localization.Messages;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     /**
      * Module for localization support.
      */
-    private final Localization localization = new Localization();
+    private final Messages localization = new Messages();
 
     /**
      * Set base fields and create
@@ -227,7 +228,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
         return null;
     }
 
-    public Localization getLocalization() {
+    public Messages getLocalization() {
         return localization;
     }
 
