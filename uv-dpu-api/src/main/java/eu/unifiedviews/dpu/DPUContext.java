@@ -99,6 +99,11 @@ public interface DPUContext {
     String getPipelineOwner();
 
     /**
+     * Return the pipeline owner organization
+     */
+    String getOrganization();
+
+    /**
      * Return true if the execution of current {@link DPU} should be stopped as soon as
      * possible.
      *
