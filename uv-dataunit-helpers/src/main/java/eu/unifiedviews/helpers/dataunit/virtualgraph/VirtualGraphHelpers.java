@@ -1,13 +1,17 @@
 package eu.unifiedviews.helpers.dataunit.virtualgraph;
 
+import org.openrdf.model.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelper;
-import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelpers;
+import eu.unifiedviews.dpu.DPUException;
+import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtils;
+import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance;
+import eu.unifiedviews.helpers.dataunit.metadata.WritableMetadataUtilsInstance;
+import eu.unifiedviews.helpers.dataunit.rdf.RdfVocabulary;
 
 /**
  * Static helper nutshell for {@link VirtualGraphHelper}
@@ -98,33 +102,70 @@ public class VirtualGraphHelpers {
     }
 
     private class VirtualGraphHelperImpl implements VirtualGraphHelper {
+
         private final Logger LOG = LoggerFactory.getLogger(VirtualGraphHelperImpl.class);
 
-        protected MetadataHelper metadataHelper;
+        protected MetadataUtilsInstance metadataUtils = null;
+
+        protected WritableMetadataUtilsInstance writableMetadataUtils = null;
+
+        protected MetadataDataUnit dataUnit;
+        
+        protected WritableMetadataDataUnit writableDataUnit;
 
         public VirtualGraphHelperImpl(MetadataDataUnit dataUnit) {
-            this.metadataHelper = MetadataHelpers.create(dataUnit);
+            this.dataUnit = dataUnit;
+            this.writableDataUnit = null;
         }
 
         public VirtualGraphHelperImpl(WritableMetadataDataUnit dataUnit) {
-            this.metadataHelper = MetadataHelpers.create(dataUnit);
+            this.dataUnit = null;
+            this.writableDataUnit = dataUnit;
+        }
+
+        private void init() throws DataUnitException {
+            if (metadataUtils == null) {
+                if (writableDataUnit == null) {
+                    // Read only.
+                    this.metadataUtils = MetadataUtils.create(dataUnit);
+                } else {
+                    this.writableMetadataUtils = MetadataUtils.create(writableDataUnit);
+                    this.metadataUtils = this.writableMetadataUtils;
+                }
+            }
         }
 
         @Override
         public String getVirtualGraph(String symbolicName) throws DataUnitException {
-            return metadataHelper.get(symbolicName, VirtualGraphHelper.PREDICATE_VIRTUAL_GRAPH);
+            init();
+            metadataUtils.setEntry(symbolicName);
+            final Value value;
+            try {
+                value = metadataUtils.get(RdfVocabulary.UV_VIRTUAL_URI);
+            } catch (DPUException ex) {
+                throw new DataUnitException(ex);
+            }
+            if (value == null) {
+                return null;
+            } else {
+                return value.stringValue();
+            }
         }
 
         @Override
         public void setVirtualGraph(String symbolicName, String virtualGraph) throws DataUnitException {
-            metadataHelper.set(symbolicName, VirtualGraphHelper.PREDICATE_VIRTUAL_GRAPH, virtualGraph);
+            init();
+            writableMetadataUtils.setEntry(symbolicName);
+            writableMetadataUtils.set(RdfVocabulary.UV_VIRTUAL_URI, virtualGraph);
         }
 
         @Override
         public void close() {
-            if (metadataHelper != null) {
+            if (metadataUtils != null) {
                 try {
-                    metadataHelper.close();
+                    // If writableDataUnit != null, then as writableDataUnit == metadataUtils
+                    // this also close writableDataUnit.
+                    metadataUtils.close();
                 } catch (DataUnitException ex) {
                     LOG.warn("Error in close.", ex);
                 }

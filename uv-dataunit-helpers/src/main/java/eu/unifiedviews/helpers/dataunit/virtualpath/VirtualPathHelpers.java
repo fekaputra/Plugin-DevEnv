@@ -1,13 +1,17 @@
 package eu.unifiedviews.helpers.dataunit.virtualpath;
 
+import org.openrdf.model.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelper;
-import eu.unifiedviews.helpers.dataunit.internal.metadata.MetadataHelpers;
+import eu.unifiedviews.dpu.DPUException;
+import eu.unifiedviews.helpers.dataunit.files.FilesVocabulary;
+import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtils;
+import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance;
+import eu.unifiedviews.helpers.dataunit.metadata.WritableMetadataUtilsInstance;
 
 /**
  * Static helper nutshell for {@link VirtualPathHelper}
@@ -100,33 +104,68 @@ public class VirtualPathHelpers {
     }
 
     private class VirtualPathHelperImpl implements VirtualPathHelper {
-        private final Logger LOG = LoggerFactory.getLogger(VirtualPathHelperImpl.class);
 
-        protected MetadataHelper metadataHelper;
+        protected MetadataUtilsInstance metadataUtils = null;
+
+        protected WritableMetadataUtilsInstance writableMetadataUtils = null;
+
+        protected MetadataDataUnit dataUnit;
+
+        protected WritableMetadataDataUnit writableDataUnit;
 
         public VirtualPathHelperImpl(MetadataDataUnit dataUnit) {
-            this.metadataHelper = MetadataHelpers.create(dataUnit);
+            this.dataUnit = dataUnit;
+            this.writableDataUnit = null;
         }
 
         public VirtualPathHelperImpl(WritableMetadataDataUnit dataUnit) {
-            this.metadataHelper = MetadataHelpers.create(dataUnit);
+            this.dataUnit = null;
+            this.writableDataUnit = dataUnit;
+        }
+
+        private void init() throws DataUnitException {
+            if (metadataUtils == null) {
+                if (writableDataUnit == null) {
+                    // Read only.
+                    this.metadataUtils = MetadataUtils.create(dataUnit);
+                } else {
+                    this.writableMetadataUtils = MetadataUtils.create(writableDataUnit);
+                    this.metadataUtils = this.writableMetadataUtils;
+                }
+            }
         }
 
         @Override
         public String getVirtualPath(String symbolicName) throws DataUnitException {
-            return metadataHelper.get(symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH);
+            init();
+            metadataUtils.setEntry(symbolicName);
+            final Value value;
+            try {
+                value = metadataUtils.get(FilesVocabulary.UV_VIRTUAL_PATH);
+            } catch (DPUException ex) {
+                throw new DataUnitException(ex);
+            }
+            if (value == null) {
+                return null;
+            } else {
+                return value.stringValue();
+            }
         }
 
         @Override
-        public void setVirtualPath(String symbolicName, String virtualPath) throws DataUnitException {
-            metadataHelper.set(symbolicName, VirtualPathHelper.PREDICATE_VIRTUAL_PATH, virtualPath);
+        public void setVirtualPath(String symbolicName, String virtualGraph) throws DataUnitException {
+            init();
+            writableMetadataUtils.setEntry(symbolicName);
+            writableMetadataUtils.set(FilesVocabulary.UV_VIRTUAL_PATH, virtualGraph);
         }
 
         @Override
         public void close() {
-            if (metadataHelper != null) {
+            if (metadataUtils != null) {
                 try {
-                    metadataHelper.close();
+                    // If writableDataUnit != null, then as writableDataUnit == metadataUtils
+                    // this also close writableDataUnit.
+                    metadataUtils.close();
                 } catch (DataUnitException ex) {
                     LOG.warn("Error in close.", ex);
                 }
