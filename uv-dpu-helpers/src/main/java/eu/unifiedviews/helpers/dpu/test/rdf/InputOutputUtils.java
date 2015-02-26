@@ -34,18 +34,19 @@ public final class InputOutputUtils {
      *
      * @param source
      * @param format
-     * @param target
+     * @param dataunit
+     * @param target Target entry into which data should be extracted from file.
      */
-    public static void extractFromFile(File source, RDFFormat format, WritableRDFDataUnit target) {
+    public static void extractFromFile(File source, RDFFormat format, WritableRDFDataUnit dataunit, 
+            RDFDataUnit.Entry target) {
+        
         RepositoryConnection connection = null;
-
         try {
-            final String graphUriStr = target.getBaseDataGraphURI().stringValue() + "/fromFile";
-            final URI graphUri = target.getConnection().getValueFactory().createURI(graphUriStr);
+            final URI graphUri = target.getDataGraphURI();
 
-            connection = target.getConnection();
+            connection = dataunit.getConnection();
             connection.begin();
-            connection.add(source, "http://default//", format, graphUri);
+            connection.add(source, "http://default-base/", format, graphUri);
             connection.commit();
 
             LOG.info("{} triples have been extracted from {}", connection.size(), source.toString());
