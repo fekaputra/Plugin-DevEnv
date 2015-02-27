@@ -33,6 +33,35 @@ public class MetadataUtils {
     }
 
     /**
+     * Close must be called on returned class after usage. Also before first usage, symbolic name
+     * must be set.
+     *
+     * @param dataUnit
+     * @return
+     * @throws DataUnitException
+     */
+    public static MetadataUtilsInstance create(MetadataDataUnit dataUnit)
+            throws DataUnitException {
+        return new MetadataUtilsInstance<>(dataUnit.getConnection(), dataUnit.getMetadataGraphnames(),
+                null, true);
+    }
+
+
+    /**
+     * Close must be called on returned class after usage. Also before first usage, symbolic name must be set.
+     *
+     * @param dataUnit
+     * @return
+     * @throws DataUnitException
+     */
+    public static WritableMetadataUtilsInstance create(WritableMetadataDataUnit dataUnit)
+            throws DataUnitException {
+        return new WritableMetadataUtilsInstance(dataUnit.getConnection(),
+                dataUnit.getMetadataGraphnames(),
+                dataUnit.getMetadataWriteGraphname(), null, true);
+    }
+
+    /**
      * Close must be called on returned class after usage.
      *
      * @param dataUnit

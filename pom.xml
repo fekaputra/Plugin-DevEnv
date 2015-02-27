@@ -8,26 +8,15 @@
     <description>Maven build all project, used instead of build plugin.</description>
 
 	<modules>
-        <!-- Base pom projects. -->
-        <module>uv-pom</module>
-        <module>uv-pom-api</module>
-        <!-- API -->
-        <module>uv-dpu-api</module>
-		<module>uv-dataunit-files</module>
-		<module>uv-dataunit-rdf</module>
-		<module>uv-dataunit-relational</module>
-		<module>uv-dpu-api-helpers</module>
         <!-- DPU templates and base projects. -->
-		<module>dpu-base-pom</module>
         <module>uv-dpu-template-base</module>
         <!-- Other pom projects. -->
-        <module>uv-pom-lib</module>
+        <module>uv-pom-helpers</module>
         <module>uv-pom-dpu</module>
         <!-- Helpers and utilities. -->
         <module>uv-dataunit-helpers</module>
-        <module>uv-dpu-test-helpers</module>
-        <module>uv-dpu-helpers</module>        
-	</modules>
+        <module>uv-dpu-helpers</module>
+  </modules>
 
 	<contributors>
 		<contributor>
