@@ -205,7 +205,7 @@ public abstract class AbstractDpu<CONFIG> implements DPU, DPUConfigurable,
      */
     private boolean executeAddons(Extension.ExecutionPoint execPoint) {
         boolean result = true;
-        for (Extension item : this.masterContext.geInitializables()) {
+        for (Extension item : this.masterContext.getExtensions()) {
             if (item instanceof Extension.Executable) {
                 final Extension.Executable executable = (Extension.Executable) item;
                 try {
