@@ -150,7 +150,12 @@ public class ConfigManager {
             }
         }
         if (newMasterConfig == null) {
-            throw new ConfigException("No serializer can deserialize master configuration object.");
+            if ((masterConfigStr == null || masterConfigStr.isEmpty())) {
+                // Original was null.
+                newMasterConfig = new MasterConfigObject();
+            } else {
+                throw new ConfigException("No serializer can deserialize master configuration object.");
+            }
         }
         this.masterConfig = newMasterConfig;
         // We got new configuration, configure add-ons.
