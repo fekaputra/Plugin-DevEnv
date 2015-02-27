@@ -147,7 +147,7 @@ public class ContextUtils {
      * @param args
      */
     public static void sendShortInfo(UserContext context, String captionFormat, Object... args) {
-        final String caption = String.format(captionFormat, args);
+        final String caption = context.tr(captionFormat, args);
         sendMessage(context, DPUContext.MessageType.INFO, caption, "");
     }
 
@@ -160,7 +160,7 @@ public class ContextUtils {
      * @param args
      */
     public static void sendShortWarn(UserContext context, String captionFormat, Object... args) {
-        final String caption = String.format(captionFormat, args);
+        final String caption = context.tr(captionFormat, args);
         sendMessage(context, DPUContext.MessageType.WARNING, caption, "");
     }
 
