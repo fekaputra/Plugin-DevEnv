@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import eu.unifiedviews.helpers.dpu.exec.ExecContext;
@@ -134,10 +132,6 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
 
         private CheckBox checkEnabled;
 
-        private TextField txtRetryCount;
-
-        private TextArea txtExceptionNames;
-
         public VaadinDialog() {
             super(configHistory);
         }
@@ -150,24 +144,6 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
 
             checkEnabled = new CheckBox("Enable");
             layout.addComponent(checkEnabled);
-//            checkEnabled.addValueChangeListener(new Property.ValueChangeListener() {
-//
-//                @Override
-//                public void valueChange(Property.ValueChangeEvent event) {
-//                    txtRetryCount.setEnabled((Boolean) event.getProperty().getValue());
-//                    txtExceptionNames.setEnabled((Boolean) event.getProperty().getValue());
-//                }
-//            });
-
-//            txtRetryCount = new TextField("Number of retry attemps");
-//            txtRetryCount.setDescription("Use -1 for infinite amount of attemps.");
-//            txtRetryCount.setWidth("100%");
-//            layout.addComponent(txtRetryCount);
-
-//            txtExceptionNames = new TextArea("Names of exceptions to catch (separated by ; )");
-//            txtExceptionNames.setSizeFull();
-//            layout.addComponent(txtExceptionNames);
-//            layout.setExpandRatio(txtExceptionNames, 1.0f);
 
             final Panel panel = new Panel();
             panel.setSizeFull();
@@ -184,33 +160,12 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
         @Override
         protected void setConfiguration(Configuration_V1 conf) throws DPUConfigException {
             checkEnabled.setValue(conf.isEnabled());
-//            txtRetryCount.setValue(Integer.toString(conf.maxRetryCount));
-//            // Construct exception string.
-//            final StringBuilder exceptionList = new StringBuilder();
-//            for (String item : conf.getExceptionNames()) {
-//                if (!item.isEmpty()) {
-//                    exceptionList.append(item);
-//                    exceptionList.append(";");
-//                }
-//            }
-//            txtExceptionNames.setValue(exceptionList.toString());
         }
 
         @Override
         protected Configuration_V1 getConfiguration() throws DPUConfigException {
             final Configuration_V1 c = new Configuration_V1();
-
             c.setEnabled(checkEnabled.getValue());
-//            try {
-//                if (c.isEnabled()) {
-//                    // Read only if enabled ..
-//                    c.setMaxRetryCount(Integer.parseInt(txtRetryCount.getValue()));
-//                }
-//            } catch (NumberFormatException ex) {
-//                throw new DPUConfigException(txtRetryCount.getCaption() + " must be a number!");
-//            }
-//            c.getExceptionNames().addAll(Arrays.asList(txtExceptionNames.getValue().split(";")));
-
             return c;
         }
 
@@ -249,13 +204,11 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
     @Override
     public void preInit(String param) throws DPUException {
         // No-op/
-        LOG.info("preInit called!");
     }
 
     @Override
     public void afterInit(Context context) {
         this.context = context;
-        LOG.info("afterInit called!");
         if (context instanceof ExecContext) {
             this.dpuContext = ((ExecContext) context).getDpuContext();
             LOG.info("\tcontext set to: {}", this.dpuContext);
