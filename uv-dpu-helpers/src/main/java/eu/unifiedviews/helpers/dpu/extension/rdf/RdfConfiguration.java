@@ -12,6 +12,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.ValueFactoryImpl;
+import org.openrdf.model.vocabulary.RDF;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
@@ -170,10 +171,9 @@ public class RdfConfiguration implements ConfigTransformer, Extension {
         RepositoryConnection conn = null;
         try {
             conn = sourceDataUnit.getConnection();
-            final URI type = conn.getValueFactory().createURI("http://www.w3.org/2000/01/rdf-schema#type");
             // Load statemetns into memory.
             List<Statement> statements;
-            RepositoryResult<Statement> result = conn.getStatements(null, type, clazz, true, graphs);
+            RepositoryResult<Statement> result = conn.getStatements(null, RDF.TYPE, clazz, true, graphs);
             try {
                 statements = Iterations.asList(result);
             } finally {
