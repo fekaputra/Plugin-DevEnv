@@ -40,7 +40,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     /**
      * List of used extensions.
      */
-    private final List<Extension> initializables = new LinkedList<>();
+    private final List<Extension> extensions = new LinkedList<>();
 
     /**
      * List of used configuration transformers.
@@ -48,7 +48,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     private final List<ConfigTransformer> configTransformers = new LinkedList<>();
 
     /**
-     * List of configurable ad-dons. May contains same classes as {@link #initializables} and
+     * List of configurable ad-dons. May contains same classes as {@link #extensions} and
      * {@link #configTransformers}.
      */
     private final List<Configurable> configurable = new LinkedList<>();
@@ -143,7 +143,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     @Override
     public void onField(Field field, Object value) {
         if (value instanceof Extension) {
-            initializables.add((Extension) value);
+            extensions.add((Extension) value);
         }
         if (value instanceof ConfigTransformer) {
             configTransformers.add((ConfigTransformer) value);
@@ -180,8 +180,8 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
         return serializationXml;
     }
 
-    public List<Extension> geInitializables() {
-        return initializables;
+    public List<Extension> getExtensions() {
+        return extensions;
     }
 
     public List<ConfigTransformer> getConfigTransformers() {
@@ -209,7 +209,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
      */
     @SuppressWarnings("unchecked")
     public <T> T getInstance(Class<T> clazz) {
-        for (Extension item : initializables) {
+        for (Extension item : extensions) {
             if (item.getClass() == clazz) {
                 return (T) item;
             }
