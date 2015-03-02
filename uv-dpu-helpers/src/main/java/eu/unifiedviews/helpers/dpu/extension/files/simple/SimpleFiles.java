@@ -74,7 +74,7 @@ public class SimpleFiles implements Extension {
                 readDataUnit = (FilesDataUnit)value;
             } else {
                 throw new DPUException("Class" + value.getClass().getCanonicalName()
-                        + " can't be assigned to RDFDataUnit.");
+                        + " can't be assigned to FilesDataUnit.");
             }
         } catch (IllegalAccessException | IllegalArgumentException ex) {
             throw new DPUException("Can't get value for: " + dataUnitName, ex);

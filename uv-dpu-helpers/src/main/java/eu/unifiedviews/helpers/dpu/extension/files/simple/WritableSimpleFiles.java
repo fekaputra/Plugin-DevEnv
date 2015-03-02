@@ -134,7 +134,7 @@ public class WritableSimpleFiles extends SimpleFiles {
                 writableDataUnit = (WritableFilesDataUnit) value;
             } else {
                 throw new DPUException("Class" + value.getClass().getCanonicalName()
-                        + " can't be assigned to WritableRDFDataUnit.");
+                        + " can't be assigned to WritableFilesDataUnit.");
             }
         } catch (IllegalAccessException | IllegalArgumentException ex) {
             throw new DPUException("Can't get value for: " + dataUnitName, ex);
