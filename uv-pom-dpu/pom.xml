@@ -27,6 +27,8 @@
         <dpu.mainClass></dpu.mainClass>
         <!-- Can be used to embeed dependenceis transitively - use with caution. -->
         <embed.transitive>false</embed.transitive>
+        <!-- - - - -->
+        <git.notUsed>false</git.notUsed>
     </properties>
     
     <dependencies>
@@ -161,6 +163,27 @@
                         <DPU-MainClass>${dpu.mainClass}</DPU-MainClass>
                         <Build-Time>${maven.build.timestamp}</Build-Time>
                     </instructions>
+                </configuration>
+            </plugin>
+            <plugin> <!-- https://github.com/ktoso/maven-git-commit-id-plugin -->
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                         </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <prefix>git</prefix>
+                    <useNativeGit>false</useNativeGit>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <skipPoms>true</skipPoms>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <skip>${git.notUsed}</skip>
+                    <runOnlyOnce>false</runOnlyOnce>
                 </configuration>
             </plugin>
         </plugins>

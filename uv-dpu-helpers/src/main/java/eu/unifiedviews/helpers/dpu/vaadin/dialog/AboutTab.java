@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -31,6 +32,9 @@ public class AboutTab extends CustomComponent {
     private final String HTML_SYSTEM_PROPERTIES = "<b>System properties</b><br>"
             + "<ul>"
             + "<li>Build time: %s</li>"
+            + "<li>Git branch: %s</li>"
+            + "<li>Git dirty: %s</li>"
+            + "<li>Git commit: %s</li>"
             + "</ul>"
             + "<br/><hr/>";
 
@@ -58,9 +62,28 @@ public class AboutTab extends CustomComponent {
                 context.getDpuClass().getClassLoader());
 
         final String buildTime = buildInfo.getString("build.timestamp");
-        mainLayout.addComponent(
-                new Label(String.format(HTML_SYSTEM_PROPERTIES, buildTime),
-                        ContentMode.HTML));
+        String gitBranch, gitDirty, gitCommit;
+        // Load optional properties.
+        try {
+            gitBranch = buildInfo.getString("git.branch");
+        } catch (MissingResourceException | ClassCastException ex) {
+            gitBranch = "";
+        }
+        try {
+            gitDirty = buildInfo.getString("git.dirty");
+        } catch (MissingResourceException | ClassCastException ex) {
+            gitDirty = "";
+        }
+        try {
+            gitCommit = buildInfo.getString("git.commit.id");
+        } catch (MissingResourceException | ClassCastException ex) {
+            gitCommit = "";
+        }
+        // - - -
+        final String content = String.format(HTML_SYSTEM_PROPERTIES,
+                buildTime, gitBranch, gitDirty, gitCommit);
+        mainLayout.addComponent(new Label(content, ContentMode.HTML));
+
 
         // Add user provided description if available.
         final String userDescription = loadUserAboutText(
