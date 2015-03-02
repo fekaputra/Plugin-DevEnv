@@ -9,7 +9,6 @@ import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.files.WritableFilesDataUnit;
 import eu.unifiedviews.dataunit.rdf.WritableRDFDataUnit;
 import eu.unifiedviews.dpu.DPUException;
-import eu.unifiedviews.helpers.dataunit.files.FilesDataUnitUtils;
 import eu.unifiedviews.helpers.dataunit.files.FilesVocabulary;
 import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtils;
 import eu.unifiedviews.helpers.dpu.context.Context;
@@ -62,6 +61,44 @@ public class WritableSimpleFiles extends SimpleFiles {
                 }
             });
         }
+    }
+
+    /**
+     * Create new file.
+     *
+     * @param fileName
+     * @return
+     * @throws DPUException
+     */
+    public File create(final String fileName) throws DPUException {
+        final File result;
+        if (faultTolerance == null) {
+            try {
+                result = new File(java.net.URI.create(writableDataUnit.addNewFile(fileName)));
+                // Add metadata - Virtual path.
+                MetadataUtils.set(writableDataUnit, fileName, FilesVocabulary.UV_VIRTUAL_PATH, fileName);
+            } catch (DataUnitException ex) {
+                throw new DPUException("Failed to add file.", ex);
+            }            
+        } else {
+            // First create a file.
+            result = faultTolerance.execute(new FaultTolerance.ActionReturn<File>() {
+
+                @Override
+                public File action() throws Exception {
+                    return new File(java.net.URI.create(writableDataUnit.addNewFile(fileName)));
+                }
+            });  
+            // Add metadata - Virtual path.
+            faultTolerance.execute(new FaultTolerance.Action() {
+
+                @Override
+                public void action() throws Exception {
+                    MetadataUtils.set(writableDataUnit, fileName, FilesVocabulary.UV_VIRTUAL_PATH, fileName);
+                }
+            });            
+        }
+        return result;        
     }
 
     @Override
