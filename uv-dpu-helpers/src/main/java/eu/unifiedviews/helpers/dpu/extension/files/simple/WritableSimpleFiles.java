@@ -130,7 +130,7 @@ public class WritableSimpleFiles extends SimpleFiles {
             if (value == null) {
                 return;
             }
-            if (WritableRDFDataUnit.class.isAssignableFrom(value.getClass())) {
+            if (WritableFilesDataUnit.class.isAssignableFrom(value.getClass())) {
                 writableDataUnit = (WritableFilesDataUnit) value;
             } else {
                 throw new DPUException("Class" + value.getClass().getCanonicalName()
