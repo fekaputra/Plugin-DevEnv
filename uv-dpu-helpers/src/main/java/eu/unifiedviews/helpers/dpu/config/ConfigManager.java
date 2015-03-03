@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.helpers.dpu.config.serializer.XStreamSerializer;
-import eu.unifiedviews.helpers.dpu.config.transformer.AddonMigration;
+import eu.unifiedviews.helpers.dpu.config.migration.AddonMigration;
 import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXml;
 
 /**

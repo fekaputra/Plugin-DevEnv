@@ -48,9 +48,9 @@ public class ConfigHistory<CONFIG> {
         }
         // Let's enter the past ..
         if (endOfHistory == null) {
-            LOG.error("Can't parse config for ({}), there is no history, value is: {}", finalClass.getName(),
-                    config);
-            throw new ConfigException("Can't parse given object.");
+            LOG.error("Can't parse config for ({}), there is no history, value is: '{}' config:\n{}",
+                    finalClass.getName(), config, configAsString);
+            throw new ConfigException("Can't parse configuration for: " + finalClass.getName());
         }
         Object object = null;
         ConfigHistoryEntry<?, ?> current = endOfHistory;

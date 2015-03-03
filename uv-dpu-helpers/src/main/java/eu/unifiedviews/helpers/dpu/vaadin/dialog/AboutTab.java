@@ -16,6 +16,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
+import eu.unifiedviews.helpers.dpu.context.UserContext;
+
 /**
  * About page for DPU. Content should be generated based on context.
  *
@@ -60,34 +62,37 @@ public class AboutTab extends CustomComponent {
         final ResourceBundle buildInfo = ResourceBundle.getBundle(BUNDLE_NAME,
                 context.getDialogContext().getLocale(),
                 context.getDpuClass().getClassLoader());
+        // Just as a shortcut for translation.
+        final UserContext ctx = context.asUserContext();
 
-        final String buildTime = buildInfo.getString("build.timestamp");
-        String gitBranch, gitDirty, gitCommit;
+        final StringBuilder aboutHtml = new StringBuilder();
+        aboutHtml.append("<b>");
+        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildInfo"));
+        aboutHtml.append("</b></br>");
+        aboutHtml.append("<ul>");
+
+        aboutHtml.append("<li>");
+        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildTime"));
+        aboutHtml.append(buildInfo.getString("build.timestamp"));
+        aboutHtml.append("</li>");
+
+        final String gitInfo = buildGitInfo(buildInfo, ctx);
+        if (gitInfo != null) {
+            aboutHtml.append("<li>");
+            aboutHtml.append(gitInfo);
+            aboutHtml.append("</li>");
+        }
+
+        aboutHtml.append("</ul>");
+        aboutHtml.append("<hr/>");
+
         // Load optional properties.
-        try {
-            gitBranch = buildInfo.getString("git.branch");
-        } catch (MissingResourceException | ClassCastException ex) {
-            gitBranch = "";
-        }
-        try {
-            gitDirty = buildInfo.getString("git.dirty");
-        } catch (MissingResourceException | ClassCastException ex) {
-            gitDirty = "";
-        }
-        try {
-            gitCommit = buildInfo.getString("git.commit.id");
-        } catch (MissingResourceException | ClassCastException ex) {
-            gitCommit = "";
-        }
-        // - - -
-        final String content = String.format(HTML_SYSTEM_PROPERTIES,
-                buildTime, gitBranch, gitDirty, gitCommit);
-        mainLayout.addComponent(new Label(content, ContentMode.HTML));
 
+        // Add generated text into a dilaog.
+        mainLayout.addComponent(new Label(aboutHtml.toString(), ContentMode.HTML));
 
         // Add user provided description if available.
-        final String userDescription = loadUserAboutText(
-                context);
+        final String userDescription = loadUserAboutText(context);
         if (userDescription != null) {
             mainLayout.addComponent(new Label(userDescription, ContentMode.HTML));
         }
@@ -133,6 +138,74 @@ public class AboutTab extends CustomComponent {
             return builder.toString();
         } catch (IOException ex) {
             LOG.error("Failed to load about.html.", ex);
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param buildInfo
+     * @param ctx
+     * @return Null if no GIT related info is available.
+     */
+    protected String buildGitInfo(final ResourceBundle buildInfo, UserContext ctx) {
+        final StringBuilder gitInfo = new StringBuilder(100);
+        gitInfo.append(ctx.tr("lib.helpers.vaadin.about.git"));
+        gitInfo.append("<ul>");
+        boolean notEmpty = false;
+        try {
+            final String gitBranch = buildInfo.getString("git.branch");
+            notEmpty = true;
+            // Add to output.
+            gitInfo.append("<li>");
+            gitInfo.append(ctx.tr("lib.helpers.vaadin.about.git.branch"));
+            gitInfo.append(gitBranch);
+            gitInfo.append("</li>");
+        } catch (MissingResourceException | ClassCastException ex) {
+        }
+        //
+        try {
+            final String gitDirty = buildInfo.getString("git.dirty");
+            notEmpty = true;
+            // Add to output.
+            gitInfo.append("<li>");
+            gitInfo.append(ctx.tr("lib.helpers.vaadin.about.git.dirty"));
+            gitInfo.append(gitDirty);
+            gitInfo.append("</li>");
+        } catch (MissingResourceException | ClassCastException ex) {
+        }
+        //
+        try {
+            String gitCommit = buildInfo.getString("git.commit.id");
+            notEmpty = true;
+            try {
+                // Again optional.
+                final String gitRepository = buildInfo.getString("git.repository.link");
+                if (gitRepository != null && !gitRepository.isEmpty()) {
+                    final StringBuilder gitCommitBuilder = new StringBuilder(20);
+                    gitCommitBuilder.append("<a href=\"");
+                    gitCommitBuilder.append(gitRepository);
+                    gitCommitBuilder.append("/commit/");
+                    gitCommitBuilder.append(gitCommit);
+                    gitCommitBuilder.append("\">");
+                    gitCommitBuilder.append(gitCommit);
+                    gitCommitBuilder.append("</a>");
+                    gitCommit = gitCommitBuilder.toString();
+                }
+            } catch (MissingResourceException | ClassCastException ex) {
+            }
+            // Add to output.
+            gitInfo.append("<li>");
+            gitInfo.append(ctx.tr("lib.helpers.vaadin.about.git.commit"));
+            gitInfo.append(gitCommit);
+            gitInfo.append("</li>");
+        } catch (MissingResourceException | ClassCastException ex) {
+        }
+        gitInfo.append("</ul>");
+        //
+        if (notEmpty) {
+            return gitInfo.toString();
+        } else {
             return null;
         }
     }
