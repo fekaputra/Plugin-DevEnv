@@ -179,7 +179,6 @@
                 <configuration>
                     <prefix>git</prefix>
                     <useNativeGit>false</useNativeGit>
-                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                     <skipPoms>true</skipPoms>
                     <failOnNoGitDirectory>false</failOnNoGitDirectory>
                     <skip>${git.notUsed}</skip>
