@@ -29,6 +29,8 @@
         <embed.transitive>false</embed.transitive>
         <!-- - - - -->
         <git.notUsed>false</git.notUsed>
+        <!-- Link to repository used in build.info.properties, sample: https://github.com/mff-uk/DPUs -->
+        <git.repository.link></git.repository.link>
     </properties>
     
     <dependencies>
