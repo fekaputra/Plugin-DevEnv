@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dpu.config.transformer;
+package eu.unifiedviews.helpers.dpu.config.migration;
 
 import eu.unifiedviews.helpers.dpu.config.ConfigException;
 import eu.unifiedviews.helpers.dpu.config.ConfigManager;
@@ -22,7 +22,11 @@ public class AddonMigration implements ConfigTransformer {
                 .replaceAll("cz.cuni.mff.xrg.uv.boost.dpu.addon.impl.FaultToleranceWrap_-Configuration__V1",
                         "cz.cuni.mff.xrg.uv.boost.extensions.FaultTolerance_-Configuration__V1")
                 .replaceAll("cz.cuni.mff.xrg.uv.boost.dpu.addon.impl.CachedFileDownloader_-Configuration",
-                        "cz.cuni.mff.xrg.uv.boost.extensions.CachedFileDownloader_-Configuration__V1");
+                        "cz.cuni.mff.xrg.uv.boost.extensions.CachedFileDownloader_-Configuration__V1")
+                .replaceAll("eu.unifiedviews.helpers.cuni.extensions.FaultTolerance_-Configuration__V1",
+                        "eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance_-Configuration__V1")
+                .replaceAll("eu.unifiedviews.helpers.dpu.extensions.FaultTolerance_-Configuration__V1",
+                        "eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance_-Configuration__V1");
     }
 
     @Override
