@@ -17,6 +17,9 @@ public class AddonMigration implements ConfigTransformer {
 
     @Override
     public String transformString(String configName, String config) throws ConfigException {
+        if (config == null) {
+            return null;
+        }
         // Some fix transformations.
         return config
                 .replaceAll("cz.cuni.mff.xrg.uv.boost.dpu.addon.impl.FaultToleranceWrap_-Configuration__V1",

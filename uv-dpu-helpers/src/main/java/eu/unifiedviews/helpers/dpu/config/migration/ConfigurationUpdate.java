@@ -50,7 +50,7 @@ public class ConfigurationUpdate implements ConfigTransformer, Extension {
 
     @Override
     public String transformString(String configName, String config) throws ConfigException {
-        if (!configName.equals(MasterConfigObject.CONFIG_NAME)) {
+        if (!configName.equals(MasterConfigObject.CONFIG_NAME) || config == null) {
             return config;
         }
         // Fast initial check.
