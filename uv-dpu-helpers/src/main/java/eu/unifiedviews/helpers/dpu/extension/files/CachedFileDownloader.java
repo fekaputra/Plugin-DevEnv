@@ -369,13 +369,13 @@ public class CachedFileDownloader implements Extension, Extension.Executable,
             this.config = context.getConfigManager().get(USED_CONFIG_NAME, configHistory);
         } catch (ConfigException ex) {
             ContextUtils.sendWarn(context.asUserContext(), "Addon failed to load configuration", ex,
-                    "Failed to load configuration for: %s default configuration is used.", ADDON_NAME);
+                    "Failed to load configuration for: {0} default configuration is used.", ADDON_NAME);
             this.config = new Configuration_V1();
         }
 
         if (this.config == null) {
             ContextUtils.sendWarn(context.asUserContext(), "Addon failed to load configuration",
-                    "Failed to load configuration for: %s default configuration is used.", ADDON_NAME);
+                    "Failed to load configuration for: {0} default configuration is used.", ADDON_NAME);
             this.config = new Configuration_V1();
         }
         LOG.info("BaseDirectory: {}", baseDirectory);
@@ -609,7 +609,7 @@ public class CachedFileDownloader implements Extension, Extension.Executable,
         } catch (IOException ex) {
             //throw new ExtensionException("Can't read cache into from file.", ex);
             ContextUtils.sendWarn(context.asUserContext(), ADDON_NAME,
-                    "Can't read cache file from: '%s'. This is normal if DPU is running for the first time.",
+                    "Can't read cache file from: ''{0}''. This is normal if DPU is running for the first time.",
                     cacheFile.toString());
         } catch (SerializationFailure | SerializationXmlFailure  ex) {
             throw new ExtensionException("Can't deserialize cache from string.", ex);
