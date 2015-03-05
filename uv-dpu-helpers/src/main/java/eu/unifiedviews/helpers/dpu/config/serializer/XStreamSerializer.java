@@ -35,7 +35,7 @@ public class XStreamSerializer implements ConfigSerializer {
 
     @Override
     public <TYPE> boolean canDeserialize(String configAsString, String className) {
-        return configAsString.contains(className);        
+        return configAsString != null && configAsString.contains(className);
     }
 
     @Override
