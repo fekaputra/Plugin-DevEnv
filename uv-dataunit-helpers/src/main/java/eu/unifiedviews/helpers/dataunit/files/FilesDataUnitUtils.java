@@ -74,7 +74,7 @@ public class FilesDataUnitUtils {
         // Set available metadata.
         MetadataUtils.add(dataUnit, symbolicName, FilesVocabulary.UV_VIRTUAL_PATH, symbolicName);
         // Return representing instance.
-        return new InMemoryEntry(file.toString(), symbolicName);
+        return new InMemoryEntry(file.toURI().toString(), symbolicName);
     }
 
     /**
