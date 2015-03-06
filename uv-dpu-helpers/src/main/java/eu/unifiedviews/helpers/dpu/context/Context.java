@@ -1,29 +1,31 @@
 package eu.unifiedviews.helpers.dpu.context;
 
-import eu.unifiedviews.helpers.dpu.localization.Messages;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
+import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.helpers.dpu.config.ConfigException;
 import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
 import eu.unifiedviews.helpers.dpu.config.ConfigManager;
 import eu.unifiedviews.helpers.dpu.config.ConfigTransformer;
-import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
+import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
+import eu.unifiedviews.helpers.dpu.extension.Extension;
 import eu.unifiedviews.helpers.dpu.extension.ExtensionInitializer;
+import eu.unifiedviews.helpers.dpu.localization.Messages;
 import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXml;
 import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFactory;
-import eu.unifiedviews.dpu.DPUException;
-import eu.unifiedviews.helpers.dpu.extension.Extension;
+import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
 
 /**
  * Base class for context.
  *
  * @author Škoda Petr
- * @param <CONFIG> Last configuration class.
- * @param <ONTOLOGY> Ontology class.
+ * @param <CONFIG>
+ *            Last configuration class.
+ * @param <ONTOLOGY>
+ *            Ontology class.
  */
 public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
@@ -48,8 +50,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     private final List<ConfigTransformer> configTransformers = new LinkedList<>();
 
     /**
-     * List of configurable ad-dons. May contains same classes as {@link #extensions} and
-     * {@link #configTransformers}.
+     * List of configurable ad-dons. May contains same classes as {@link #extensions} and {@link #configTransformers}.
      */
     private final List<Configurable> configurable = new LinkedList<>();
 
@@ -76,14 +77,15 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     /**
      * Module for localization support.
      */
-    private final Messages localization = new Messages();
+    private Messages localization;
 
     /**
      * Set base fields and create
      *
      * @param <T>
      * @param dpuClass
-     * @param dpuInstance Can be null, in such case temporary instance is created.
+     * @param dpuInstance
+     *            Can be null, in such case temporary instance is created.
      * @param ontology
      * @throws eu.unifiedviews.dpu.DPUException
      */
@@ -102,7 +104,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
         this.configHistory = dpuInstance.getConfigHistoryHolder();
         this.serializationXml = SerializationXmlFactory.serializationXml();
         // Prepare initializer.
-        this.initializer = new ExtensionInitializer(dpuInstance);        
+        this.initializer = new ExtensionInitializer(dpuInstance);
         // Prepare configuration manager - without addons, configuration transformers etc ..
         this.configManager = new ConfigManager(this.serializationXml);
     }
@@ -110,14 +112,15 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     /**
      * Initialize fields and set given configuration.
      *
-     * @param configAsString If null no configuration is set. Used by dialog as there the configuration is set
-     *                       later.
+     * @param configAsString
+     *            If null no configuration is set. Used by dialog as there the configuration is set
+     *            later.
      * @throws DPUException
      */
     protected final void init(String configAsString, Locale locale, ClassLoader classLoader)
             throws DPUException {
         // Initialize localization.
-        this.localization.setLocale(locale, classLoader);
+        this.localization = new Messages(locale, classLoader);
         // Init DPU use callback to get info about Addon, ConfigTransformer, ConfigurableAddon.
         initializer.addCallback(this);
         initializer.preInit();
@@ -233,7 +236,6 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
     }
 
     /**
-     *
      * @return Return new instance of {@link UserContext} that wrap this context.
      */
     public UserContext asUserContext() {

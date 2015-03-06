@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- *
  * @author Škoda Petr
  */
 public class Messages {
@@ -27,22 +26,19 @@ public class Messages {
 
     private ResourceBundle resourceBundleLib = null;
 
-    /**
-     * Set current locale.
-     *
-     * @param locale
-     */
-    public void setLocale(Locale locale, ClassLoader classLoader) {
+    public Messages(Locale locale, ClassLoader classLoader) {
         resourceBundleDpu = ResourceBundle.getBundle(BUNDLE_NAME_DPU, locale, classLoader);
         resourceBundleLib = ResourceBundle.getBundle(BUNDLE_NAME_LIB, locale,
-            Messages.class.getClassLoader());
+                Messages.class.getClassLoader());
     }
 
     /**
      * Get the resource bundle string stored under key, formatted using {@link MessageFormat}.
      *
-     * @param key resource bundle key
-     * @param args parameters to formatting routine
+     * @param key
+     *            resource bundle key
+     * @param args
+     *            parameters to formatting routine
      * @return formatted string, returns "!key!" when the value is not found in bundle
      */
     public String getString(final String key, final Object... args) {
