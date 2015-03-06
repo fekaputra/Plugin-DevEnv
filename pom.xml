@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.unifiedviews</groupId>
 	<artifactId>uv-plugin-devenv</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.0</version>
 	<packaging>pom</packaging>
 	<description />
 
@@ -24,6 +24,7 @@
 		<!-- dataunits -->
 		<module>uv-dataunit-files</module>
 		<module>uv-dataunit-rdf</module>
+		<module>uv-dataunit-relational</module>
 		<!-- dataunit helpers and support libraries -->
 		<module>uv-dataunit-helpers</module>
 	</modules>
@@ -74,8 +75,7 @@
 		</pluginManagement>
 
 		<plugins>
-			<!-- integration tests (*SysTest) are disabled by default; use SYSTESTS 
-				profile to enable it -->
+			<!-- integration tests (*SysTest) are disabled by default; use SYSTESTS profile to enable it -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
