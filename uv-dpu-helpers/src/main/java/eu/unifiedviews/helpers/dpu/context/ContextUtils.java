@@ -31,7 +31,10 @@ public class ContextUtils {
      */
     public static void sendMessage(UserContext context, DPUContext.MessageType type, String caption,
             String bodyFormat, Object... args) {
+        // Localization.
+        caption = context.tr(caption);
         final String body = context.tr(bodyFormat, args);
+        // Send message.
         if (context.getMasterContext() instanceof ExecContext) {
             final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
             if (dpuContext != null) {
@@ -55,7 +58,10 @@ public class ContextUtils {
      */
     public static void sendMessage(UserContext context, DPUContext.MessageType type, String caption,
             Exception exception, String bodyFormat, Object... args) {
+        // Localization.
+        caption = context.tr(caption);
         final String body = context.tr(bodyFormat, args);
+        // Send message.
         if (context.getMasterContext() instanceof ExecContext) {
             final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
             if (dpuContext != null) {
