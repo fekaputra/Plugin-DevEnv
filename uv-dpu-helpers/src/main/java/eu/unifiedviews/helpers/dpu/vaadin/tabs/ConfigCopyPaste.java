@@ -1,4 +1,4 @@
-package eu.unifiedviews.helpers.dpu.extension.vaadin;
+package eu.unifiedviews.helpers.dpu.vaadin.tabs;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
