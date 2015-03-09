@@ -2,6 +2,8 @@ package eu.unifiedviews.dpu.config.vaadin;
 
 import java.util.Locale;
 
+import eu.unifiedviews.util.Cryptography;
+
 /**
  * Context for {@link AbstractConfigDialog}.
  *
@@ -18,4 +20,10 @@ public interface ConfigDialogContext {
      * Get the current locale
      */
     Locale getLocale();
+
+    /**
+     * @return Instance of cryptography class for encryption and decryption.
+     */
+    Cryptography getCryptography();
+
 }
