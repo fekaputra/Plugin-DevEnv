@@ -1,47 +1,59 @@
-package eu.unifiedviews.helpers.dpu.extension.vaadin;
+package eu.unifiedviews.helpers.dpu.vaadin.tabs;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 
-import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
-import eu.unifiedviews.helpers.dpu.context.Context;
-import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractExtensionDialog;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractDialog;
-import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
-import eu.unifiedviews.helpers.dpu.vaadin.dialog.DialogContext;
-import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.dpu.config.DPUConfigException;
+import eu.unifiedviews.helpers.dpu.vaadin.dialog.UserDialogContext;
 
 /**
- * Add-on for copy & past work with configuration.
+ * Create a Tab in configuration dialog. The tab provide user with possibility to copy and paste
+ * DPUs configuration as a string.
+ *
+ * This offer a simple way how to copy DPU's configuration from one instance to another but also
+ * provide user will full access to the configuration - this is a high security risk, use with caution!
  *
  * @author Škoda Petr
  */
-public class ConfigCopyPaste implements Configurable<ConfigCopyPaste.Configuration_V1> {
+public class ConfigCopyPaste {
 
-    public static final String USED_CONFIG_NAME = "addon/configurationCopyPaste";
-
-    public static final String ADDON_NAME = "Configuration copy&paste";
-
-    public static class Configuration_V1 {
+    protected ConfigCopyPaste() {
         
     }
 
-    public class VaadinDialog extends AbstractExtensionDialog<Configuration_V1> {
+    /**
+     *
+     * @param ctx
+     * @return Tab that should be added to the dialog.
+     */
+    public static CustomComponent create(UserDialogContext ctx) {
+        final ConfigCopyPasteTab tab = new ConfigCopyPasteTab(ctx);
+        tab.buildLayout();
+        return tab;
+    }
+
+    protected static class ConfigCopyPasteTab extends CustomComponent {
 
         private TextArea txtConfiguration;
 
-        public VaadinDialog() {
-            super(ConfigHistory.noHistory(Configuration_V1.class));
+        private final UserDialogContext ctx;
+
+        private final AbstractDialog dialog;
+
+        public ConfigCopyPasteTab(UserDialogContext ctx) {
+            this.ctx = ctx;
+            this.dialog = ctx.getDialogMasterContext().getDialog();
+            // Build layout.            
         }
 
-        @Override
         public void buildLayout() {
             setSizeFull();
 
@@ -81,7 +93,8 @@ public class ConfigCopyPaste implements Configurable<ConfigCopyPaste.Configurati
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     try {
-                        dialogContext.getDialog().setConfig(txtConfiguration.getValue());
+
+                        dialog.setConfig(txtConfiguration.getValue());
                         Notification.show("Configuration has been imported.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (DPUConfigException ex) {
                         Notification.show("Import failed", ex.fillInStackTrace().toString(), Notification.Type.ERROR_MESSAGE);
@@ -94,7 +107,7 @@ public class ConfigCopyPaste implements Configurable<ConfigCopyPaste.Configurati
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     try {
-                        final String configuration = dialogContext.getDialog().getConfig();
+                        final String configuration = dialog.getConfig();
                         txtConfiguration.setValue(configuration);
                         Notification.show("Configuration has been exported.", Notification.Type.HUMANIZED_MESSAGE);
                     } catch (DPUConfigException ex) {
@@ -103,57 +116,7 @@ public class ConfigCopyPaste implements Configurable<ConfigCopyPaste.Configurati
                     }
                 }
             });
-
-
         }
-
-        @Override
-        protected String getConfigClassName() {
-            return USED_CONFIG_NAME;
-        }
-
-        @Override
-        protected void setConfiguration(Configuration_V1 conf) throws DPUConfigException {
-            // No operation here.
-        }
-
-        @Override
-        protected Configuration_V1 getConfiguration() throws DPUConfigException {
-            return new Configuration_V1();
-        }
-
-    }
-
-    /**
-     * Dialog context.
-     */
-    private DialogContext dialogContext = null;
-
-    @Override
-    public void preInit(String param) throws DPUException {
-        // No-op.
-    }
-
-    @Override
-    public void afterInit(Context context) {
-        if (context instanceof DialogContext) {
-            this.dialogContext = (DialogContext)context;
-        }
-    }
-
-    @Override
-    public Class<Configuration_V1> getConfigClass() {
-        return Configuration_V1.class;
-    }
-
-    @Override
-    public String getDialogCaption() {
-        return ADDON_NAME;
-    }
-
-    @Override
-    public AbstractExtensionDialog<Configuration_V1> getDialog() {
-        return new VaadinDialog();
     }
 
 }
