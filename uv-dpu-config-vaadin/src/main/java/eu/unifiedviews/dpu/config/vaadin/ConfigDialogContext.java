@@ -1,6 +1,7 @@
 package eu.unifiedviews.dpu.config.vaadin;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Context for {@link AbstractConfigDialog}.
@@ -18,4 +19,10 @@ public interface ConfigDialogContext {
      * Get the current locale
      */
     Locale getLocale();
+
+    /**
+     * Return the execution environment variables
+     * @return
+     */
+    Map<String, String> getEnvironment();
 }
