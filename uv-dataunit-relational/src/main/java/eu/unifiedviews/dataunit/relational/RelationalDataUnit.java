@@ -52,7 +52,13 @@ public interface RelationalDataUnit extends MetadataDataUnit {
      * @throws DataUnitException
      */
     Connection getDatabaseConnection() throws DataUnitException;
-    
-    
+
+    /**
+     * Returns JDBC connection that can be used to connect to the underlying database
+     * 
+     * @return JDBC URL string
+     * @throws DataUnitException
+     */
+    String getDatabaseURL() throws DataUnitException;
 
 }
