@@ -62,10 +62,10 @@ public interface RelationalDataUnit extends MetadataDataUnit {
     Connection getDatabaseConnection() throws DataUnitException;
 
     /**
-     * Returns JDBC connection that can be used to connect to the underlying database
+     * Returns connection to relational database for specific user. User must exist prior calling this method or exception will be thrown
      * 
      * @return JDBC URL string
      * @throws DataUnitException
      */
-    String getDatabaseURL() throws DataUnitException;
+    Connection getDatabaseConnectionForUser(String userName, String password) throws DataUnitException;
 }
