@@ -150,8 +150,6 @@
                         <Bundle-Description>${project.description}</Bundle-Description>
                         <!-- We add range to some versions. -->
                         <Import-Package>
-                            eu.unifiedviews.dpu.*;version="[${unifiedviews.api.version},${unifiedviews.api.version.max})",
-                            eu.unifiedviews.dataunit.*;version="[${unifiedviews.api.version},${unifiedviews.api.version.max})",
                             ${osgi.import.package}
                             *
                         </Import-Package>
