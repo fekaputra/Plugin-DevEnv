@@ -118,8 +118,6 @@
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Import-Package>
-                            eu.unifiedviews.dpu.*;version="[${unifiedviews.api.version},${unifiedviews.api.version.max})",
-                            eu.unifiedviews.dataunit.*;version="[${unifiedviews.api.version},${unifiedviews.api.version.max})",
                             ${osgi.import.package}
                             *
                         </Import-Package>
