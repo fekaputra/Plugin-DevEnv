@@ -15,7 +15,7 @@
     <description/>
 
     <properties>
-        <unifiedviews.helpers.dataunit.version>2.0.0-SNAPSHOT</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dataunit.version>2.0.0</unifiedviews.helpers.dataunit.version>
         <unifiedviews.helpers.dataunit.version.max>3.0.0</unifiedviews.helpers.dataunit.version.max>
     </properties>
 
