@@ -1,23 +1,23 @@
 package eu.unifiedviews.helpers.dpu.vaadin.dialog;
 
+import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
 
-import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
-import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
-import eu.unifiedviews.dpu.config.DPUConfigException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
-import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 import eu.unifiedviews.dpu.DPUException;
+import eu.unifiedviews.dpu.config.DPUConfigException;
 import eu.unifiedviews.dpu.config.vaadin.AbstractConfigDialog;
 import eu.unifiedviews.dpu.config.vaadin.ConfigDialogContext;
 import eu.unifiedviews.dpu.config.vaadin.InitializableConfigDialog;
-
-import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
+import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
+import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
+import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
+import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 
 /**
  * Base class for DPU's configuration dialogs.
@@ -27,6 +27,8 @@ import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
  */
 public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<MasterConfigObject>
         implements InitializableConfigDialog {
+
+    private static final String ABOUT_DIALOG_PROPERTY = "frontend.dpu.dialog.about.enabled";
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDialog.class);
 
@@ -77,10 +79,11 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
             LOG.error("Can't create dialog context!", ex);
             throw new DPUConfigException("Dialog initialization failed!", ex);
         }
-        // Build main layout.
-        buildMainLayout();
         // Set user context.
         this.ctx = new UserDialogContext(this.context);
+        // Build main layout.
+        buildMainLayout();
+
         //  Build user layout.
         buildDialogLayout();
     }
@@ -100,15 +103,20 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
                 LOG.error("Dialog is ignored as it's null: {}", addon.getDialogCaption());
             } else {
                 dialog.buildLayout();
+                // FIXME: should be localized
                 addTab(dialog, addon.getDialogCaption());
                 this.context.addonDialogs.add(dialog);
             }
         }
-        // Add AboutTab.
-        final AboutTab aboutTab = new AboutTab();
-        aboutTab.buildLayout(context);
-        addTab(aboutTab, aboutTab.getCaption());
-        // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
+        // Add AboutTab if not disabled in properties
+        String aboutEnabledProperty = this.context.getDialogContext().getEnvironment().get(ABOUT_DIALOG_PROPERTY);
+        if (aboutEnabledProperty == null || Boolean.getBoolean(aboutEnabledProperty)) {
+            final AboutTab aboutTab = new AboutTab();
+            aboutTab.buildLayout(context);
+            // FIXME: should be localized
+            addTab(aboutTab, aboutTab.getCaption());
+            // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
+        }
 
         // Set composition root.
         super.setCompositionRoot(tabSheet);
@@ -121,6 +129,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
             tabSheet.setSelectedTab(0);
             return;
         }
+        // FIXME: should be localized
         final Tab newTab = tabSheet.addTab(compositionRoot, "DPU configuration");
         // Remove old one if set, and set new as a master tab (tab with DPU's configuration).
         if (mainTab != null) {
