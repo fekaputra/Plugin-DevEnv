@@ -110,7 +110,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
         }
         // Add AboutTab if not disabled in properties
         String aboutDisabledProperty = this.context.getDialogContext().getEnvironment().get(ABOUT_DIALOG_PROPERTY);
-        if (aboutDisabledProperty == null || !Boolean.getBoolean(aboutDisabledProperty)) {
+        if (aboutDisabledProperty == null || !Boolean.parseBoolean(aboutDisabledProperty)) {
             final AboutTab aboutTab = new AboutTab();
             aboutTab.buildLayout(context);
             // FIXME: should be localized
