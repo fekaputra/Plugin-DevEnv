@@ -28,7 +28,7 @@ import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<MasterConfigObject>
         implements InitializableConfigDialog {
 
-    private static final String ABOUT_DIALOG_PROPERTY = "frontend.dpu.dialog.about.enabled";
+    private static final String ABOUT_DIALOG_PROPERTY = "frontend.dpu.dialog.about.disabled";
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDialog.class);
 
@@ -109,8 +109,8 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
             }
         }
         // Add AboutTab if not disabled in properties
-        String aboutEnabledProperty = this.context.getDialogContext().getEnvironment().get(ABOUT_DIALOG_PROPERTY);
-        if (aboutEnabledProperty == null || Boolean.getBoolean(aboutEnabledProperty)) {
+        String aboutDisabledProperty = this.context.getDialogContext().getEnvironment().get(ABOUT_DIALOG_PROPERTY);
+        if (aboutDisabledProperty == null || !Boolean.getBoolean(aboutDisabledProperty)) {
             final AboutTab aboutTab = new AboutTab();
             aboutTab.buildLayout(context);
             // FIXME: should be localized
