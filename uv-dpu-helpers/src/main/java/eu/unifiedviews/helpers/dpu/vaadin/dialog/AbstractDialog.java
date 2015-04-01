@@ -28,7 +28,11 @@ import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<MasterConfigObject>
         implements InitializableConfigDialog {
 
+    private static final long serialVersionUID = 2482689171030846291L;
+
     private static final String ABOUT_DIALOG_PROPERTY = "frontend.dpu.dialog.about.disabled";
+
+    private static final String DPU_CONFIGURATION_TAB_NAME = "dialog.dpu.tab.config";
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDialog.class);
 
@@ -103,7 +107,6 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
                 LOG.error("Dialog is ignored as it's null: {}", addon.getDialogCaption());
             } else {
                 dialog.buildLayout();
-                // FIXME: should be localized
                 addTab(dialog, addon.getDialogCaption());
                 this.context.addonDialogs.add(dialog);
             }
@@ -113,7 +116,6 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
         if (aboutDisabledProperty == null || !Boolean.parseBoolean(aboutDisabledProperty)) {
             final AboutTab aboutTab = new AboutTab();
             aboutTab.buildLayout(context);
-            // FIXME: should be localized
             addTab(aboutTab, aboutTab.getCaption());
             // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
         }
@@ -129,8 +131,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
             tabSheet.setSelectedTab(0);
             return;
         }
-        // FIXME: should be localized
-        final Tab newTab = tabSheet.addTab(compositionRoot, "DPU configuration");
+        final Tab newTab = tabSheet.addTab(compositionRoot, this.ctx.tr(DPU_CONFIGURATION_TAB_NAME));
         // Remove old one if set, and set new as a master tab (tab with DPU's configuration).
         if (mainTab != null) {
             tabSheet.removeTab(mainTab);
@@ -141,12 +142,13 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     /**
-     *
-     * @param component Tab to add.
-     * @param caption   Tab name.
+     * @param component
+     *            Tab to add.
+     * @param caption
+     *            Tab name resource for translation
      */
     protected void addTab(Component component, String caption) {
-        final Tab newTab = tabSheet.addTab(component, caption);
+        this.tabSheet.addTab(component, this.ctx.tr(caption));
     }
 
     @Override
@@ -155,7 +157,6 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     /**
-     *
      * @return Dialog originalDialogContext.
      */
     protected ConfigDialogContext getContext() {
