@@ -31,6 +31,9 @@
         <git.notUsed>false</git.notUsed>
         <!-- Link to repository used in build.info.properties, sample: https://github.com/mff-uk/DPUs -->
         <git.repository.link></git.repository.link>
+        
+        <uv.helpers.version>[2.0.0,3.0.0)</uv.helpers.version>
+
     </properties>
     
     <dependencyManagement>
@@ -43,12 +46,12 @@
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dataunit-helpers</artifactId>
-                <version>2.0.0</version>
+                <version>${uv.helpers.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dpu-helpers</artifactId>
-                <version>2.0.0</version>
+                <version>${uv.helpers.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
