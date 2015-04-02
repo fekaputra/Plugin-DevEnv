@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>eu.unifiedviews</groupId>
+        <artifactId>uv-pom-api</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../uv-pom-api/pom.xml</relativePath>
+    </parent>
+    <groupId>eu.unifiedviews</groupId>
+    <artifactId>uv-dpu-config-vaadin</artifactId>
+    <version>2.0.0</version>
+    <packaging>bundle</packaging>
+
+    <repositories>
+        <repository> <!-- Spring repositories. -->
+            <id>com.springsource.repository.bundles.release</id>
+            <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+            <url>http://repository.springsource.com/maven/bundles/release</url>
+        </repository>
+        <repository>
+            <id>com.springsource.repository.bundles.external</id>
+            <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+            <url>http://repository.springsource.com/maven/bundles/external</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>uv-dpu-api</artifactId>
+            <version>[${unifiedviews.api.version}, ${unifiedviews.api.version.max})</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Vaadin. -->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        <!-- Testing. -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- used for testing, required by BaseConfigDialog -->
+            <groupId>javax.servlet</groupId>
+            <artifactId>com.springsource.javax.servlet</artifactId>
+            <version>2.4.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

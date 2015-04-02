@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>eu.unifiedviews</groupId>
+        <artifactId>uv-pom</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../uv-pom/pom.xml</relativePath>
+    </parent>
+    <groupId>eu.unifiedviews</groupId>
+    <artifactId>uv-pom-dpu</artifactId>
+    <version>2.0.0</version>
+    <packaging>pom</packaging>
+    <name>uv-pom-dpu</name>
+    <description>Commons base project for DPU's.</description>
+    
+    <properties>
+        <!-- Libs version. -->
+        <vaadin.version>7.3.7</vaadin.version>        
+        <junit.version>4.12</junit.version>
+        <!-- Must end with comma if not empty. Can be used to influence the OSGI import package list. -->
+        <osgi.import.package></osgi.import.package>
+        <!-- http://jira.codehaus.org/browse/MRESOURCES-99 -->
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+        <!-- dpu.package and dpu.mainClass must be set to DPU main class package and name respectively. -->
+        <dpu.package></dpu.package>
+        <dpu.mainClass></dpu.mainClass>
+        <!-- Can be used to embeed dependenceis transitively - use with caution. -->
+        <embed.transitive>false</embed.transitive>
+        <!-- - - - -->
+        <git.notUsed>false</git.notUsed>
+        <!-- Link to repository used in build.info.properties, sample: https://github.com/mff-uk/DPUs -->
+        <git.repository.link></git.repository.link>
+        
+        <uv.helpers.version>[2.0.0,3.0.0)</uv.helpers.version>
+
+    </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>eu.unifiedviews</groupId>
+                <artifactId>module-test</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.unifiedviews</groupId>
+                <artifactId>uv-dataunit-helpers</artifactId>
+                <version>${uv.helpers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.unifiedviews</groupId>
+                <artifactId>uv-dpu-helpers</artifactId>
+                <version>${uv.helpers.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Unifiedviews API. -->
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>uv-dpu-api</artifactId>
+            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>uv-dpu-config-vaadin</artifactId>
+            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>uv-dataunit-rdf</artifactId>
+            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>uv-dataunit-files</artifactId>
+            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>uv-dataunit-relational</artifactId>
+            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Logback as implementation org.slf4j, for testing. -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test dependencies. -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!-- Profile for compilation with Java 8. -->
+        <profile>
+            <id>java8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Do not fail compulation on Java doc errors (Java 8). -->
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <!--  Used by cz.cuni.mff.xrg.uv.boost.dpu.vaadin.AboutTab. -->
+                    <include>build-info.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>build-info.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin> <!-- Main build plugin. -->
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${bundle.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-Description>${project.description}</Bundle-Description>
+                        <!-- We add range to some versions. -->
+                        <Import-Package>
+                            ${osgi.import.package}
+                            *
+                        </Import-Package>
+                        <!-- Dependencies embedding. -->
+                        <Embed-Dependency>*;scope=compile|system</Embed-Dependency>
+                        <Embed-Directory>dependency</Embed-Directory>
+                        <Embed-StripGroup>false</Embed-StripGroup>
+                        <Embed-Transitive>${embed.transitive}</Embed-Transitive>
+                        <!-- Unifiedviews properties. -->
+                        <DPU-Package>${dpu.package}</DPU-Package>
+                        <DPU-MainClass>${dpu.mainClass}</DPU-MainClass>
+                        <Build-Time>${maven.build.timestamp}</Build-Time>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin> <!-- https://github.com/ktoso/maven-git-commit-id-plugin -->
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <prefix>git</prefix>
+                    <useNativeGit>false</useNativeGit>
+                    <skipPoms>true</skipPoms>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <skip>${git.notUsed}</skip>
+                    <runOnlyOnce>false</runOnlyOnce>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
