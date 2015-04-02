@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
@@ -20,25 +21,19 @@ import eu.unifiedviews.helpers.dpu.context.UserContext;
 
 /**
  * About page for DPU. Content should be generated based on context.
- *
  * TODO Petr: We should consider localization here too.
  *
  * @author Škoda Petr
  */
 public class AboutTab extends CustomComponent {
 
+    private static final long serialVersionUID = -1097541500977063250L;
+
     private static final Logger LOG = LoggerFactory.getLogger(AboutTab.class);
 
-    private final String BUNDLE_NAME = "build-info";
+    private static final String DPU_ABOUT_TAB_NAME = "dialog.dpu.tab.about";
 
-    private final String HTML_SYSTEM_PROPERTIES = "<b>System properties</b><br>"
-            + "<ul>"
-            + "<li>Build time: %s</li>"
-            + "<li>Git branch: %s</li>"
-            + "<li>Git dirty: %s</li>"
-            + "<li>Git commit: %s</li>"
-            + "</ul>"
-            + "<br/><hr/>";
+    private final String BUNDLE_NAME = "build-info";
 
     private final String HTML_FOOTER = "<br/><hr/>"
             + "Powered by <a href=\"https://github.com/mff-uk\">CUNI helpers</a>.";
@@ -49,7 +44,7 @@ public class AboutTab extends CustomComponent {
 
     @Override
     public String getCaption() {
-        return "About";
+        return DPU_ABOUT_TAB_NAME;
     }
 
     public void buildLayout(DialogContext context) {
