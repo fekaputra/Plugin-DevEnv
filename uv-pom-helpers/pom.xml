@@ -4,12 +4,12 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.0</version>
         <relativePath>../uv-pom/pom.xml</relativePath>
     </parent>
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-helpers</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
     <name>uv-pom-helpers</name>
     <description>Base project for libraries.</description>
@@ -118,8 +118,6 @@
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Import-Package>
-                            eu.unifiedviews.dpu.*;version="[${unifiedviews.api.version},${unifiedviews.api.version.max})",
-                            eu.unifiedviews.dataunit.*;version="[${unifiedviews.api.version},${unifiedviews.api.version.max})",
                             ${osgi.import.package}
                             *
                         </Import-Package>

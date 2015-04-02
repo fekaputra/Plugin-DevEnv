@@ -11,19 +11,19 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-import eu.unifiedviews.helpers.dpu.exec.ExecContext;
-import eu.unifiedviews.helpers.dpu.config.ConfigException;
-import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
-import eu.unifiedviews.helpers.dpu.context.Context;
-import eu.unifiedviews.helpers.dpu.context.ContextUtils;
-import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractExtensionDialog;
-import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dpu.DPUContext;
 import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.dpu.config.DPUConfigException;
+import eu.unifiedviews.helpers.dpu.config.ConfigException;
+import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
+import eu.unifiedviews.helpers.dpu.context.Context;
+import eu.unifiedviews.helpers.dpu.context.ContextUtils;
+import eu.unifiedviews.helpers.dpu.exec.ExecContext;
 import eu.unifiedviews.helpers.dpu.extension.Extension;
+import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractExtensionDialog;
+import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
 
 /**
  * Provide possibility to wrap user code. Wrapped code may be re-executed in case of failure and so this
@@ -35,7 +35,7 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
 
     public static final String USED_CONFIG_NAME = "addon/faultToleranceWrap";
 
-    public static final String ADDON_NAME = "Fault tolerance";
+    public static final String ADDON_NAME = "dialog.dpu.tab.faulttolerance";
 
     private static final Logger LOG = LoggerFactory.getLogger(FaultTolerance.class);
 
@@ -142,7 +142,7 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
             layout.setSpacing(true);
             layout.setMargin(true);
 
-            checkEnabled = new CheckBox("Enable");
+            checkEnabled = new CheckBox(FaultTolerance.this.context.asUserContext().tr("dialog.dpu.faulttolerance.enabled"));
             layout.addComponent(checkEnabled);
 
             final Panel panel = new Panel();
@@ -173,8 +173,7 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
 
     private Configuration_V1 config;
 
-    private final ConfigHistory<Configuration_V1> configHistory
-            = ConfigHistory.noHistory(Configuration_V1.class);
+    private final ConfigHistory<Configuration_V1> configHistory = ConfigHistory.noHistory(Configuration_V1.class);
 
     /**
      * Context used by DPU, used to find out cancellation.

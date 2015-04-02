@@ -1,23 +1,23 @@
 package eu.unifiedviews.helpers.dpu.vaadin.dialog;
 
+import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
 
-import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
-import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
-import eu.unifiedviews.dpu.config.DPUConfigException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
-import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 import eu.unifiedviews.dpu.DPUException;
+import eu.unifiedviews.dpu.config.DPUConfigException;
 import eu.unifiedviews.dpu.config.vaadin.AbstractConfigDialog;
 import eu.unifiedviews.dpu.config.vaadin.ConfigDialogContext;
 import eu.unifiedviews.dpu.config.vaadin.InitializableConfigDialog;
-
-import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
+import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
+import eu.unifiedviews.helpers.dpu.exec.AbstractDpu;
+import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
+import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 
 /**
  * Base class for DPU's configuration dialogs.
@@ -27,6 +27,12 @@ import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
  */
 public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<MasterConfigObject>
         implements InitializableConfigDialog {
+
+    private static final long serialVersionUID = 2482689171030846291L;
+
+    private static final String ABOUT_DIALOG_PROPERTY = "frontend.dpu.dialog.about.disabled";
+
+    private static final String DPU_CONFIGURATION_TAB_NAME = "dialog.dpu.tab.config";
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDialog.class);
 
@@ -77,10 +83,11 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
             LOG.error("Can't create dialog context!", ex);
             throw new DPUConfigException("Dialog initialization failed!", ex);
         }
-        // Build main layout.
-        buildMainLayout();
         // Set user context.
         this.ctx = new UserDialogContext(this.context);
+        // Build main layout.
+        buildMainLayout();
+
         //  Build user layout.
         buildDialogLayout();
     }
@@ -104,11 +111,14 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
                 this.context.addonDialogs.add(dialog);
             }
         }
-        // Add AboutTab.
-        final AboutTab aboutTab = new AboutTab();
-        aboutTab.buildLayout(context);
-        addTab(aboutTab, aboutTab.getCaption());
-        // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
+        // Add AboutTab if not disabled in properties
+        String aboutDisabledProperty = this.context.getDialogContext().getEnvironment().get(ABOUT_DIALOG_PROPERTY);
+        if (aboutDisabledProperty == null || !Boolean.parseBoolean(aboutDisabledProperty)) {
+            final AboutTab aboutTab = new AboutTab();
+            aboutTab.buildLayout(context);
+            addTab(aboutTab, aboutTab.getCaption());
+            // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
+        }
 
         // Set composition root.
         super.setCompositionRoot(tabSheet);
@@ -121,7 +131,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
             tabSheet.setSelectedTab(0);
             return;
         }
-        final Tab newTab = tabSheet.addTab(compositionRoot, "DPU configuration");
+        final Tab newTab = tabSheet.addTab(compositionRoot, this.ctx.tr(DPU_CONFIGURATION_TAB_NAME));
         // Remove old one if set, and set new as a master tab (tab with DPU's configuration).
         if (mainTab != null) {
             tabSheet.removeTab(mainTab);
@@ -132,12 +142,13 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     /**
-     *
-     * @param component Tab to add.
-     * @param caption   Tab name.
+     * @param component
+     *            Tab to add.
+     * @param caption
+     *            Tab name resource for translation
      */
     protected void addTab(Component component, String caption) {
-        final Tab newTab = tabSheet.addTab(component, caption);
+        this.tabSheet.addTab(component, this.ctx.tr(caption));
     }
 
     @Override
@@ -146,7 +157,6 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     /**
-     *
      * @return Dialog originalDialogContext.
      */
     protected ConfigDialogContext getContext() {
