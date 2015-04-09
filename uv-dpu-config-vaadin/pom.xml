@@ -30,25 +30,21 @@
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-api</artifactId>
-            <version>[${unifiedviews.api.version}, ${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <!-- Vaadin. -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
-            <version>${vaadin.version}</version>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.7</version>
         </dependency>
         <!-- Testing. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>

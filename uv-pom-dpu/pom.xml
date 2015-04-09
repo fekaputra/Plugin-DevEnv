@@ -16,9 +16,6 @@
     <description>Commons base project for DPU's.</description>
 
     <properties>
-        <!-- Libs version. -->
-        <vaadin.version>7.3.7</vaadin.version>        
-        <junit.version>4.12</junit.version>
         <!-- Must end with comma if not empty. Can be used to influence the OSGI import package list. -->
         <osgi.import.package></osgi.import.package>
         <!-- http://jira.codehaus.org/browse/MRESOURCES-99 -->
@@ -32,8 +29,6 @@
         <git.notUsed>false</git.notUsed>
         <!-- Link to repository used in build.info.properties, sample: https://github.com/mff-uk/DPUs -->
         <git.repository.link></git.repository.link>
-        
-        <uv.helpers.version>[2.1.0-SNAPSHOT,3.0.0)</uv.helpers.version>
 
     </properties>
 
@@ -44,16 +39,6 @@
                 <artifactId>module-test</artifactId>
                 <version>2.1.0-SNAPSHOT</version>
             </dependency>
-            <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>uv-dataunit-helpers</artifactId>
-                <version>${uv.helpers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>uv-dpu-helpers</artifactId>
-                <version>${uv.helpers.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -62,51 +47,48 @@
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-api</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-config-vaadin</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-rdf</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-files</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-relational</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <!-- Logback as implementation org.slf4j, for testing. -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- Test dependencies. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

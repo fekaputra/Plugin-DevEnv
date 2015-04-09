@@ -18,7 +18,6 @@
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-api</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

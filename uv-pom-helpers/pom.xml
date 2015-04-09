@@ -25,46 +25,44 @@
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-api</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dpu-config-vaadin</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-rdf</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-files</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-relational</artifactId>
-            <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
             <scope>provided</scope>
         </dependency>
         <!-- Logback as implementation org.slf4j for testing. -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
