@@ -31,6 +31,7 @@
         <vaadin.version>7.2.6</vaadin.version>
         <junit.version>4.12</junit.version>
         <xstream.version>1.4.7</xstream.version>
+        <commons.io>2.4</commons.io>
 
         <!-- System properties. -->
         <project.java.source.version>1.7</project.java.source.version>
@@ -100,7 +101,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+                <version>${commons.io}</version>
             </dependency>
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
