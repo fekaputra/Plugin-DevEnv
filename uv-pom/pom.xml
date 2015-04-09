@@ -16,13 +16,10 @@
     </developers>
 
     <properties>
-        <!-- Min. uv version - version of libs. during development. -->
-        <unifiedviews.api.version>2.1.0-SNAPSHOT</unifiedviews.api.version>
-        <unifiedviews.api.version.max>3.0.0</unifiedviews.api.version.max>
-        <unifiedviews.helpers.dataunit.version>2.1.0-SNAPSHOT</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dataunit.version.max>3.0.0</unifiedviews.helpers.dataunit.version.max>
-        <unifiedviews.helpers.dpu.version>2.1.0-SNAPSHOT</unifiedviews.helpers.dpu.version>
-        <unifiedviews.helpers.dpu.version.max>3.0.0</unifiedviews.helpers.dpu.version.max>
+        <!-- UV version for dependencies. -->
+        <unifiedviews.api.version>[2.0,3)</unifiedviews.api.version>
+        <unifiedviews.helpers.dataunit.version>[2.0,3)</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dpu.version>[2.0,3)</unifiedviews.helpers.dpu.version>
 
         <!-- Used bundle plugin version. -->
         <bundle.plugin.version>2.3.7</bundle.plugin.version>
@@ -56,37 +53,37 @@
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dpu-api</artifactId>
-                <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+                <version>${unifiedviews.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dpu-config-vaadin</artifactId>
-                <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+                <version>${unifiedviews.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dataunit-rdf</artifactId>
-                <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+                <version>${unifiedviews.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dataunit-files</artifactId>
-                <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+                <version>${unifiedviews.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dataunit-relational</artifactId>
-                <version>[${unifiedviews.api.version},${unifiedviews.api.version.max})</version>
+                <version>${unifiedviews.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dataunit-helpers</artifactId>
-                <version>[${unifiedviews.helpers.dataunit.version},${unifiedviews.helpers.dataunit.version.max})</version>
+                <version>${unifiedviews.helpers.dataunit.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dpu-helpers</artifactId>
-                <version>[${unifiedviews.helpers.dpu.version},${unifiedviews.helpers.dpu.version.max})</version>
+                <version>${unifiedviews.helpers.dpu.version}</version>
             </dependency>
 
             <dependency>
