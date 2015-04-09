@@ -17,9 +17,9 @@
 
     <properties>
         <!-- UV version for dependencies. -->
-        <unifiedviews.api.version>[2.0,3)</unifiedviews.api.version>
-        <unifiedviews.helpers.dataunit.version>[2.0,3)</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dpu.version>[2.0,3)</unifiedviews.helpers.dpu.version>
+        <unifiedviews.api.version>2.0.1-SNAPSHOT</unifiedviews.api.version>
+        <unifiedviews.helpers.dataunit.version>2.0.1-SNAPSHOT</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dpu.version>2.0.1-SNAPSHOT</unifiedviews.helpers.dpu.version>
 
         <!-- Used bundle plugin version. -->
         <bundle.plugin.version>2.3.7</bundle.plugin.version>
