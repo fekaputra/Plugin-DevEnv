@@ -464,7 +464,7 @@ public class CachedFileDownloader implements Extension, Extension.Executable,
         }
         // Check cache.
         if (file.exists() && !config.rewriteCache) {
-            LOG.debug("get({}, {}) - file from cache ", fileName, fileUrl.toString());
+            LOG.debug("cache - get({}, {}) ", fileName, fileUrl.toString());
             return file;
         }
         // Check if we should download file.
@@ -480,7 +480,7 @@ public class CachedFileDownloader implements Extension, Extension.Executable,
             // Try to download file.
             try {
                 FileUtils.copyURLToFile(fileUrl, file);
-                LOG.debug("get({}, {}) - file downloaded ", fileName, fileUrl.toString());
+                LOG.debug("downloaded - get({}, {}) ", fileName, fileUrl.toString());
                 //  Add record to the cache.
                 cache.cacheContent.put(fileName, new CacheRecord(file.getAbsolutePath()));
                 return file;
