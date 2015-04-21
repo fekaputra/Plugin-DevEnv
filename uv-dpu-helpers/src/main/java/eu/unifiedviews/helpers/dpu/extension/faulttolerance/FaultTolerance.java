@@ -228,6 +228,8 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
         }
         // Add exception for Virtuoso
         this.config.exceptionNames.add("java.sql.BatchUpdateException");
+        // Virtuoso Communications Link Failure (timeout) : Connection to the server lost
+        this.config.exceptionNames.add("virtuoso.jdbc4.VirtuosoException");
     }
 
     /**
