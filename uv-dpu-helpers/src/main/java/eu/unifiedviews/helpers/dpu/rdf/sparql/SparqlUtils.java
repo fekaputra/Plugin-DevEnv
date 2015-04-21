@@ -253,8 +253,6 @@ public class SparqlUtils {
     public static SparqlUpdateObject createDelete(String query, List<RDFDataUnit.Entry> sources,
             RDFDataUnit.Entry target) throws SparqlProblemException, DataUnitException {
         if (!useDataset()) {
-            if (query.contains(query))
-
             query = query.replaceFirst("(?i)DELETE", prepareClause("WITH", target) + "DELETE");
             query = query.replaceFirst("(?i)WHERE", prepareClause("USING", sources) + "WHERE");
         }
