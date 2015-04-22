@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>uv-pom</name>
 
@@ -17,9 +17,7 @@
 
     <properties>
         <!-- UV version for dependencies. -->
-        <unifiedviews.api.version>2.0.1</unifiedviews.api.version>
-        <unifiedviews.helpers.dataunit.version>2.0.1</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dpu.version>2.0.1</unifiedviews.helpers.dpu.version>
+        <unifiedviews.api.version>2.0.2-SNAPSHOT</unifiedviews.api.version>
 
         <!-- Used bundle plugin version. -->
         <bundle.plugin.version>2.3.7</bundle.plugin.version>
@@ -75,16 +73,6 @@
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>uv-dataunit-relational</artifactId>
                 <version>${unifiedviews.api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>uv-dataunit-helpers</artifactId>
-                <version>${unifiedviews.helpers.dataunit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>uv-dpu-helpers</artifactId>
-                <version>${unifiedviews.helpers.dpu.version}</version>
             </dependency>
 
             <dependency>

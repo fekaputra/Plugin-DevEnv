@@ -4,21 +4,39 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom</artifactId>
-        <version>2.0.1</version>
+        <version>2.0.2-SNAPSHOT</version>
         <relativePath>../uv-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-helpers</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>uv-pom-helpers</name>
     <description>Base project for libraries.</description>
 
     <properties>
-        <!-- Must end with comma if not empty. -->
+        <unifiedviews.helpers.dataunit.version>2.0.2-SNAPSHOT</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dpu.version>2.0.2-SNAPSHOT</unifiedviews.helpers.dpu.version>
+
+		<!-- Must end with comma if not empty. -->
         <osgi.import.package></osgi.import.package>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>eu.unifiedviews</groupId>
+                <artifactId>uv-dataunit-helpers</artifactId>
+                <version>${unifiedviews.helpers.dataunit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.unifiedviews</groupId>
+                <artifactId>uv-dpu-helpers</artifactId>
+                <version>${unifiedviews.helpers.dpu.version}</version>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
 
     <dependencies>
         <!-- Unifiedviews API. -->
