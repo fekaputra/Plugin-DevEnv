@@ -16,27 +16,9 @@
     <description>Base project for libraries.</description>
 
     <properties>
-        <unifiedviews.helpers.dataunit.version>2.0.2-SNAPSHOT</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dpu.version>2.0.2-SNAPSHOT</unifiedviews.helpers.dpu.version>
-
-		<!-- Must end with comma if not empty. -->
+        <!-- Must end with comma if not empty. -->
         <osgi.import.package></osgi.import.package>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>uv-dataunit-helpers</artifactId>
-                <version>${unifiedviews.helpers.dataunit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>uv-dpu-helpers</artifactId>
-                <version>${unifiedviews.helpers.dpu.version}</version>
-            </dependency>
-		</dependencies>
-	</dependencyManagement>
 
     <dependencies>
         <!-- Unifiedviews API. -->

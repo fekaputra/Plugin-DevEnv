@@ -15,6 +15,10 @@
     <name>uv-dpu-helpers</name>
     <description/>
 
+    <properties>
+        <unifiedviews.helpers.dataunit.version>2.0.2-SNAPSHOT</unifiedviews.helpers.dataunit.version>
+    </properties>
+
     <developers>
         <developer>
             <name>Petr Škoda</name>
@@ -28,6 +32,7 @@
         <dependency>
             <groupId>eu.unifiedviews</groupId>
             <artifactId>uv-dataunit-helpers</artifactId>
+            <version>${unifiedviews.helpers.dataunit.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- Libraries provided by UnifiedViews at runtime. -->
