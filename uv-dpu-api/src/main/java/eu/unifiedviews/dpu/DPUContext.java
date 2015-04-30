@@ -108,6 +108,11 @@ public interface DPUContext {
     String getPipelineOwner();
 
     /**
+     * If pipeline owner has meta data about the real user, returns Id, otherwise returns null
+     */
+    String getPipelineOwnerActorId();
+
+    /**
      * Return true if the execution of current {@link DPU} should be stopped as soon as
      * possible.
      *
