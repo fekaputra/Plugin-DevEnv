@@ -68,7 +68,14 @@ public class SerializationUtils {
     }
 
     /**
-     * Merge (add) data from source to target. All null-values in target are overwritten with values from
+     * Merge (add) data from source to target. Variables are merged based on type:
+     * <ul>
+     *  <li>Collection - elements from source are added to target.</li>
+     *  <li>Map - elements from source are added to target. In case of collision target values ore rewritten.</li>
+     *  <li>Other - if source contains non-null and non-default value then it's used instead of target one.</li>
+     * </ul>
+     * 
+     * All null or default values in target are overwritten with values from
      * source, collections are merged.
      *
      * In case of collection the elements from target are added to source.
@@ -78,10 +85,17 @@ public class SerializationUtils {
      * @param target
      */
     public static <T> void merge(T source, T target) throws RuntimeException {
+        // Create new instance of source, so we can track down default values.
+        final T sourceDefault;
+        try {
+            sourceDefault = (T)createInstance(target.getClass());
+        } catch (SerializationFailure ex) {
+            throw new RuntimeException("Can't create a default class.", ex);
+        }
         // Iterate over fields.
         for (Field field : source.getClass().getDeclaredFields()) {
             try {
-                mergeField(field, source, target);
+                mergeField(field, source, target, sourceDefault);
             } catch (IllegalAccessException | IllegalArgumentException |InvocationTargetException ex) {
                 throw new RuntimeException("Problem with reflection during class merge.", ex);
             }
@@ -96,19 +110,20 @@ public class SerializationUtils {
      * @param field
      * @param source
      * @param target
+     * @param sourceDefault Default values of source.
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    private static <T> void mergeField(Field field, T source, T target) throws IllegalArgumentException,
+    private static <T> void mergeField(Field field, T source, T target, T sourceDefault) throws IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
-        Object sourceValue, targetValue;
+        Object sourceValue, sourceDefaultValue;
         final PropertyDescriptor fieldDesc;
         // Read source value.
         if ((field.getModifiers() & Modifier.PUBLIC) > 0) {
             fieldDesc = null; // We do not use this here.
             sourceValue = field.get(source);
-            targetValue = field.get(target);
+            sourceDefaultValue = field.get(sourceDefault);
         } else {
             try {
                 fieldDesc = new PropertyDescriptor(field.getName(), source.getClass());
@@ -117,7 +132,7 @@ public class SerializationUtils {
                         + field.getName(), ex);
             }
             sourceValue = fieldDesc.getReadMethod().invoke(source);
-            targetValue = fieldDesc.getReadMethod().invoke(target);
+            sourceDefaultValue = fieldDesc.getReadMethod().invoke(sourceDefault);
         }
         if (sourceValue == null) {
             // Do not copy, no value in source.
@@ -147,8 +162,8 @@ public class SerializationUtils {
             // Add items.
             targetMap.putAll(sourceMap);
         } else {
-             if (targetValue != null) {
-                 // Skip as we preserve primitive values from target.
+             if (sourceValue.equals(sourceDefaultValue)) {
+                 // Default value in source, we keep value in target.
              } else {
                  // Primitive type -> just write.
                  if (fieldDesc == null) {
