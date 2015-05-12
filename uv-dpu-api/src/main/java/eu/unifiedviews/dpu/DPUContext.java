@@ -113,6 +113,14 @@ public interface DPUContext {
     String getPipelineOwnerActorId();
 
     /**
+     * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
+     *             backward compatibility, this method will be preserved but should not be used anymore as there can
+     *             only be a dummy implementation of this method (e.g. empty String)
+     */
+    @Deprecated
+    String getOrganization();
+
+    /**
      * Return true if the execution of current {@link DPU} should be stopped as soon as
      * possible.
      *
