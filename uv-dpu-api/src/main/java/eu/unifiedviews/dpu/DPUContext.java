@@ -139,8 +139,10 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Fill data output data to {@link DataUnit}s instead.
-     *             Return path to the existing result directory. Result directory is shared
-     *             by all DPU's in pipeline.
+     *             
+     * Return path to the existing result directory. Result directory is shared
+     * by all DPU's in pipeline.
+     * 
      * @return Execution's result directory.
      */
     @Deprecated
@@ -148,7 +150,9 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. User classloader resources if you need to load any shipped resource.
-     *             Return path to the jar-file which contains implementation of this DPU.
+     * 
+     * Return path to the jar-file which contains implementation of this DPU.
+     * 
      * @return Path to the this DPU's jar.
      */
     @Deprecated
@@ -163,9 +167,11 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
-     *             Return existing global DPU directory. The directory is accessible only
-     *             for DPU of single type (jar-file). It's shared among all the instances
-     *             and executions. Be aware of concurrency access when using this directory.
+     * 
+     * Return existing global DPU directory. The directory is accessible only
+     * for DPU of single type (jar-file). It's shared among all the instances
+     * and executions. Be aware of concurrency access when using this directory.
+     * 
      * @return Folder in which the DPU's are stored.
      */
     @Deprecated
@@ -173,9 +179,11 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
-     *             Return existing DPU shared directory specific for single user. It's
-     *             shared among all the instances and executions for single user and certain
-     *             DPU (jar-file). Be aware of concurrency access when using this directory.
+     * 
+     * Return existing DPU shared directory specific for single user. It's
+     * shared among all the instances and executions for single user and certain
+     * DPU (jar-file). Be aware of concurrency access when using this directory.
+     * 
      * @return User specific folder shared by all DPU's of single template.
      */
     @Deprecated
