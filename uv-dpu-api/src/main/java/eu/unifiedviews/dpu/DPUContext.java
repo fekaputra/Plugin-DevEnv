@@ -111,8 +111,8 @@ public interface DPUContext {
 
     /**
      * If pipeline owner has meta data about the real user, returns Id, otherwise returns null
-	 * 
-	 * @return actor id if present, null otherwise
+     * 
+     * @return actor id if present, null otherwise
      */
     String getPipelineOwnerActorId();
 
@@ -120,8 +120,8 @@ public interface DPUContext {
      * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
      *             backward compatibility, this method will be preserved but should not be used anymore as there can
      *             only be a dummy implementation of this method (e.g. empty String)
-	 * 
-	 * @return name of organization
+     * 
+     * @return name of organization
      */
     @Deprecated
     String getOrganization();
@@ -212,29 +212,29 @@ public interface DPUContext {
 
     /**
      * Return the current locale
-	 * 
-	 * @return locale for current run of DPU
+     * 
+     * @return locale for current run of DPU
      */
     Locale getLocale();
 
     /**
      * Return the current pipeline id
-	 * 
-	 * @return id of pipeline
+     * 
+     * @return id of pipeline
      */
     Long getPipelineId();
 
     /**
      * Return the current pipeline execution id
-	 * 
-	 * @return execution ID of pipeline
+     * 
+     * @return execution ID of pipeline
      */
     Long getPipelineExecutionId();
 
     /**
      * Return the current DPU instance id
-	 * 
-	 * @return instance ID
+     * 
+     * @return instance ID
      */
     Long getDpuInstanceId();
 }
