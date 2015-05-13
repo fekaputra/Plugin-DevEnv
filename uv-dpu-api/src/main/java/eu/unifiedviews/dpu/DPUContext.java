@@ -104,11 +104,15 @@ public interface DPUContext {
 
     /**
      * Return the pipeline owner user id
+	 * 
+	 * @return user id of pipeline owner
      */
     String getPipelineOwner();
 
     /**
      * If pipeline owner has meta data about the real user, returns Id, otherwise returns null
+	 * 
+	 * @return actor id if present, null otherwise
      */
     String getPipelineOwnerActorId();
 
@@ -116,6 +120,8 @@ public interface DPUContext {
      * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
      *             backward compatibility, this method will be preserved but should not be used anymore as there can
      *             only be a dummy implementation of this method (e.g. empty String)
+	 * 
+	 * @return name of organization
      */
     @Deprecated
     String getOrganization();
@@ -139,10 +145,10 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Fill data output data to {@link DataUnit}s instead.
-     *             
+     *
      * Return path to the existing result directory. Result directory is shared
      * by all DPU's in pipeline.
-     * 
+     *
      * @return Execution's result directory.
      */
     @Deprecated
@@ -150,9 +156,9 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. User classloader resources if you need to load any shipped resource.
-     * 
+     *
      * Return path to the jar-file which contains implementation of this DPU.
-     * 
+     *
      * @return Path to the this DPU's jar.
      */
     @Deprecated
@@ -167,11 +173,11 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
-     * 
+     *
      * Return existing global DPU directory. The directory is accessible only
      * for DPU of single type (jar-file). It's shared among all the instances
      * and executions. Be aware of concurrency access when using this directory.
-     * 
+     *
      * @return Folder in which the DPU's are stored.
      */
     @Deprecated
@@ -179,11 +185,11 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
-     * 
+     *
      * Return existing DPU shared directory specific for single user. It's
      * shared among all the instances and executions for single user and certain
      * DPU (jar-file). Be aware of concurrency access when using this directory.
-     * 
+     *
      * @return User specific folder shared by all DPU's of single template.
      */
     @Deprecated
@@ -192,35 +198,43 @@ public interface DPUContext {
     /**
      * Return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324) which is unique for DPU instance (DPU use in pipeline) but shared among
      * executions of the pipeline.
-     * 
+     *
      * @return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324)
      */
     String getDpuInstanceDirectory();
 
     /**
      * Return the execution environment variables
-     * 
+     *
      * @return
      */
     Map<String, String> getEnvironment();
 
     /**
      * Return the current locale
+	 * 
+	 * @return locale for current run of DPU
      */
     Locale getLocale();
 
     /**
      * Return the current pipeline id
+	 * 
+	 * @return id of pipeline
      */
     Long getPipelineId();
 
     /**
      * Return the current pipeline execution id
+	 * 
+	 * @return execution ID of pipeline
      */
     Long getPipelineExecutionId();
 
     /**
      * Return the current DPU instance id
+	 * 
+	 * @return instance ID
      */
     Long getDpuInstanceId();
 }
