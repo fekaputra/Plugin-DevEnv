@@ -51,8 +51,10 @@ public interface DPUContext {
      * published then the execution is stopped after current DPU and the whole
      * execution failed.
      *
-     * @param type Type of message.
-     * @param shortMessage Short message, should not be more than 50 chars.
+     * @param type
+     *            Type of message.
+     * @param shortMessage
+     *            Short message, should not be more than 50 chars.
      */
     void sendMessage(MessageType type, String shortMessage);
 
@@ -61,10 +63,13 @@ public interface DPUContext {
      * published then the execution is stopped after current DPU and the whole
      * execution failed.
      *
-     * @param type Type of message.
-     * @param shortMessage Short message, should not be more than 50 chars.
-     * @param fullMessage The full text of the message can be longer then
-     * shortMessage.
+     * @param type
+     *            Type of message.
+     * @param shortMessage
+     *            Short message, should not be more than 50 chars.
+     * @param fullMessage
+     *            The full text of the message can be longer then
+     *            shortMessage.
      */
     void sendMessage(MessageType type,
             String shortMessage,
@@ -75,11 +80,15 @@ public interface DPUContext {
      * published then the execution is stopped after current DPU and the whole
      * execution failed.
      *
-     * @param type Type of message.
-     * @param shortMessage Short message, should not be more than 50 chars.
-     * @param fullMessage The full text of the message can be longer then
-     * shortMessage.
-     * @param exception Exception to add to the message.
+     * @param type
+     *            Type of message.
+     * @param shortMessage
+     *            Short message, should not be more than 50 chars.
+     * @param fullMessage
+     *            The full text of the message can be longer then
+     *            shortMessage.
+     * @param exception
+     *            Exception to add to the message.
      */
     void sendMessage(MessageType type,
             String shortMessage,
@@ -95,12 +104,26 @@ public interface DPUContext {
 
     /**
      * Return the pipeline owner user id
+	 * 
+	 * @return user id of pipeline owner
      */
     String getPipelineOwner();
 
     /**
-     * Return the pipeline owner organization
+     * If pipeline executing user has meta data (actor), returns actor external Id
+     * 
+     * @return actor id if present, null otherwise
      */
+    String getPipelineExecutorActorExternalId();
+
+    /**
+     * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
+     *             backward compatibility, this method will be preserved but should not be used anymore as there can
+     *             only be a dummy implementation of this method (e.g. empty String)
+     * 
+     * @return name of organization
+     */
+    @Deprecated
     String getOrganization();
 
     /**
@@ -133,6 +156,7 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. User classloader resources if you need to load any shipped resource.
+     *
      * Return path to the jar-file which contains implementation of this DPU.
      *
      * @return Path to the this DPU's jar.
@@ -161,6 +185,7 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
+     *
      * Return existing DPU shared directory specific for single user. It's
      * shared among all the instances and executions for single user and certain
      * DPU (jar-file). Be aware of concurrency access when using this directory.
@@ -171,34 +196,45 @@ public interface DPUContext {
     File getUserDirectory();
 
     /**
-     * Return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324) which is unique for DPU instance (DPU use in pipeline) but shared among executions of the pipeline.
+     * Return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324) which is unique for DPU instance (DPU use in pipeline) but shared among
+     * executions of the pipeline.
+     *
      * @return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324)
      */
     String getDpuInstanceDirectory();
 
     /**
      * Return the execution environment variables
+     *
      * @return
      */
     Map<String, String> getEnvironment();
 
     /**
      * Return the current locale
+     * 
+     * @return locale for current run of DPU
      */
     Locale getLocale();
 
     /**
      * Return the current pipeline id
+     * 
+     * @return id of pipeline
      */
     Long getPipelineId();
 
     /**
      * Return the current pipeline execution id
+     * 
+     * @return execution ID of pipeline
      */
     Long getPipelineExecutionId();
 
     /**
      * Return the current DPU instance id
+     * 
+     * @return instance ID
      */
     Long getDpuInstanceId();
 }
