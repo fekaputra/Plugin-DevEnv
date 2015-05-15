@@ -110,11 +110,11 @@ public interface DPUContext {
     String getPipelineOwner();
 
     /**
-     * If pipeline owner has meta data about the real user, returns Id, otherwise returns null
+     * If pipeline executing user has meta data (actor), returns actor external Id
      * 
      * @return actor id if present, null otherwise
      */
-    String getPipelineOwnerActorId();
+    String getPipelineExecutorActorExternalId();
 
     /**
      * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
