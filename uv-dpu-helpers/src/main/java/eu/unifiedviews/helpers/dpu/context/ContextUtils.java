@@ -135,7 +135,6 @@ public class ContextUtils {
      *
      * @param context
      * @param caption
-     * @param exception
      * @param bodyFormat
      * @param args
      */
@@ -176,6 +175,8 @@ public class ContextUtils {
      *
      * @param context
      * @param message Exception message.
+     *
+     * @return newly created exception
      */
     public static DPUException dpuException(UserContext context, String message) {
         return new DPUException(context.tr(message));
@@ -188,6 +189,8 @@ public class ContextUtils {
      * @param context
      * @param cause
      * @param message Exception message.
+     *
+     * @return newly created exception
      */
     public static DPUException dpuException(UserContext context, Exception cause, String message) {
         return new DPUException(context.tr(message), cause);
@@ -200,8 +203,10 @@ public class ContextUtils {
      * @param context
      * @param message
      * @param args
+     *
+     * @return newly created exception
      */
-    public static  DPUException dpuException(UserContext context, String message, Object... args) {
+    public static DPUException dpuException(UserContext context, String message, Object... args) {
         return new DPUException(context.tr(message, args));
     }
 
@@ -213,8 +218,10 @@ public class ContextUtils {
      * @param cause
      * @param message
      * @param args
+     *
+     * @return newly created exception
      */
-    public static  DPUException dpuException(UserContext context, Exception cause, String message, Object... args) {
+    public static DPUException dpuException(UserContext context, Exception cause, String message, Object... args) {
         return new DPUException(context.tr(message, args), cause);
     }
 
@@ -222,6 +229,8 @@ public class ContextUtils {
      * Return DPU exception that informs that current execution has been cancelled.
      *
      * @param context
+     *
+     * @return newly created exception
      */
     public static DPUException dpuExceptionCancelled(UserContext context) {
         return new DPUException(context.tr("lib.boost.execution.cancelled"));
