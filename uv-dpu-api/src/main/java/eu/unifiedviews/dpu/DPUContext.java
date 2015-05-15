@@ -103,6 +103,13 @@ public interface DPUContext {
     boolean isDebugging();
 
     /**
+     * Return pipeline owner user name
+     * 
+     * @return Pipeline owner user name
+     */
+    String getPipelineOwner();
+
+    /**
      * Return the user name of user who started or scheduled the pipeline execution
      * 
      * @return Pipeline execution owner name
