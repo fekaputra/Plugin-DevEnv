@@ -103,18 +103,32 @@ public interface DPUContext {
     boolean isDebugging();
 
     /**
-     * Return the pipeline owner user id
-	 * 
-	 * @return user id of pipeline owner
+     * Return pipeline owner user name
+     * 
+     * @return Pipeline owner user name
      */
     String getPipelineOwner();
+
+    /**
+     * Return the user name of user who started or scheduled the pipeline execution
+     * 
+     * @return Pipeline execution owner name
+     */
+    String getPipelineExecutionOwner();
+
+    /**
+     * Return the external Id of user who started or scheduled the pipeline execution
+     * 
+     * @return Pipeline execution owner external Id
+     */
+    String getPipelineExecutionOwnerExternalId();
 
     /**
      * If pipeline executing user has meta data (actor), returns actor external Id
      * 
      * @return actor id if present, null otherwise
      */
-    String getPipelineExecutorActorExternalId();
+    String getPipelineExecutionActorExternalId();
 
     /**
      * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
