@@ -30,7 +30,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     private static final long serialVersionUID = 2482689171030846291L;
 
-    private static final String ABOUT_DIALOG_PROPERTY = "frontend.dpu.dialog.about.disabled";
+    private static final String DIALOG_TAB_DISABLED_PROPETY_PREFIX = "frontend.dpu.tab.disabled.";
 
     private static final String DPU_CONFIGURATION_TAB_NAME = "dialog.dpu.tab.config";
 
@@ -99,29 +99,38 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
      */
     private void buildMainLayout() {
         setSizeFull();
-        tabSheet.setSizeFull();
-        // Prepare add-ons.
-        for (Configurable addon : this.context.getConfigurableAddons()) {
-            final AbstractExtensionDialog dialog = addon.getDialog();
+        this.tabSheet.setSizeFull();
+        // Prepare configurable addons
+        prepareConfigurableAddons();
+        // Add AboutTab if not disabled in properties
+
+        final AboutTab aboutTab = new AboutTab();
+        aboutTab.buildLayout(this.context);
+        addTab(aboutTab, aboutTab.getCaption());
+        // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
+
+        // Set composition root.
+        super.setCompositionRoot(this.tabSheet);
+    }
+
+    private void prepareConfigurableAddons() {
+        for (Configurable<CONFIG> addon : this.context.getConfigurableAddons()) {
+            final AbstractExtensionDialog<CONFIG> dialog = addon.getDialog();
             if (dialog == null) {
                 LOG.error("Dialog is ignored as it's null: {}", addon.getDialogCaption());
             } else {
-                dialog.buildLayout();
-                addTab(dialog, addon.getDialogCaption());
-                this.context.addonDialogs.add(dialog);
+                String dialogPropertyName = DIALOG_TAB_DISABLED_PROPETY_PREFIX + addon.getClass().getSimpleName();
+                String dialogDisabledProperty = this.context.getDialogContext().getEnvironment().get(dialogPropertyName);
+                LOG.debug("Disable property name / value for tab: {}/{}", dialogPropertyName, dialogDisabledProperty);
+                if (dialogDisabledProperty == null || !Boolean.parseBoolean(dialogDisabledProperty)) {
+                    dialog.buildLayout();
+                    addTab(dialog, addon.getDialogCaption(), false);
+                    this.context.addonDialogs.add(dialog);
+                }
+
             }
         }
-        // Add AboutTab if not disabled in properties
-        String aboutDisabledProperty = this.context.getDialogContext().getEnvironment().get(ABOUT_DIALOG_PROPERTY);
-        if (aboutDisabledProperty == null || !Boolean.parseBoolean(aboutDisabledProperty)) {
-            final AboutTab aboutTab = new AboutTab();
-            aboutTab.buildLayout(context);
-            addTab(aboutTab, aboutTab.getCaption());
-            // We do not register for this.ctx.addonDialogs.add(dialog); as this is static element.
-        }
 
-        // Set composition root.
-        super.setCompositionRoot(tabSheet);
     }
 
     @Override
@@ -148,7 +157,27 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
      *            Tab name resource for translation
      */
     protected void addTab(Component component, String caption) {
-        this.tabSheet.addTab(component, this.ctx.tr(caption));
+        addTab(component, caption, true);
+    }
+
+    /**
+     * @param component
+     *            Tab to add.
+     * @param caption
+     *            Tab name resource for translation
+     * @param bCheckDialogHidden
+     *            Whether to check configuration to hide the tab
+     */
+    private void addTab(Component component, String caption, boolean bCheckDialogHidden) {
+        String dialogDisabledProperty = null;
+        if (bCheckDialogHidden) {
+            String dialogPropertyName = DIALOG_TAB_DISABLED_PROPETY_PREFIX + component.getClass().getSimpleName();
+            dialogDisabledProperty = this.context.getDialogContext().getEnvironment().get(dialogPropertyName);
+            LOG.debug("Disable property name / value for tab: {}/{}", dialogPropertyName, dialogDisabledProperty);
+        }
+        if (dialogDisabledProperty == null || !Boolean.parseBoolean(dialogDisabledProperty)) {
+            this.tabSheet.addTab(component, this.ctx.tr(caption));
+        }
     }
 
     @Override
