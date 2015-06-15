@@ -85,19 +85,12 @@ public class ResourceConverter {
 
     public static Map<String, String> extrasToMap(Extras extras) {
         Map<String, String> result = new LinkedHashMap<>();
-        if (extras.getSource() != null) {
-            result.put("source", extras.getSource());
-        }
         result.putAll(extras.getMap());
         return result;
     }
 
     public static Extras extrasFromMap(Map<String, String> map) throws ParseException {
         Extras extras = new Extras();
-        if (map.containsKey("source")) {
-            extras.setSource(map.get("source"));
-            map.remove("source");
-        }
         extras.getMap().putAll(map);
         return extras;
     }
