@@ -22,11 +22,14 @@
         <!-- Used bundle plugin version. -->
         <bundle.plugin.version>2.3.7</bundle.plugin.version>
 
-        <!-- versions of 3rd party libraries -->
+        <!-- Versions of 3rd party libraries -->
+        <!-- Vaadin -->
+        <vaadin.version>7.3.7</vaadin.version>
+        
+        <!-- other third party libraries versions -->
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
         <sesame.version>2.8.1</sesame.version>
-        <vaadin.version>7.2.6</vaadin.version>
         <junit.version>4.12</junit.version>
         <xstream.version>1.4.7</xstream.version>
         <commons.io>2.4</commons.io>

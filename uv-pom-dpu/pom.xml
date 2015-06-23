@@ -18,7 +18,7 @@
     <properties>
         <unifiedviews.helpers.dataunit.version>2.1.0-SNAPSHOT</unifiedviews.helpers.dataunit.version>
         <unifiedviews.helpers.dpu.version>2.1.0-SNAPSHOT</unifiedviews.helpers.dpu.version>
-		
+
         <!-- UV modeules dependecies version for DPUs. -->
         <unifiedviews.module-test.version>2.1.0-SNAPSHOT</unifiedviews.module-test.version>
 
@@ -54,7 +54,7 @@
                 <version>${unifiedviews.helpers.dpu.version}</version>
             </dependency>
 
-			<dependency>
+            <dependency>
                 <groupId>eu.unifiedviews</groupId>
                 <artifactId>module-test</artifactId>
                 <version>${unifiedviews.module-test.version}</version>
@@ -216,7 +216,24 @@
                     <runOnlyOnce>false</runOnlyOnce>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m4.3</version>
+                <configuration>
+                    <flowInitContext>
+                        <!-- masterBranchName>odn/master</masterBranchName>
+                        <developBranchName>odn/develop</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix -->
+                        <releaseBranchPrefix>UV_v</releaseBranchPrefix>
+                        <!-- hotfixBranchPrefix>hotfix-</hotfixBranchPrefix -->
+                        <versionTagPrefix>UV_v</versionTagPrefix>
+                    </flowInitContext>
+                    <allowSnapshots>true</allowSnapshots>
+                    <noDeploy>true</noDeploy>
+                    <!-- see goals wiki page for configuration options -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
