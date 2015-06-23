@@ -1,7 +1,22 @@
 package eu.unifiedviews.helpers.dataunit.resource;
 
-
+/**
+ * Class provides merging of two {@link Resource} entities, where not-null properties from primary resource are taken at first and when some property is not set in primary resource, it is taken from secondary one.
+ * 
+ * If some property is set in both primary and secondary resource, it is taken from primary resource.
+ * If some property is set in primary and not secondary resource, it is taken from primary resource.
+ * If some property is set in secondary and not primary resource, it is taken from secondary resource.
+ * If some property is null in both resources, it is null in result. 
+ *
+ */
 public class ResourceMerger {
+    /**
+     * Merges two {@link Resource} entities.
+     *  
+     * @param primary Primary resource, whose property values have precedence over secondary resource
+     * @param secondary Secondary resource, whose properties are used only when primary resource property is null
+     * @return new instance of {@link Resource} class (different from primary and secondary instances - so you can change them after calling this method, withou affecting the resulting {@link Resource}).
+     */
     public static Resource merge(Resource primary, Resource secondary) {
         Resource result = new Resource();
         result.setCreated(secondary.getCreated());
