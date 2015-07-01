@@ -15,20 +15,42 @@ import eu.unifiedviews.helpers.dpu.localization.Messages;
  */
 public class UrlValidator implements Validator {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * If true them empty value is considered to be valid URL.
      */
     private boolean emptyAllowed = true;
 
-    private Messages localization;
+    private Messages localization = new Messages(Locale.US, this
+            .getClass().getClassLoader());
 
     /**
+     * Constructor
+     */
+    public UrlValidator() {
+    }
+
+    /**
+     * Constructor
+     * 
+     * @param emptyAllowed
+     *            If true then empty value is considered to be a valid URL.
+     */
+    public UrlValidator(boolean emptyAllowed) {
+        this(emptyAllowed, Locale.getDefault());
+    }
+
+    /**
+     * Constructor
+     * 
      * @param emptyAllowed
      *            If true then empty value is considered to be a valid URL.
      */
     public UrlValidator(boolean emptyAllowed, Locale locale) {
         this.emptyAllowed = emptyAllowed;
-        this.localization = new Messages(locale, this.getClass().getClassLoader());
+        this.localization = new Messages(locale, this.getClass()
+                .getClassLoader());
     }
 
     @Override
@@ -46,7 +68,8 @@ public class UrlValidator implements Validator {
             try {
                 new java.net.URL(valueStr);
             } catch (MalformedURLException ex) {
-                throw new InvalidValueException(localization.getString("urlvalidator.invaliduri", valueStr));
+                throw new InvalidValueException(localization.getString(
+                        "urlvalidator.invaliduri", valueStr));
             }
 
         } else if (value instanceof URI) {
@@ -59,7 +82,8 @@ public class UrlValidator implements Validator {
             try {
                 new java.net.URL(valueStr);
             } catch (MalformedURLException ex) {
-                throw new InvalidValueException(localization.getString("urlvalidator.invaliduri", valueStr));
+                throw new InvalidValueException(localization.getString(
+                        "urlvalidator.invaliduri", valueStr));
             }
         }
     }
