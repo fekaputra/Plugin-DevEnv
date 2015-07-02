@@ -107,13 +107,13 @@ public class AboutTab extends CustomComponent {
         final Locale locale = context.getDialogContext().getLocale();
         // TODO Petr: This is probably not a good idea how to do this.
         // Try file based on curent localzation.
-        String fileName = "about_" + locale.toLanguageTag() + ".html";
+        String fileName = "About_" + locale.toLanguageTag() + ".html";
         final String result = loadStringFromResource(classLoader, fileName);
         if (result != null) {
             return result;
         } else {
             // Use fallback.
-            fileName = "about.html";
+            fileName = "About.html";
             return loadStringFromResource(classLoader, fileName);
         }
     }
