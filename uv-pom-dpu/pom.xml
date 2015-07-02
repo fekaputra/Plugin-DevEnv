@@ -116,6 +116,14 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Build plugins dependencies -->
+        <dependency>
+            <groupId>com.ruleoftech</groupId>
+            <artifactId>markdown-page-generator-plugin</artifactId>
+            <version>0.4</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
@@ -166,8 +174,34 @@
                     <exclude>build-info.properties</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>${basedir}/target/html</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>About*.html</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>com.ruleoftech</groupId>
+                <artifactId>markdown-page-generator-plugin</artifactId>
+                <version>0.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputDirectory>${basedir}/src/main/resources</inputDirectory>
+                            <outputDirectory>${basedir}/target/html</outputDirectory>
+                            <inputEncoding>UTF-8</inputEncoding>
+                            <outputEncoding>UTF-8</outputEncoding>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin> <!-- Main build plugin. -->
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
