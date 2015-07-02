@@ -152,7 +152,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
                     <!--  Used by cz.cuni.mff.xrg.uv.boost.dpu.vaadin.AboutTab. -->
@@ -160,7 +160,7 @@
                 </includes>
             </resource>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>build-info.properties</exclude>
