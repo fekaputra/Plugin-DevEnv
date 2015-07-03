@@ -29,7 +29,9 @@ public class AddonMigration implements ConfigTransformer {
                 .replaceAll("eu.unifiedviews.helpers.cuni.extensions.FaultTolerance_-Configuration__V1",
                         "eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance_-Configuration__V1")
                 .replaceAll("eu.unifiedviews.helpers.dpu.extensions.FaultTolerance_-Configuration__V1",
-                        "eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance_-Configuration__V1");
+                        "eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance_-Configuration__V1")
+                .replaceAll("cz.cuni.mff.xrg.uv.boost.extensions.FaultTolerance",
+                        "eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance");
     }
 
     @Override

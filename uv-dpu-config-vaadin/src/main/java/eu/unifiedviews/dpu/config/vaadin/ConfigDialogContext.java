@@ -22,7 +22,22 @@ public interface ConfigDialogContext {
 
     /**
      * Return the execution environment variables
+     * 
      * @return
      */
     Map<String, String> getEnvironment();
+
+    /**
+     * Returns logged user external Id
+     * 
+     * @return Users' external Id
+     */
+    String getUserExternalId();
+
+    /**
+     * Returns logged user Id
+     * 
+     * @return Users' Id
+     */
+    Long getUserId();
 }

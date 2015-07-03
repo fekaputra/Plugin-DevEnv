@@ -2,6 +2,7 @@ package eu.unifiedviews.helpers.dpu.extension.faulttolerance;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
@@ -87,7 +88,7 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
         /**
          * If false no fault tolerance is provided by this add-on.
          */
-        private boolean enabled = true;
+        private boolean enabled = false;
 
         /**
          * Store names of exceptions that should be catch.
@@ -228,6 +229,8 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
         }
         // Add exception for Virtuoso
         this.config.exceptionNames.add("java.sql.BatchUpdateException");
+        // Virtuoso Communications Link Failure (timeout) : Connection to the server lost
+        this.config.exceptionNames.add("virtuoso.jdbc4.VirtuosoException");
     }
 
     /**

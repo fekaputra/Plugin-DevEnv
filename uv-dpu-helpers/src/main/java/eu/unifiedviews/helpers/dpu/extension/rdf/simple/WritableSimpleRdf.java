@@ -286,7 +286,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
      * @throws DPUException
      */
     private void createDefaultWriteGraph() throws SimpleRdfException, DPUException {
-        LOG.warn("Default output graph used.");
+        LOG.info("Default output graph used.");
         final URI writeGraphUri;
         if (faultTolerance == null) {
             try {

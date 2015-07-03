@@ -253,8 +253,6 @@ public class SparqlUtils {
     public static SparqlUpdateObject createDelete(String query, List<RDFDataUnit.Entry> sources,
             RDFDataUnit.Entry target) throws SparqlProblemException, DataUnitException {
         if (!useDataset()) {
-            if (query.contains(query))
-
             query = query.replaceFirst("(?i)DELETE", prepareClause("WITH", target) + "DELETE");
             query = query.replaceFirst("(?i)WHERE", prepareClause("USING", sources) + "WHERE");
         }
@@ -282,12 +280,12 @@ public class SparqlUtils {
     /**
      *
      * @param query
-     * @param entries
+     * @param entries If empty the SELECT is executed over the whole repository.
      * @return Prepared SPARQL select query object.
      */
     public static SparqlSelectObject createSelect(String query, List<RDFDataUnit.Entry> sources)
             throws SparqlProblemException, DataUnitException {
-        if (!useDataset()) {
+        if (!useDataset() && !sources.isEmpty()) {
             query = query.replaceFirst("(?i)WHERE", prepareClause("FROM", sources) + "WHERE ");
         }
         return new SparqlSelectObject(query, prepareDataset(sources, null));

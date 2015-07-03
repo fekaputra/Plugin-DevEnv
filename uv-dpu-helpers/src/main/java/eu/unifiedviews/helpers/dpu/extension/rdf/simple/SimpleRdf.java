@@ -14,6 +14,7 @@ import eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dpu.DPUException;
+import eu.unifiedviews.helpers.dpu.context.ContextUtils;
 import eu.unifiedviews.helpers.dpu.extension.Extension;
 
 /**
@@ -103,7 +104,11 @@ public class SimpleRdf implements Extension {
      */
     public ValueFactory getValueFactory() throws DPUException {
         if (faultTolerance == null) {
-            return getValueFactory();
+            try {
+                return getValueFactoryInner();
+            } catch (DataUnitException ex) {
+                throw new DPUException(ex);
+            }
         } else {
             return faultTolerance.execute(new FaultTolerance.ActionReturn<ValueFactory>() {
 
