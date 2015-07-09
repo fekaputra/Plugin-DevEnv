@@ -117,11 +117,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>eu.unifiedviews</groupId>
-			<artifactId>module-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>module-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Build plugins dependencies -->
         <dependency>
