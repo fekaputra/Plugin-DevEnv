@@ -62,11 +62,12 @@ public abstract class AbstractConfigDialog<C> extends CustomComponent {
 
     /**
      * Compare last configuration and current dialog's configuration. If any
-     * exception is thrown then return false.
+     * exception is thrown it is {@link DPUConfigException} indicating invalid configuration
+     * entered by user.
      * The last configuration is updated in calls {@link #getConfig()} and {@link #setConfig(java.lang.String) }.
      *
-     * @return False if configurations are valid and are different.
+     * @return True if configurations are valid and are different. False if configurations are valid and equal. Exception when new configuration is invalid.
      */
-    public abstract boolean hasConfigChanged();
+    public abstract boolean hasConfigChanged() throws DPUConfigException;
 
 }
