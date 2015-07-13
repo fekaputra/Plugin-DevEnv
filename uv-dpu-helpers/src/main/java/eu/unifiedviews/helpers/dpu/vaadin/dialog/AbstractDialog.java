@@ -237,19 +237,17 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     @Override
-    public boolean hasConfigChanged() {
+    public boolean hasConfigChanged() throws DPUConfigException {
         // We utilize string form of configuration to decide it the configuration has changed or not.
         // This could be done probably better, but not in general case.
         final String configString;
         try {
             configString = getConfig();
         } catch (DPUConfigException ex) {
-            // Exception according to definition return false.
-            LOG.warn("Dialog configuration is invalid. It's assumed unchanged: ", ex);
-            return false;
+            throw ex;
         } catch (Throwable ex) {
-            LOG.warn("Unexpected exception. Configuration is assumed to be unchanged.", ex);
-            return false;
+            LOG.warn("Unexpected exception. Configuration is assumed to be invalid.", ex);
+            throw new DPUConfigException(ex);
         }
 
         if (this.lastSetConfiguration == null) {
