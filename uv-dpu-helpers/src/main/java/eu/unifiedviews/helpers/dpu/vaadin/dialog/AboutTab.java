@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -102,22 +104,42 @@ public class AboutTab extends CustomComponent {
         setCompositionRoot(panel);
     }
 
+    protected List<String> calculateFilenamesForLocale(String basename, Locale locale) {
+        List<String> result = new ArrayList<String>(3);
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        String variant = locale.getVariant();
+        StringBuilder temp = new StringBuilder(basename);
+
+        temp.append('_');
+        if (language.length() > 0) {
+            temp.append(language);
+            result.add(0, temp.toString());
+        }
+
+        temp.append('_');
+        if (country.length() > 0) {
+            temp.append(country);
+            result.add(0, temp.toString());
+        }
+
+        if (variant.length() > 0 && (language.length() > 0 || country.length() > 0)) {
+            temp.append('_').append(variant);
+            result.add(0, temp.toString());
+        }
+
+        return result;
+    }
+
     protected String loadUserAboutText(DialogContext context) {
         final ClassLoader classLoader = context.getDpuClass().getClassLoader();
         final Locale locale = context.getDialogContext().getLocale();
-        // TODO Petr: This is probably not a good idea how to do this.
-        // Try file based on curent localzation.
-        
-        String fileNames [] = { "About", "about"};
-        for( String filenamePrefix : fileNames) {
-            String fileName = filenamePrefix + locale.toLanguageTag() + ".html";
-            final String result = loadStringFromResource(classLoader, fileName);
-            if (result != null) {
-                return result;
-            }
-        }
-        // Check (fallback) default nonlocalized About files
-        for( String filenamePrefix : fileNames) {
+
+        List<String> fileNames = calculateFilenamesForLocale("About", locale);
+        fileNames.addAll(calculateFilenamesForLocale("about", locale));
+        fileNames.add("About");
+        fileNames.add("about");
+        for (String filenamePrefix : fileNames) {
             String fileName = filenamePrefix + ".html";
             final String result = loadStringFromResource(classLoader, fileName);
             if (result != null) {
@@ -126,7 +148,7 @@ public class AboutTab extends CustomComponent {
         }
         // no About found
         return null;
-  
+
     }
 
     protected String loadStringFromResource(ClassLoader classLoader, String resourceName) {
@@ -149,7 +171,6 @@ public class AboutTab extends CustomComponent {
     }
 
     /**
-     *
      * @param buildInfo
      * @param ctx
      * @return Null if no GIT related info is available.
