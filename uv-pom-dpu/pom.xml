@@ -123,12 +123,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Build plugins dependencies -->
-        <dependency>
-            <groupId>com.ruleoftech</groupId>
-            <artifactId>markdown-page-generator-plugin</artifactId>
-            <version>0.4</version>
-        </dependency>
 
     </dependencies>
 
