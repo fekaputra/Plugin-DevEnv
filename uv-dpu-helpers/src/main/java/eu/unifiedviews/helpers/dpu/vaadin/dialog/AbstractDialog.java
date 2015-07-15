@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * This file is part of UnifiedViews.
+ *
+ * UnifiedViews is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UnifiedViews is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with UnifiedViews.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package eu.unifiedviews.helpers.dpu.vaadin.dialog;
 
 import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
@@ -237,19 +253,17 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     @Override
-    public boolean hasConfigChanged() {
+    public boolean hasConfigChanged() throws DPUConfigException {
         // We utilize string form of configuration to decide it the configuration has changed or not.
         // This could be done probably better, but not in general case.
         final String configString;
         try {
             configString = getConfig();
         } catch (DPUConfigException ex) {
-            // Exception according to definition return false.
-            LOG.warn("Dialog configuration is invalid. It's assumed unchanged: ", ex);
-            return false;
+            throw ex;
         } catch (Throwable ex) {
-            LOG.warn("Unexpected exception. Configuration is assumed to be unchanged.", ex);
-            return false;
+            LOG.warn("Unexpected exception. Configuration is assumed to be invalid.", ex);
+            throw new DPUConfigException(ex);
         }
 
         if (this.lastSetConfiguration == null) {
