@@ -47,7 +47,8 @@ public class ResourceMerger {
         result.setSize(secondary.getSize());
         result.setUrl(secondary.getUrl());
         result.getExtras().getMap().putAll(secondary.getExtras().getMap());
-        
+        result.setId(secondary.getId());
+
         if (primary.getCreated() != null) {
             result.setCreated(primary.getCreated());
         }
@@ -81,7 +82,10 @@ public class ResourceMerger {
         if (primary.getUrl() != null) {
             result.setUrl(primary.getUrl());
         }
-        
+        if (primary.getId() != null) {
+            result.setId(primary.getId());
+        }
+
         return result;
     }
 
