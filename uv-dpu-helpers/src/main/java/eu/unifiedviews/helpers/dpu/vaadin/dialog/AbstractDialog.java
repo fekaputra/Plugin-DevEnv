@@ -218,9 +218,14 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
         // Configura add-ons.
         for (AbstractExtensionDialog dialogs : this.context.addonDialogs) {
             dialogs.loadConfig(context.getConfigManager());
+            dialogs.storeConfig(context.getConfigManager());
         }
         // Update last configuration.
-        this.lastSetConfiguration = conf;
+        try {
+            this.lastSetConfiguration =  context.getSerializationXml().convert(context.getConfigManager().getMasterConfig());
+        } catch (SerializationFailure | SerializationXmlFailure ex) {
+            throw new DPUConfigException("Conversion failed.", ex);
+        }
     }
 
     @Override
