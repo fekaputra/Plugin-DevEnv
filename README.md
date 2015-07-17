@@ -6,4 +6,4 @@ UnifiedViews Plugin Development Environment (PDE) - APIs and helpers for plugin 
 Licenses
 -------
 
-[see Licenses](./LICENSE.MD]
+[see Licenses](./LICENSE.md)
