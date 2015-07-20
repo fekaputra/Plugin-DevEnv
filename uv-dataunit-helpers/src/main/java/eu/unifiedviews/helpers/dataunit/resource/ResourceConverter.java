@@ -58,6 +58,9 @@ public class ResourceConverter {
         if (resource.getUrl() != null) {
             result.put("url", resource.getUrl());
         }
+        if (resource.getId() != null) {
+            result.put("id", resource.getId());
+        }
         return result;
     }
 
@@ -95,6 +98,9 @@ public class ResourceConverter {
         }
         if (map.containsKey("url")) {
             resource.setUrl(map.get("url"));
+        }
+        if (map.containsKey("id")) {
+            resource.setId(map.get("id"));
         }
         return resource;
     }
