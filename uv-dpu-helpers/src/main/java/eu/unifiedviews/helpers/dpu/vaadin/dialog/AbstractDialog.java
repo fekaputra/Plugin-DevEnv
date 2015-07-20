@@ -37,7 +37,7 @@ import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 
 /**
  * Base class for DPU's configuration dialogs.
- *
+ * 
  * @author Škoda Petr
  * @param <CONFIG>
  */
@@ -110,7 +110,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     /**
      * Build main layout and add dialogs for add-ons.
-     *
+     * 
      * @param addons
      */
     private void buildMainLayout() {
@@ -215,12 +215,22 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
         final CONFIG dpuConfig = context.getConfigManager().get(DPU_CONFIG_NAME,
                 this.context.getConfigHistory());
         setConfiguration(dpuConfig);
-        // Configura add-ons.
+        // Configure add-ons.
         for (AbstractExtensionDialog dialogs : this.context.addonDialogs) {
             dialogs.loadConfig(context.getConfigManager());
+
+            //The following line is used in order to fix https://github.com/UnifiedViews/Core/issues/448. 
+            //Note: If someone changes conf dialog of addon, user is not informed about that, but such change is silently used.
+            dialogs.storeConfig(context.getConfigManager());
         }
         // Update last configuration.
-        this.lastSetConfiguration = conf;
+        try {
+            //last configuration is not taken from "conf" param of the method, but rather deserialized from master 
+            //config object to fix https://github.com/UnifiedViews/Core/issues/448. As a result extra serialization/deserialization appears, which is not necessary.
+            this.lastSetConfiguration = context.getSerializationXml().convert(context.getConfigManager().getMasterConfig());
+        } catch (SerializationFailure | SerializationXmlFailure ex) {
+            throw new DPUConfigException("Conversion failed.", ex);
+        }
     }
 
     @Override
@@ -281,7 +291,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     /**
      * Set DPU's configuration for dialog.
-     *
+     * 
      * @param conf
      * @throws eu.unifiedviews.dpu.config.DPUConfigException
      */
@@ -289,7 +299,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     /**
      * Get DPU's dialog configuration.
-     *
+     * 
      * @return
      * @throws eu.unifiedviews.dpu.config.DPUConfigException
      */
