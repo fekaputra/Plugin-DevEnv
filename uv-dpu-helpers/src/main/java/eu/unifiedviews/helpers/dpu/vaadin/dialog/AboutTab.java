@@ -53,8 +53,6 @@ public class AboutTab extends CustomComponent {
 
     private final String BUNDLE_NAME = "build-info";
 
-    private final String HTML_FOOTER = "<br/><hr/>"
-            + "Powered by <a href=\"https://github.com/mff-uk\">CUNI helpers</a>.";
 
     public AboutTab() {
         // No-op here.
@@ -78,31 +76,7 @@ public class AboutTab extends CustomComponent {
         // Just as a shortcut for translation.
         final UserContext ctx = context.asUserContext();
 
-        final StringBuilder aboutHtml = new StringBuilder();
-        aboutHtml.append("<b>");
-        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildInfo"));
-        aboutHtml.append("</b></br>");
-        aboutHtml.append("<ul>");
-
-        aboutHtml.append("<li>");
-        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildTime"));
-        aboutHtml.append(buildInfo.getString("build.timestamp"));
-        aboutHtml.append("</li>");
-
-        final String gitInfo = buildGitInfo(buildInfo, ctx);
-        if (gitInfo != null) {
-            aboutHtml.append("<li>");
-            aboutHtml.append(gitInfo);
-            aboutHtml.append("</li>");
-        }
-
-        aboutHtml.append("</ul>");
-        aboutHtml.append("<hr/>");
-
         // Load optional properties.
-
-        // Add generated text into a dilaog.
-        mainLayout.addComponent(new Label(aboutHtml.toString(), ContentMode.HTML));
 
         // Add user provided description if available.
         final String userDescription = loadUserAboutText(context);
@@ -110,8 +84,17 @@ public class AboutTab extends CustomComponent {
             mainLayout.addComponent(new Label(userDescription, ContentMode.HTML));
         }
 
-        // Logo at the verz end.
-        mainLayout.addComponent(new Label(HTML_FOOTER, ContentMode.HTML));
+        final StringBuilder aboutHtml = new StringBuilder();
+        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildTime"));
+        aboutHtml.append(buildInfo.getString("build.timestamp"));
+
+        final String gitInfo = buildGitInfo(buildInfo, ctx);
+        if (gitInfo != null) {
+            aboutHtml.append(gitInfo);
+        }
+
+        // Add generated text into a dilaog.
+        mainLayout.addComponent(new Label(aboutHtml.toString(), ContentMode.HTML));
 
         // Wrap all into a panel.
         final Panel panel = new Panel();
