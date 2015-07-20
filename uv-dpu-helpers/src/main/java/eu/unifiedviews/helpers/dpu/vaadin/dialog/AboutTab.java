@@ -84,7 +84,7 @@ public class AboutTab extends CustomComponent {
             mainLayout.addComponent(new Label(userDescription, ContentMode.HTML));
         }
 
-        final StringBuilder aboutHtml = new StringBuilder();
+        final StringBuilder aboutHtml = new StringBuilder("<hr/>");
         aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildTime"));
         aboutHtml.append(buildInfo.getString("build.timestamp"));
 
