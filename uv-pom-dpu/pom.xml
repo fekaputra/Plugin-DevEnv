@@ -20,7 +20,7 @@
         <unifiedviews.helpers.dpu.version>2.1.1-SNAPSHOT</unifiedviews.helpers.dpu.version>
 
         <!-- UV modeules dependecies version for DPUs. -->
-        <unifiedviews.module-test.version>2.1.2-SNAPSHOT</unifiedviews.module-test.version>
+        <unifiedviews.module-test.version>2.1.1</unifiedviews.module-test.version>
 
         <!-- versions of 3rd party libraries -->
         <commons.commons-lang3>3.0</commons.commons-lang3>
