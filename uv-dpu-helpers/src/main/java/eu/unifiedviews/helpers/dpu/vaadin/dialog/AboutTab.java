@@ -84,19 +84,6 @@ public class AboutTab extends CustomComponent {
             mainLayout.addComponent(new Label(userDescription, ContentMode.HTML));
         }
 
-        final StringBuilder aboutHtml = new StringBuilder("<hr/><p style=\"text-align:right\">");
-        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildTime"));
-        aboutHtml.append(buildInfo.getString("build.timestamp"));
-        aboutHtml.append("</p>");
-
-        final String gitInfo = buildGitInfo(buildInfo, ctx);
-        if (gitInfo != null) {
-            aboutHtml.append(gitInfo);
-        }
-
-        // Add generated text into a dilaog.
-        mainLayout.addComponent(new Label(aboutHtml.toString(), ContentMode.HTML));
-
         // Wrap all into a panel.
         final Panel panel = new Panel();
         panel.setSizeFull();
