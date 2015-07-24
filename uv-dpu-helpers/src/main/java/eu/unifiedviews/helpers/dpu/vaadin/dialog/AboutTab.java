@@ -1,9 +1,27 @@
+/*******************************************************************************
+ * This file is part of UnifiedViews.
+ *
+ * UnifiedViews is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UnifiedViews is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with UnifiedViews.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package eu.unifiedviews.helpers.dpu.vaadin.dialog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -35,8 +53,6 @@ public class AboutTab extends CustomComponent {
 
     private final String BUNDLE_NAME = "build-info";
 
-    private final String HTML_FOOTER = "<br/><hr/>"
-            + "Powered by <a href=\"https://github.com/mff-uk\">CUNI helpers</a>.";
 
     public AboutTab() {
         // No-op here.
@@ -60,40 +76,13 @@ public class AboutTab extends CustomComponent {
         // Just as a shortcut for translation.
         final UserContext ctx = context.asUserContext();
 
-        final StringBuilder aboutHtml = new StringBuilder();
-        aboutHtml.append("<b>");
-        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildInfo"));
-        aboutHtml.append("</b></br>");
-        aboutHtml.append("<ul>");
-
-        aboutHtml.append("<li>");
-        aboutHtml.append(ctx.tr("lib.helpers.vaadin.about.buildTime"));
-        aboutHtml.append(buildInfo.getString("build.timestamp"));
-        aboutHtml.append("</li>");
-
-        final String gitInfo = buildGitInfo(buildInfo, ctx);
-        if (gitInfo != null) {
-            aboutHtml.append("<li>");
-            aboutHtml.append(gitInfo);
-            aboutHtml.append("</li>");
-        }
-
-        aboutHtml.append("</ul>");
-        aboutHtml.append("<hr/>");
-
         // Load optional properties.
-
-        // Add generated text into a dilaog.
-        mainLayout.addComponent(new Label(aboutHtml.toString(), ContentMode.HTML));
 
         // Add user provided description if available.
         final String userDescription = loadUserAboutText(context);
         if (userDescription != null) {
             mainLayout.addComponent(new Label(userDescription, ContentMode.HTML));
         }
-
-        // Logo at the verz end.
-        mainLayout.addComponent(new Label(HTML_FOOTER, ContentMode.HTML));
 
         // Wrap all into a panel.
         final Panel panel = new Panel();
@@ -102,20 +91,51 @@ public class AboutTab extends CustomComponent {
         setCompositionRoot(panel);
     }
 
+    protected List<String> calculateFilenamesForLocale(String basename, Locale locale) {
+        List<String> result = new ArrayList<String>(3);
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        String variant = locale.getVariant();
+        StringBuilder temp = new StringBuilder(basename);
+
+        temp.append('_');
+        if (language.length() > 0) {
+            temp.append(language);
+            result.add(0, temp.toString());
+        }
+
+        temp.append('_');
+        if (country.length() > 0) {
+            temp.append(country);
+            result.add(0, temp.toString());
+        }
+
+        if (variant.length() > 0 && (language.length() > 0 || country.length() > 0)) {
+            temp.append('_').append(variant);
+            result.add(0, temp.toString());
+        }
+
+        return result;
+    }
+
     protected String loadUserAboutText(DialogContext context) {
         final ClassLoader classLoader = context.getDpuClass().getClassLoader();
         final Locale locale = context.getDialogContext().getLocale();
-        // TODO Petr: This is probably not a good idea how to do this.
-        // Try file based on curent localzation.
-        String fileName = "about_" + locale.toLanguageTag() + ".html";
-        final String result = loadStringFromResource(classLoader, fileName);
-        if (result != null) {
-            return result;
-        } else {
-            // Use fallback.
-            fileName = "about.html";
-            return loadStringFromResource(classLoader, fileName);
+
+        List<String> fileNames = calculateFilenamesForLocale("About", locale);
+        fileNames.addAll(calculateFilenamesForLocale("about", locale));
+        fileNames.add("About");
+        fileNames.add("about");
+        for (String filenamePrefix : fileNames) {
+            String fileName = filenamePrefix + ".html";
+            final String result = loadStringFromResource(classLoader, fileName);
+            if (result != null) {
+                return result;
+            }
         }
+        // no About found
+        return null;
+
     }
 
     protected String loadStringFromResource(ClassLoader classLoader, String resourceName) {
@@ -138,7 +158,6 @@ public class AboutTab extends CustomComponent {
     }
 
     /**
-     *
      * @param buildInfo
      * @param ctx
      * @return Null if no GIT related info is available.

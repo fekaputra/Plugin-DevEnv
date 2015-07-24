@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * This file is part of UnifiedViews.
+ *
+ * UnifiedViews is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UnifiedViews is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with UnifiedViews.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package eu.unifiedviews.dpu.config.vaadin;
 
 import com.vaadin.ui.CustomComponent;
@@ -62,11 +78,12 @@ public abstract class AbstractConfigDialog<C> extends CustomComponent {
 
     /**
      * Compare last configuration and current dialog's configuration. If any
-     * exception is thrown then return false.
+     * exception is thrown it is {@link DPUConfigException} indicating invalid configuration
+     * entered by user.
      * The last configuration is updated in calls {@link #getConfig()} and {@link #setConfig(java.lang.String) }.
      *
-     * @return False if configurations are valid and are different.
+     * @return True if configurations are valid and are different. False if configurations are valid and equal. Exception when new configuration is invalid.
      */
-    public abstract boolean hasConfigChanged();
+    public abstract boolean hasConfigChanged() throws DPUConfigException;
 
 }

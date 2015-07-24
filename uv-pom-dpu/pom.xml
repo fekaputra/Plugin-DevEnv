@@ -4,23 +4,23 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.1</version>
         <relativePath>../uv-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-dpu</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <packaging>pom</packaging>
     <name>uv-pom-dpu</name>
     <description>Commons base project for DPU's.</description>
 
     <properties>
-        <unifiedviews.helpers.dataunit.version>2.1.0</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dpu.version>2.1.0</unifiedviews.helpers.dpu.version>
+        <unifiedviews.helpers.dataunit.version>2.1.1</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dpu.version>2.1.1</unifiedviews.helpers.dpu.version>
 
         <!-- UV modeules dependecies version for DPUs. -->
-        <unifiedviews.module-test.version>2.1.0</unifiedviews.module-test.version>
+        <unifiedviews.module-test.version>2.1.2</unifiedviews.module-test.version>
 
         <!-- versions of 3rd party libraries -->
         <commons.commons-lang3>3.0</commons.commons-lang3>
@@ -55,14 +55,15 @@
             </dependency>
 
             <dependency>
-                <groupId>eu.unifiedviews</groupId>
-                <artifactId>module-test</artifactId>
-                <version>${unifiedviews.module-test.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.commons-lang3}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.unifiedviews</groupId>
+                <artifactId>module-test</artifactId>
+                <version>${unifiedviews.module-test.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -116,6 +117,13 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>eu.unifiedviews</groupId>
+            <artifactId>module-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <profiles>
@@ -152,7 +160,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
                     <!--  Used by cz.cuni.mff.xrg.uv.boost.dpu.vaadin.AboutTab. -->
@@ -160,14 +168,41 @@
                 </includes>
             </resource>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>build-info.properties</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>${basedir}/target/html</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>About*.html</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>com.ruleoftech</groupId>
+                <artifactId>markdown-page-generator-plugin</artifactId>
+                <version>0.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputDirectory>${basedir}/doc</inputDirectory>
+                            <outputDirectory>${basedir}/target/html</outputDirectory>
+                            <inputEncoding>UTF-8</inputEncoding>
+                            <outputEncoding>UTF-8</outputEncoding>
+							<pegdownExtensions>ALL</pegdownExtensions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin> <!-- Main build plugin. -->
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -178,7 +213,7 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Description>${project.description}</Bundle-Description>
+                        <Bundle-Description>${project.description} (commit: ${git.commit.id}, build timestamp: ${maven.build.timestamp})</Bundle-Description>
                         <!-- We add range to some versions. -->
                         <Import-Package>
                             ${osgi.import.package}

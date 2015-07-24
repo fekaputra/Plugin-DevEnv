@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * This file is part of UnifiedViews.
+ *
+ * UnifiedViews is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * UnifiedViews is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with UnifiedViews.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package eu.unifiedviews.helpers.dpu.vaadin.dialog;
 
 import static eu.unifiedviews.helpers.dpu.exec.AbstractDpu.DPU_CONFIG_NAME;
@@ -21,7 +37,7 @@ import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFailure;
 
 /**
  * Base class for DPU's configuration dialogs.
- *
+ * 
  * @author Škoda Petr
  * @param <CONFIG>
  */
@@ -94,7 +110,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     /**
      * Build main layout and add dialogs for add-ons.
-     *
+     * 
      * @param addons
      */
     private void buildMainLayout() {
@@ -199,12 +215,22 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
         final CONFIG dpuConfig = context.getConfigManager().get(DPU_CONFIG_NAME,
                 this.context.getConfigHistory());
         setConfiguration(dpuConfig);
-        // Configura add-ons.
+        // Configure add-ons.
         for (AbstractExtensionDialog dialogs : this.context.addonDialogs) {
             dialogs.loadConfig(context.getConfigManager());
+
+            //The following line is used in order to fix https://github.com/UnifiedViews/Core/issues/448. 
+            //Note: If someone changes conf dialog of addon, user is not informed about that, but such change is silently used.
+            dialogs.storeConfig(context.getConfigManager());
         }
         // Update last configuration.
-        this.lastSetConfiguration = conf;
+        try {
+            //last configuration is not taken from "conf" param of the method, but rather deserialized from master 
+            //config object to fix https://github.com/UnifiedViews/Core/issues/448. As a result extra serialization/deserialization appears, which is not necessary.
+            this.lastSetConfiguration = context.getSerializationXml().convert(context.getConfigManager().getMasterConfig());
+        } catch (SerializationFailure | SerializationXmlFailure ex) {
+            throw new DPUConfigException("Conversion failed.", ex);
+        }
     }
 
     @Override
@@ -237,19 +263,17 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
     }
 
     @Override
-    public boolean hasConfigChanged() {
+    public boolean hasConfigChanged() throws DPUConfigException {
         // We utilize string form of configuration to decide it the configuration has changed or not.
         // This could be done probably better, but not in general case.
         final String configString;
         try {
             configString = getConfig();
         } catch (DPUConfigException ex) {
-            // Exception according to definition return false.
-            LOG.warn("Dialog configuration is invalid. It's assumed unchanged: ", ex);
-            return false;
+            throw ex;
         } catch (Throwable ex) {
-            LOG.warn("Unexpected exception. Configuration is assumed to be unchanged.", ex);
-            return false;
+            LOG.warn("Unexpected exception. Configuration is assumed to be invalid.", ex);
+            throw new DPUConfigException(ex);
         }
 
         if (this.lastSetConfiguration == null) {
@@ -267,7 +291,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     /**
      * Set DPU's configuration for dialog.
-     *
+     * 
      * @param conf
      * @throws eu.unifiedviews.dpu.config.DPUConfigException
      */
@@ -275,7 +299,7 @@ public abstract class AbstractDialog<CONFIG> extends AbstractConfigDialog<Master
 
     /**
      * Get DPU's dialog configuration.
-     *
+     * 
      * @return
      * @throws eu.unifiedviews.dpu.config.DPUConfigException
      */
