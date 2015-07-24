@@ -198,6 +198,7 @@
                             <outputDirectory>${basedir}/target/html</outputDirectory>
                             <inputEncoding>UTF-8</inputEncoding>
                             <outputEncoding>UTF-8</outputEncoding>
+							<pegdownExtensions>ALL</pegdownExtensions>
                         </configuration>
                     </execution>
                 </executions>
@@ -212,7 +213,7 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Description>${project.description}</Bundle-Description>
+                        <Bundle-Description>${project.description} (commit: ${git.commit.id}, build timestamp: ${maven.build.timestamp})</Bundle-Description>
                         <!-- We add range to some versions. -->
                         <Import-Package>
                             ${osgi.import.package}
