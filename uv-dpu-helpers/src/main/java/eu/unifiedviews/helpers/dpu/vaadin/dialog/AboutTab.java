@@ -36,6 +36,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 import eu.unifiedviews.helpers.dpu.context.UserContext;
+import java.nio.charset.StandardCharsets;
 
 /**
  * About page for DPU. Content should be generated based on context.
@@ -144,7 +145,7 @@ public class AboutTab extends CustomComponent {
                 // Missing resource.
                 return null;
             }
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
             final StringBuilder builder = new StringBuilder(256);
             String line;
             while ((line = reader.readLine()) != null) {
