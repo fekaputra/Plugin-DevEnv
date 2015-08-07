@@ -163,7 +163,7 @@
                 <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <!--  Used by cz.cuni.mff.xrg.uv.boost.dpu.vaadin.AboutTab. -->
+                    <!-- Used by cz.cuni.mff.xrg.uv.boost.dpu.vaadin.AboutTab. -->
                     <include>build-info.properties</include>
                 </includes>
             </resource>
@@ -198,7 +198,7 @@
                             <outputDirectory>${basedir}/target/html</outputDirectory>
                             <inputEncoding>UTF-8</inputEncoding>
                             <outputEncoding>UTF-8</outputEncoding>
-							<pegdownExtensions>ALL</pegdownExtensions>
+                            <pegdownExtensions>ALL</pegdownExtensions>
                         </configuration>
                     </execution>
                 </executions>
@@ -257,9 +257,7 @@
                 <version>1.0-m4.3</version>
                 <configuration>
                     <flowInitContext>
-                        <!-- masterBranchName>odn/master</masterBranchName>
-                        <developBranchName>odn/develop</developBranchName>
-                        <featureBranchPrefix>feature-</featureBranchPrefix -->
+                        <!-- masterBranchName>odn/master</masterBranchName> <developBranchName>odn/develop</developBranchName> <featureBranchPrefix>feature-</featureBranchPrefix -->
                         <releaseBranchPrefix>UV_v</releaseBranchPrefix>
                         <!-- hotfixBranchPrefix>hotfix-</hotfixBranchPrefix -->
                         <versionTagPrefix>UV_v</versionTagPrefix>
@@ -271,4 +269,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- define license -->
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License, Version 3</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+            <distribution>repo</distribution>
+            <!-- https://maven.apache.org/pom.html#Licenses -->
+        </license>
+    </licenses>
 </project>
