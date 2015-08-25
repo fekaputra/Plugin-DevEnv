@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 import eu.unifiedviews.helpers.dpu.context.UserContext;
+
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -140,13 +142,7 @@ public class AboutTab extends CustomComponent {
                 // Missing resource.
                 return null;
             }
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
-            final StringBuilder builder = new StringBuilder(256);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-            return builder.toString();
+            return IOUtils.toString(inStream, StandardCharsets.UTF_8);
         } catch (IOException ex) {
             LOG.error("Failed to load about.html.", ex);
             return null;
