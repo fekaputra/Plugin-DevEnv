@@ -22,7 +22,7 @@ import eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance;
 @DPU.As${dpu_type}
 public class ${dpu_name} extends AbstractDpu<${dpu_name}Config_V1> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(${dpu_name}.class);
+    private static final Logger log = LoggerFactory.getLogger(${dpu_name}.class);
 		
     @ExtensionInitializer.Init
     public FaultTolerance faultTolerance;

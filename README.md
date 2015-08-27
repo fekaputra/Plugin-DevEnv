@@ -8,7 +8,7 @@ This repository contains UnifiedViews Plugin Development Environment (PDE) - API
 Documentation
 -------------
 
-Please see http://unifiedviews.eu
+Please see http://unifiedviews.eu and [documentation for DPU developers](https://grips.semantic-web.at/pages/viewpage.action?pageId=50929588), where you can find description of [basic UnifiedViews concepts needed for developing DPUs](https://grips.semantic-web.at/display/UDDOC/Basic+Concepts+for+DPU+developers) and [tutorials](https://grips.semantic-web.at/display/UDDOC/Tutorials) for preparing DPUs. 
 
 
 Installation steps

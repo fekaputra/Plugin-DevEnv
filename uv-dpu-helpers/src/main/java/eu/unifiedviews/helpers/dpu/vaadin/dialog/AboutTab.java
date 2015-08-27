@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,12 +37,13 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 import eu.unifiedviews.helpers.dpu.context.UserContext;
+
 import java.nio.charset.StandardCharsets;
 
 /**
  * About page for DPU. Content should be generated based on context.
  * TODO Petr: We should consider localization here too.
- *
+ * 
  * @author Škoda Petr
  */
 public class AboutTab extends CustomComponent {
@@ -53,7 +55,6 @@ public class AboutTab extends CustomComponent {
     private static final String DPU_ABOUT_TAB_NAME = "dialog.dpu.tab.about";
 
     private final String BUNDLE_NAME = "build-info";
-
 
     public AboutTab() {
         // No-op here.
@@ -70,10 +71,6 @@ public class AboutTab extends CustomComponent {
         mainLayout.setMargin(true);
         mainLayout.setSpacing(false);
 
-        // Informations from build-info.properties.
-        final ResourceBundle buildInfo = ResourceBundle.getBundle(BUNDLE_NAME,
-                context.getDialogContext().getLocale(),
-                context.getDpuClass().getClassLoader());
         // Just as a shortcut for translation.
         final UserContext ctx = context.asUserContext();
 
@@ -145,13 +142,7 @@ public class AboutTab extends CustomComponent {
                 // Missing resource.
                 return null;
             }
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
-            final StringBuilder builder = new StringBuilder(256);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-            return builder.toString();
+            return IOUtils.toString(inStream, StandardCharsets.UTF_8);
         } catch (IOException ex) {
             LOG.error("Failed to load about.html.", ex);
             return null;
