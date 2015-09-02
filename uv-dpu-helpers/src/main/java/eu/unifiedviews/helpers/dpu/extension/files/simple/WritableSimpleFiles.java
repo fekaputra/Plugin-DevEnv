@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.files.WritableFilesDataUnit;
-import eu.unifiedviews.dataunit.rdf.WritableRDFDataUnit;
 import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.helpers.dataunit.files.FilesVocabulary;
 import eu.unifiedviews.helpers.dataunit.metadata.MetadataUtils;
@@ -32,8 +31,9 @@ import eu.unifiedviews.helpers.dpu.exec.ExecContext;
 import eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance;
 
 /**
- * Add write functionality to {@link SimpleFiles} by wrapping {@link WritableFilesDataUnit}.
- *
+ * Wraps {@link WritableFilesDataUnit} to provide more user friendly way how to write files to {@link WritableFilesDataUnit}.
+ * Adds write functionality to {@link SimpleFiles}.
+ * 
  * @author Škoda Petr
  */
 public class WritableSimpleFiles extends SimpleFiles {
@@ -44,7 +44,7 @@ public class WritableSimpleFiles extends SimpleFiles {
 
     /**
      * Add file.
-     *
+     * 
      * @param file
      * @param fileName
      * @throws DPUException
@@ -81,7 +81,7 @@ public class WritableSimpleFiles extends SimpleFiles {
 
     /**
      * Create new file.
-     *
+     * 
      * @param fileName
      * @return
      * @throws DPUException
@@ -95,7 +95,7 @@ public class WritableSimpleFiles extends SimpleFiles {
                 MetadataUtils.set(writableDataUnit, fileName, FilesVocabulary.UV_VIRTUAL_PATH, fileName);
             } catch (DataUnitException ex) {
                 throw new DPUException("Failed to add file.", ex);
-            }            
+            }
         } else {
             // First create a file.
             result = faultTolerance.execute(new FaultTolerance.ActionReturn<File>() {
@@ -104,7 +104,7 @@ public class WritableSimpleFiles extends SimpleFiles {
                 public File action() throws Exception {
                     return new File(java.net.URI.create(writableDataUnit.addNewFile(fileName)));
                 }
-            });  
+            });
             // Add metadata - Virtual path.
             faultTolerance.execute(new FaultTolerance.Action() {
 
@@ -112,9 +112,9 @@ public class WritableSimpleFiles extends SimpleFiles {
                 public void action() throws Exception {
                     MetadataUtils.set(writableDataUnit, fileName, FilesVocabulary.UV_VIRTUAL_PATH, fileName);
                 }
-            });            
+            });
         }
-        return result;        
+        return result;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class WritableSimpleFiles extends SimpleFiles {
     public void afterInit(Context context) throws DPUException {
         super.afterInit(context);
         if (context instanceof ExecContext) {
-            final ExecContext execContext = (ExecContext)context;
+            final ExecContext execContext = (ExecContext) context;
             afterInitExecution(execContext);
         }
     }
@@ -156,6 +156,5 @@ public class WritableSimpleFiles extends SimpleFiles {
             throw new DPUException("Can't get value for: " + dataUnitName, ex);
         }
     }
-
 
 }

@@ -42,20 +42,14 @@ import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.helpers.dpu.extension.Extension;
 
 /**
- * Add write functionality to {@link SimpleRdfRead} by wrapping {@link WritableRDFDataUnit}.
- *
- * If this class is initialized with {@link cz.cuni.mff.xrg.uv.boost.dpu.initialization.AutoInitializer} then
- * all features of {@link SimpleRdf} hold also for this class with addition of:
- * <ul>
- * <li>Buffer is automatically flushed at the end of the execution.</li>
- * </ul>
- *
+ * Wraps {@link WritableRDFDataUnit} to provide more user friendly way how to write RDF graphs to {@link WritableRDFDataUnit}.
+ * Adds write functionality to {@link SimpleRdf}.
+ * 
  * @author Škoda Petr
  */
 public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable {
 
-    public static final String CONFIGURATION_CLASS_URI
-            = "http://uv.xrg.mff.cuni.cz/ontology/dpu/boost/rdf/simple/Configuration";
+    public static final String CONFIGURATION_CLASS_URI = "http://uv.xrg.mff.cuni.cz/ontology/dpu/boost/rdf/simple/Configuration";
 
     @EntityDescription.Entity(type = CONFIGURATION_CLASS_URI)
     public static class Configuration {
@@ -113,17 +107,16 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     /**
      * Add triple into repository. Based on current {@link AddPolicy} can add triple in immediate or lazy way.
-     *
      * In the second case the {@link #flushBuffer()} method must be called in order to add triples into used
      * repository, until that the triples are stored in inner buffer - the triples are not visible in any read
      * function.
-     *
+     * 
      * @param s
      * @param p
      * @param o
      * @return
-     * @throws cz.cuni.mff.xrg.uv.boost.serialization.rdf.SimpleRdfException
-     * @throws DPUException 
+     * @throws SimpleRdfException
+     * @throws DPUException
      */
     public WritableSimpleRdf add(Resource s, URI p, Value o) throws SimpleRdfException, DPUException {
         // Add to buffer.
@@ -133,13 +126,12 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
     }
 
     /**
-     *
      * @param statements
      * @return
      * @throws SimpleRdfException
      * @throws DPUException
      */
-    public WritableSimpleRdf add(List<Statement> statements) throws SimpleRdfException,DPUException {
+    public WritableSimpleRdf add(List<Statement> statements) throws SimpleRdfException, DPUException {
         writeBuffer.addAll(statements);
         applyFlushBufferPolicy();
         return this;
@@ -148,15 +140,13 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
     /**
      * Immediately store buffered triples into repository. The inner buffer is cleared only if all the triples
      * are added successfully. If throws exception then the state of repository is undefined.
-     *
      * If {@link #add(org.openrdf.model.Resource, org.openrdf.model.URI, org.openrdf.model.Value)} is called
      * with {@link AddPolicy#BUFFERED} this method must be called in order to save added statements into
      * repository.
-     *
      * If throws, then the buffer remain unchanged so the function can be called again until it does not pass
-     * or caller give up.
-     *
-     * @throws cz.cuni.mff.xrg.uv.boost.serialization.rdf.SimpleRdfException
+     * or caller gives up.
+     * 
+     * @throws SimpleRdfException
      */
     public void flushBuffer() throws SimpleRdfException, DPUException {
         if (faultTolerance == null) {
@@ -174,7 +164,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     /**
      * Same as {@link #flushBuffer()}. Reason for this class is easier usage with fault tolerant wrap.
-     *
+     * 
      * @throws SimpleRdfException
      * @throws DPUException
      */
@@ -216,7 +206,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     /**
      * Set given graph as current output.
-     *
+     * 
      * @param entry
      * @return
      * @throws cz.cuni.mff.xrg.uv.boost.serialization.rdf.SimpleRdfException
@@ -227,12 +217,12 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     /**
      * Set given graphs as current output.
-     *
+     * 
      * @param entries
      * @return
      * @throws cz.cuni.mff.xrg.uv.boost.serialization.rdf.SimpleRdfException
      */
-    public WritableSimpleRdf setOutput(final List<RDFDataUnit.Entry> entries) 
+    public WritableSimpleRdf setOutput(final List<RDFDataUnit.Entry> entries)
             throws SimpleRdfException, DPUException {
         // Flush buffer first.
         flushBuffer();
@@ -272,7 +262,6 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
     }
 
     /**
-     *
      * @return If modify the configuration must be set back.
      */
     public Configuration getConfiguration() {
@@ -280,9 +269,8 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
     }
 
     /**
-     * If {@link AddPolicy} change from {@link AddPolicy#BUFFERED} to {@link AddPolicy#IMMEDIATE} then
-     * {@link #flushBuffer()} is called.
-     *
+     * If {@link AddPolicy} change from {@link AddPolicy#BUFFERED} to {@link AddPolicy#IMMEDIATE} then {@link #flushBuffer()} is called.
+     * 
      * @param configuration
      * @throws cz.cuni.mff.xrg.uv.boost.serialization.rdf.SimpleRdfException
      * @throws DPUException
@@ -297,7 +285,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     /**
      * Create and set new default output graph. Fixed symbolic name is used for output graph.
-     *
+     * 
      * @throws SimpleRdfException
      * @throws DPUException
      */
@@ -324,7 +312,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     /**
      * Based on policy call {@link #flushBuffer()} if needed.
-     *
+     * 
      * @throws SimpleRdfException
      * @thrwos DPUException
      */
@@ -355,7 +343,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
     public void afterInit(Context context) throws DPUException {
         super.afterInit(context);
         if (context instanceof ExecContext) {
-            final ExecContext execContext = (ExecContext)context;
+            final ExecContext execContext = (ExecContext) context;
             afterInitExecution(execContext);
         }
     }
