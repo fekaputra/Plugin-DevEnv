@@ -16,8 +16,8 @@
     <description>Commons base project for DPU's.</description>
 
     <properties>
-        <unifiedviews.helpers.dataunit.version>2.1.4-SNAPSHOT</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dpu.version>2.1.4-SNAPSHOT</unifiedviews.helpers.dpu.version>
+        <unifiedviews.helpers.dataunit.version>2.1.5-SNAPSHOT</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dpu.version>2.1.5-SNAPSHOT</unifiedviews.helpers.dpu.version>
 
         <!-- UV modules dependecies version for DPUs. -->
         <unifiedviews.module-test.version>2.2.0-SNAPSHOT</unifiedviews.module-test.version>
