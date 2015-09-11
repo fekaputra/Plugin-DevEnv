@@ -30,18 +30,12 @@ import eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dpu.DPUException;
-import eu.unifiedviews.helpers.dpu.context.ContextUtils;
 import eu.unifiedviews.helpers.dpu.extension.Extension;
 
 /**
- * Wrap for {@link RDFDataUnit} aims to provide more user friendly way how to handler RDF functionality and
- * also reduce code duplicity.
- *
- * If this class is initialized with {@link cz.cuni.mff.xrg.uv.boost.dpu.initialization.AutoInitializer}
- * then:
- * <ul>
- * <li>If {@link FaultTolerance} is presented and initialized then it's automatically use in this class.</li>
- * </ul>
+ * Wraps {@link RDFDataUnit} to provide more user friendly way how to read RDF graphs from {@link RDFDataUnit}.
+ * If {@link FaultTolerance} is presented and initialized then it is automatically used by this class.
+ * 
  * @author Škoda Petr
  */
 public class SimpleRdf implements Extension {
@@ -64,7 +58,6 @@ public class SimpleRdf implements Extension {
     }
 
     /**
-     *
      * @return True if this object is active, initialized and can be used.
      */
     public boolean isActive() {
@@ -79,7 +72,7 @@ public class SimpleRdf implements Extension {
     @Override
     public void afterInit(Context context) throws DPUException {
         if (context instanceof ExecContext) {
-            final ExecContext execContext = (ExecContext)context;
+            final ExecContext execContext = (ExecContext) context;
             afterInitExecution(execContext);
         }
     }
@@ -100,7 +93,7 @@ public class SimpleRdf implements Extension {
                 return;
             }
             if (RDFDataUnit.class.isAssignableFrom(value.getClass())) {
-                readDataUnit = (RDFDataUnit)value;
+                readDataUnit = (RDFDataUnit) value;
             } else {
                 throw new DPUException("Class" + value.getClass().getCanonicalName()
                         + " can't be assigned to RDFDataUnit.");
@@ -109,12 +102,12 @@ public class SimpleRdf implements Extension {
             throw new DPUException("Can't get value for: " + dataUnitName, ex);
         }
         // Get FaultTolerance class if presented.
-        faultTolerance = (FaultTolerance) execContext.getInstance(FaultTolerance.class);        
+        faultTolerance = (FaultTolerance) execContext.getInstance(FaultTolerance.class);
     }
 
     /**
      * Cache result. After first successful call does not fail.
-     *
+     * 
      * @return
      * @throws DataUnitException
      */
@@ -139,7 +132,7 @@ public class SimpleRdf implements Extension {
 
     /**
      * Cache result. After first successful call does not fail.
-     *
+     * 
      * @return
      * @throws DataUnitException
      */

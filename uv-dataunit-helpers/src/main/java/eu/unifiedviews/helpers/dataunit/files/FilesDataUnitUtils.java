@@ -25,7 +25,9 @@ import eu.unifiedviews.dataunit.files.WritableFilesDataUnit;
 import eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper;
 
 /**
- *
+ * Utils for working with {@link eu.unifiedviews.dataunit.files.FilesDataUnit}. DPU developer should NOT use this class directly - he should use
+ * {@link FilesHelper}.
+ * 
  * @author Škoda Petr
  */
 public class FilesDataUnitUtils {
@@ -36,7 +38,7 @@ public class FilesDataUnitUtils {
     public static class InMemoryEntry implements FilesDataUnit.Entry {
 
         private final String fileUri;
-                
+
         private final String symbolicName;
 
         public InMemoryEntry(String graphUri, String symbolicName) {
@@ -53,11 +55,11 @@ public class FilesDataUnitUtils {
         public String getSymbolicName() throws DataUnitException {
             return symbolicName;
         }
-        
+
     }
 
     private FilesDataUnitUtils() {
-        
+
     }
 
     /**
@@ -66,7 +68,7 @@ public class FilesDataUnitUtils {
      * @param dataUnit
      * @param file
      * @return
-     * @throws DataUnitException 
+     * @throws DataUnitException
      */
     public static FilesDataUnit.Entry addFile(WritableFilesDataUnit dataUnit, File file)
             throws DataUnitException {
@@ -74,15 +76,16 @@ public class FilesDataUnitUtils {
     }
 
     /**
-     * Add file to the DataUnit. 
+     * Add file to the DataUnit.
      * 
      * @param dataUnit
-     * @param file File to add, must be under root.
+     * @param file
+     *            File to add, must be under root.
      * @param path
      * @return
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
-    public static FilesDataUnit.Entry addFile(WritableFilesDataUnit dataUnit, File file, String path) 
+    public static FilesDataUnit.Entry addFile(WritableFilesDataUnit dataUnit, File file, String path)
             throws DataUnitException {
         final String symbolicName = path;
         // Add existing file to DataUnit.
@@ -94,7 +97,6 @@ public class FilesDataUnitUtils {
     }
 
     /**
-     *
      * @param entry
      * @return File representation of given entry.
      * @throws DataUnitException
@@ -104,11 +106,9 @@ public class FilesDataUnitUtils {
     }
 
     /**
-     * Create file of under given path and return {@link File} to it. Also add
-     * {@link VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to the new file.
-     *
+     * Create file of under given path and return {@link File} to it. Also add {@link VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to the new file.
      * As this function create new connection is should not be used for greater number of files.
-     *
+     * 
      * @param dataUnit
      * @param virtualPath
      * @return

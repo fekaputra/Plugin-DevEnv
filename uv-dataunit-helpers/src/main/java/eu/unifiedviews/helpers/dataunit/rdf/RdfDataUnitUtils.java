@@ -25,8 +25,8 @@ import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dataunit.rdf.WritableRDFDataUnit;
 
 /**
- * Helper for {@link RDFDataUnit}.
- *
+ * Utils for working with {@link RDFDataUnit}. DPU developer should NOT use this class directly - he should use {@link RDFHelper}.
+ * 
  * @author Škoda Petr
  */
 public class RdfDataUnitUtils {
@@ -37,7 +37,7 @@ public class RdfDataUnitUtils {
     public static class InMemoryEntry implements RDFDataUnit.Entry {
 
         private final URI graphUri;
-                
+
         private final String symbolicName;
 
         public InMemoryEntry(URI graphUri, String symbolicName) {
@@ -54,16 +54,16 @@ public class RdfDataUnitUtils {
         public String getSymbolicName() throws DataUnitException {
             return symbolicName;
         }
-        
+
     }
 
     private RdfDataUnitUtils() {
-        
+
     }
 
     /**
      * Add entry with generated graph name.
-     *
+     * 
      * @param dataUnit
      * @param symbolicName
      * @return Wrap of a new entry.
@@ -82,16 +82,15 @@ public class RdfDataUnitUtils {
      * @param symbolicName
      * @param uri
      * @return Wrap of a new entry.
-     * @throws DataUnitException 
+     * @throws DataUnitException
      */
-    public static InMemoryEntry addGraph(WritableRDFDataUnit dataUnit,String symbolicName, URI uri)
+    public static InMemoryEntry addGraph(WritableRDFDataUnit dataUnit, String symbolicName, URI uri)
             throws DataUnitException {
         dataUnit.addExistingDataGraph(symbolicName, uri);
         return new InMemoryEntry(uri, symbolicName);
     }
 
     /**
-     *
      * @param entry
      * @return URI of graph represented by this entry.
      * @throws DataUnitException
@@ -102,16 +101,16 @@ public class RdfDataUnitUtils {
 
     /**
      * Convert RDF graph entries into their respective URIs.
-     *
+     * 
      * @param entries
      * @return
      * @throws DataUnitException
      */
     public static URI[] asGraphs(List<RDFDataUnit.Entry> entries) throws DataUnitException {
-        final List<URI> result = new ArrayList<>(entries.size());        
+        final List<URI> result = new ArrayList<>(entries.size());
         for (RDFDataUnit.Entry entry : entries) {
             result.add(asGraph(entry));
-        }   
+        }
         return result.toArray(new URI[0]);
     }
 

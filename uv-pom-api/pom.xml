@@ -4,13 +4,13 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom</artifactId>
-        <version>2.1.3</version>
+        <version>2.1.4</version>
         <relativePath>../uv-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-api</artifactId>
-    <version>2.1.3</version>
+    <version>2.1.4</version>
     <packaging>pom</packaging>
     <name>uv-pom-api</name>
     <description>Commons base project for API libraries.</description>
