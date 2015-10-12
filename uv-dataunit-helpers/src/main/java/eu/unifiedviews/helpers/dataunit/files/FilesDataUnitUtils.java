@@ -25,7 +25,8 @@ import eu.unifiedviews.dataunit.files.WritableFilesDataUnit;
 import eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper;
 
 /**
- * Utils for working with file data units.
+ * Utils for working with {@link eu.unifiedviews.dataunit.files.FilesDataUnit}. DPU developer should NOT use this class directly - he should use
+ * {@link FilesHelper}.
  * 
  * @author Škoda Petr
  */
