@@ -41,7 +41,7 @@ import static eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance.EN
 
 /**
  * Utilities for SPARQL execution.
- *
+ * 
  * @author Škoda Petr
  */
 public class SparqlUtils {
@@ -120,7 +120,7 @@ public class SparqlUtils {
     }
 
     /**
-     * Represents SPARQL select query.
+     * Represents SPARQL construct query.
      */
     public static class SparqlConstructObject extends SparqlQueryObject {
 
@@ -137,10 +137,11 @@ public class SparqlUtils {
 
         /**
          * Called for every tuple in result.
-         *
+         * 
          * @param binding
-         * @throws eu.unifiedviews.dpu.DPUException If thrown the the iteration stops and the the same
-         *                                          exception is re-thrown.
+         * @throws eu.unifiedviews.dpu.DPUException
+         *             If thrown the the iteration stops and the the same
+         *             exception is re-thrown.
          */
         public void next(BindingSet binding) throws DPUException;
 
@@ -153,17 +154,18 @@ public class SparqlUtils {
 
         /**
          * Called for every tuple in result.
-         *
+         * 
          * @param binding
-         * @throws eu.unifiedviews.dpu.DPUException If thrown the the iteration stops and the the same
-         *                                          exception is re-thrown.
+         * @throws eu.unifiedviews.dpu.DPUException
+         *             If thrown the the iteration stops and the the same
+         *             exception is re-thrown.
          */
         public void next(Statement binding) throws DPUException;
 
     }
 
     /**
-     * Fetch results of query. Before ever use in execute method the {@link #prepare()} method should be
+     * Fetch results of query. Before ever used in execute method the {@link #prepare()} method should be
      * called.
      */
     public static class QueryResultCollector implements TupleIterator {
@@ -181,7 +183,7 @@ public class SparqlUtils {
         }
 
         /**
-         * Reset current content. Call before every use!
+         * Reset current content. Call before every use of the collector
          */
         public void prepare() {
             this.results.clear();
@@ -198,7 +200,8 @@ public class SparqlUtils {
     }
 
     /**
-     *
+     * Prepares query clause (typically used to prepare WITH, FROM, or USING clauses)
+     * 
      * @param clause
      * @param entry
      * @return Witch clause with given graph URI.
@@ -214,11 +217,13 @@ public class SparqlUtils {
     }
 
     /**
-     *
+     * Prepares query clause (typically used to prepare WITH, FROM, or USING clauses)
+     * 
      * @param clause
      * @param entries
      * @return
-     * @throws SparqlProblemException                     Is thrown in ma number of graph is exceeded.
+     * @throws SparqlProblemException
+     *             Is thrown in ma number of graph is exceeded.
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
     public static String prepareClause(String clause, List<RDFDataUnit.Entry> entries)
@@ -239,8 +244,8 @@ public class SparqlUtils {
     }
 
     /**
-     *
-     * @param query   Query must contains INSERT as a first command.
+     * @param query
+     *            Query must contains INSERT as a first command.
      * @param sources
      * @param target
      * @return Prepared SPARQL update query.
@@ -258,8 +263,8 @@ public class SparqlUtils {
     }
 
     /**
-     *
-     * @param query   Query must contains DELETE as a first command, it may optionally contains INSERT.
+     * @param query
+     *            Query must contains DELETE as a first command, it may optionally contains INSERT.
      * @param sources
      * @param target
      * @return Prepared SPARQL update query.
@@ -277,7 +282,6 @@ public class SparqlUtils {
     }
 
     /**
-     *
      * @param query
      * @param sources
      * @return Prepared SPARQL update query.
@@ -294,9 +298,9 @@ public class SparqlUtils {
     }
 
     /**
-     *
      * @param query
-     * @param entries If empty the SELECT is executed over the whole repository.
+     * @param entries
+     *            If empty the SELECT is executed over the whole repository.
      * @return Prepared SPARQL select query object.
      */
     public static SparqlSelectObject createSelect(String query, List<RDFDataUnit.Entry> sources)
@@ -309,7 +313,7 @@ public class SparqlUtils {
 
     /**
      * Execute given query.
-     *
+     * 
      * @param connection
      * @param updateObject
      * @throws org.openrdf.repository.RepositoryException
@@ -329,7 +333,7 @@ public class SparqlUtils {
 
     /**
      * Execute given query and store the result into query object.
-     *
+     * 
      * @param connection
      * @param askObject
      * @throws RepositoryException
@@ -352,13 +356,13 @@ public class SparqlUtils {
     /**
      * Execute given query and call user call-back for each tuple. This function does not provide any fault
      * tolerance, the iteration may fail at any time.
-     *
      * Does not close given connection.
-     *
+     * 
      * @param connection
      * @param context
      * @param queryObject
-     * @param callback    Must not be null.
+     * @param callback
+     *            Must not be null.
      * @throws SparqlProblemException
      * @throws MalformedQueryException
      * @throws DPUException
@@ -400,11 +404,12 @@ public class SparqlUtils {
 
     /**
      * Execute user given construct.
-     *
+     * 
      * @param connection
      * @param context
      * @param constructObject
-     * @param callback        Use null to not iterate over result.
+     * @param callback
+     *            Use null to not iterate over result.
      * @throws cz.cuni.mff.xrg.uv.utils.dataunit.rdf.sparql.SparqlProblemException
      * @throws MalformedQueryException
      */
@@ -446,7 +451,6 @@ public class SparqlUtils {
     }
 
     /**
-     *
      * @return Null if no dataset should be used.
      */
     protected static Dataset prepareDataset(List<RDFDataUnit.Entry> source, RDFDataUnit.Entry target)

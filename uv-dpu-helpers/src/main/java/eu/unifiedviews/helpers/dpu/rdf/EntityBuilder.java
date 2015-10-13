@@ -25,10 +25,10 @@ import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 
 /**
- * Class designed for easy entity building. Each builder can be used to build just one entity.
- *
+ * Class designed for easy building of statements about certain RDF resource (entity). Each builder can be used to build just one RDF resource and its
+ * properties.
  * As entity builder is in-memory entity is should not be used to build bigger objects (100+ statement).
- *
+ * 
  * @author Škoda Petr
  */
 public class EntityBuilder {
@@ -49,11 +49,11 @@ public class EntityBuilder {
     private final ValueFactory valueFactory;
 
     /**
-     *
      * @param entityUri
      * @param valueFactory
-     * @param ontology     Ontology used during creation of this object. Can be null but in such case methods
-     *                     which utilize ontology must no be called.
+     * @param ontology
+     *            Ontology used during creation of this object. Can be null but in such case methods
+     *            which utilize ontology must no be called.
      */
     public EntityBuilder(URI entityUri, ValueFactory valueFactory) {
         this.entityUri = entityUri;
@@ -61,8 +61,8 @@ public class EntityBuilder {
     }
 
     /**
-     * Add a property to this object as a string literal without language tag.
-     *
+     * Adds property with certain value to the subject. Value of the property is added as string literal without language tag.
+     * 
      * @param property
      * @param value
      * @return
@@ -73,8 +73,8 @@ public class EntityBuilder {
     }
 
     /**
-     * Add a property to this object.
-     *
+     * Adds property with certain value to the subject.
+     * 
      * @param property
      * @param value
      * @return
@@ -85,8 +85,9 @@ public class EntityBuilder {
     }
 
     /**
-     * Add a property to this object. As a value the entity URI of given {@link EntityBuilder} is used.
-     *
+     * Adds property with certain value to the subject. As a value certain entity URI of given {@link EntityBuilder} is used.
+     * So this method should be used to model object properties.
+     * 
      * @param property
      * @param entity
      * @return
@@ -97,7 +98,8 @@ public class EntityBuilder {
     }
 
     /**
-     *
+     * Gets all statements about the entity
+     * 
      * @return Representation of current entity as a list of subject. Do not modify the returned list.
      */
     public List<Statement> asStatements() {
@@ -105,7 +107,8 @@ public class EntityBuilder {
     }
 
     /**
-     *
+     * Gets URI of the constructed entity
+     * 
      * @return URI of entity that is under construction.
      */
     public URI getEntityUri() {
