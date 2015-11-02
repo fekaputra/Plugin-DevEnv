@@ -31,7 +31,7 @@ import eu.unifiedviews.dataunit.DataUnit;
  * The number of the massage emitted by single execution should
  * be reasonable small to preserve readability of the message log (~10 messages per execution, only main phases notice).
  * For more intensive logging please use slf4j.
- *
+ * 
  * @see DPU
  */
 public interface DPUContext {
@@ -66,7 +66,7 @@ public interface DPUContext {
      * Send message about execution. If {@link MessageType#ERROR} message is
      * published then the execution is stopped after current DPU and the whole
      * execution failed.
-     *
+     * 
      * @param type
      *            Type of message.
      * @param shortMessage
@@ -78,7 +78,7 @@ public interface DPUContext {
      * Send message about execution. If {@link MessageType#ERROR} message is
      * published then the execution is stopped after current DPU and the whole
      * execution failed.
-     *
+     * 
      * @param type
      *            Type of message.
      * @param shortMessage
@@ -95,7 +95,7 @@ public interface DPUContext {
      * Send message about execution. If {@link MessageType#ERROR} message is
      * published then the execution is stopped after current DPU and the whole
      * execution failed.
-     *
+     * 
      * @param type
      *            Type of message.
      * @param shortMessage
@@ -113,7 +113,7 @@ public interface DPUContext {
 
     /**
      * To enable more verbose behavior of {@link DPU} execution, or more detailed information processed.
-     *
+     * 
      * @return True if the {@link DPU} is running in debugging mode.
      */
     boolean isDebugging();
@@ -150,7 +150,6 @@ public interface DPUContext {
      * @deprecated Organization concept has been removed from UV and was replaced by actor concept; To provide
      *             backward compatibility, this method will be preserved but should not be used anymore as there can
      *             only be a dummy implementation of this method (e.g. empty String)
-     * 
      * @return name of organization
      */
     @Deprecated
@@ -159,7 +158,7 @@ public interface DPUContext {
     /**
      * Return true if the execution of current {@link DPU} should be stopped as soon as
      * possible.
-     *
+     * 
      * @return True if the execution should stop.
      */
     boolean canceled();
@@ -168,17 +167,15 @@ public interface DPUContext {
      * Return path to the existing {@link DPU} working directory. The working directory
      * is unique for every {@link DPU} and execution. One can insert anything inside, directory
      * will be cleared after this particular execution.
-     *
+     * 
      * @return DPU's working directory.
      */
     File getWorkingDir();
 
     /**
      * @deprecated Do not use, will be removed in future versions. Fill data output data to {@link DataUnit}s instead.
-     *
-     * Return path to the existing result directory. Result directory is shared
-     * by all DPU's in pipeline.
-     *
+     *             Return path to the existing result directory. Result directory is shared
+     *             by all DPU's in pipeline.
      * @return Execution's result directory.
      */
     @Deprecated
@@ -186,9 +183,7 @@ public interface DPUContext {
 
     /**
      * @deprecated Do not use, will be removed in future versions. User classloader resources if you need to load any shipped resource.
-     *
-     * Return path to the jar-file which contains implementation of this DPU.
-     *
+     *             Return path to the jar-file which contains implementation of this DPU.
      * @return Path to the this DPU's jar.
      */
     @Deprecated
@@ -196,46 +191,44 @@ public interface DPUContext {
 
     /**
      * Return end time of last successful pipeline execution.
-     *
+     * 
      * @return Time or Null if there in no last execution.
      */
     Date getLastExecutionTime();
 
     /**
-     * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
-     *
-     * Return existing global DPU directory. The directory is accessible only
-     * for DPU of single type (jar-file). It's shared among all the instances
-     * and executions. Be aware of concurrency access when using this directory.
-     *
+     * @deprecated Sharing any files among executions goes against the idea of execution of pipelines using pool of backends.
+     *             Return existing global DPU directory. The directory is accessible only
+     *             for DPU of single type (jar-file). It's shared among all the instances
+     *             and executions. Be aware of concurrency access when using this directory.
      * @return Folder in which the DPU's are stored.
      */
     @Deprecated
     File getGlobalDirectory();
 
     /**
-     * @deprecated Do not use, will be removed in future versions. Use {@link DPUContext#getDpuInstanceDirectory()} to store any files shared among executions.
-     *
-     * Return existing DPU shared directory specific for single user. It's
-     * shared among all the instances and executions for single user and certain
-     * DPU (jar-file). Be aware of concurrency access when using this directory.
-     *
+     * @deprecated Sharing any files among executions goes against the idea of execution of pipelines using pool of backends.
+     *             Return existing DPU shared directory specific for single user. It's
+     *             shared among all the instances and executions for single user and certain
+     *             DPU (jar-file). Be aware of concurrency access when using this directory.
      * @return User specific folder shared by all DPU's of single template.
      */
     @Deprecated
     File getUserDirectory();
 
     /**
-     * Return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324) which is unique for DPU instance (DPU use in pipeline) but shared among
-     * executions of the pipeline.
-     *
+     * @deprecated Sharing any files among executions goes against the idea of execution of pipelines using pool of backends.
+     *             Return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324) which is unique for DPU instance (DPU use in pipeline) but
+     *             shared among
+     *             executions of the pipeline.
      * @return directory URI (in form of String, ie. file://c:/Users/uv/working/dpu/324)
      */
+    @Deprecated
     String getDpuInstanceDirectory();
 
     /**
      * Return the execution environment variables
-     *
+     * 
      * @return
      */
     Map<String, String> getEnvironment();

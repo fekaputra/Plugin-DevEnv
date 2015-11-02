@@ -25,7 +25,8 @@ import eu.unifiedviews.dpu.DPUException;
 
 /**
  * Utilities for context.
- *
+ * Limitations: It is not possible to send message which has arguments in short and also long part of the message.
+ * 
  * @author Škoda Petr
  */
 public class ContextUtils {
@@ -37,161 +38,169 @@ public class ContextUtils {
     }
 
     /**
-     * Translate and send given formated message.
-     *
-     * @param context    If null only log about message is stored.
-     * @param type
-     * @param caption
-     * @param bodyFormat
-     * @param args
-     */
-    public static void sendMessage(UserContext context, DPUContext.MessageType type, String caption,
-            String bodyFormat, Object... args) {
-        // Localization.
-        caption = context.tr(caption);
-        final String body = context.tr(bodyFormat, args);
-        // Send message.
-        if (context.getMasterContext() instanceof ExecContext) {
-            final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
-            if (dpuContext != null) {
-                dpuContext.sendMessage(type, caption, body);
-                return;
-            }
-        }
-        // Else context has not yet been initialized.
-        LOG.info("Message ignored:\ntype:{}\ncaption:{}\ntext:{}\n", type, caption, body);
-    }
-
-    /**
-     * Translate and send given formated message. Does not support message with exception.
-     *
-     * @param context    If null only log about message is stored.
-     * @param type
-     * @param caption
-     * @param exception
-     * @param bodyFormat
-     * @param args
-     */
-    public static void sendMessage(UserContext context, DPUContext.MessageType type, String caption,
-            Exception exception, String bodyFormat, Object... args) {
-        // Localization.
-        caption = context.tr(caption);
-        final String body = context.tr(bodyFormat, args);
-        // Send message.
-        if (context.getMasterContext() instanceof ExecContext) {
-            final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
-            if (dpuContext != null) {
-                dpuContext.sendMessage(type, caption, body, exception);
-                return;
-            }
-        }
-        // Else context has not yet been initialized.
-        LOG.info("Message ignored:\ntype:{}\ncaption:{}\ntext:{}\n", type, caption, body);
-    }
-
-    /**
-     * Send formated {@link DPUContext.MessageType#INFO} message. Localization is applied before the
-     * message is send.
-     *
+     * Translates and sends given formated message consisting of shortMessage and longMessage. sDoes not support message with exception.
+     * Only body (long message) may have arguments.
+     * 
      * @param context
-     * @param caption    Caption ie. short message.
-     * @param bodyFormat
+     *            If null only log about message is stored.
+     * @param type
+     * @param shortMessage
+     * @param fullMessage
      * @param args
      */
-    public static void sendInfo(UserContext context, String caption, String bodyFormat, Object... args) {
-        sendMessage(context, DPUContext.MessageType.INFO, caption, bodyFormat, args);
+    public static void sendMessage(UserContext context, DPUContext.MessageType type, String shortMessage,
+            String fullMessage, Object... args) {
+        // Localization.
+        String shortMessageTranslated = context.tr(shortMessage);
+        final String fullMessageTranslated = context.tr(fullMessage, args);
+        // Send message.
+        if (context.getMasterContext() instanceof ExecContext) {
+            final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
+            if (dpuContext != null) {
+                dpuContext.sendMessage(type, shortMessageTranslated, fullMessageTranslated);
+                return;
+            }
+        }
+        // Else context has not yet been initialized.
+        LOG.info("Message ignored:\ntype:{}\ncaption:{}\ntext:{}\n", type, shortMessageTranslated, fullMessageTranslated);
+    }
+
+    /**
+     * Translates and sends given formated message consisting of shortMessage and longMessage.
+     * Only body (long message) may have arguments.
+     * 
+     * @param context
+     *            If null only log about message is stored.
+     * @param type
+     * @param shortMessage
+     * @param exception
+     * @param fullMessage
+     * @param args
+     */
+    public static void sendMessage(UserContext context, DPUContext.MessageType type, String shortMessage,
+            Exception exception, String fullMessage, Object... args) {
+        // Localization.
+        String shortMessageTranslated = context.tr(shortMessage);
+        final String fullMessageTranslated = context.tr(fullMessage, args);
+        // Send message.
+        if (context.getMasterContext() instanceof ExecContext) {
+            final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
+            if (dpuContext != null) {
+                dpuContext.sendMessage(type, shortMessageTranslated, fullMessageTranslated, exception);
+                return;
+            }
+        }
+        // Else context has not yet been initialized.
+        LOG.info("Message ignored:\ntype:{}\ncaption:{}\ntext:{}\n", type, shortMessageTranslated, fullMessageTranslated);
+    }
+
+    /**
+     * Sends formated {@link DPUContext.MessageType#INFO} message. Localization is applied before the
+     * message is send.
+     * 
+     * @param context
+     * @param shortMessage
+     *            Caption ie. short message.
+     * @param fullMessage
+     * @param args
+     */
+    public static void sendInfo(UserContext context, String shortMessage, String fullMessage, Object... args) {
+        sendMessage(context, DPUContext.MessageType.INFO, shortMessage, fullMessage, args);
     }
 
     /**
      * Send formated {@link DPUContext.MessageType#WARNING} message. Localization is applied before the
      * message is send.
-     *
+     * 
      * @param context
-     * @param caption    Caption ie. short message.
-     * @param bodyFormat
+     * @param shortMessage
+     *            Caption ie. short message.
+     * @param fullMessage
      * @param args
      */
-    public static void sendWarn(UserContext context, String caption, String bodyFormat, Object... args) {
-        sendMessage(context, DPUContext.MessageType.WARNING, caption, bodyFormat, args);
+    public static void sendWarn(UserContext context, String shortMessage, String fullMessage, Object... args) {
+        sendMessage(context, DPUContext.MessageType.WARNING, shortMessage, fullMessage, args);
     }
 
     /**
      * Send formated {@link DPUContext.MessageType#WARNING} message. Localization is applied before the
      * message is send.
-     *
+     * 
      * @param context
-     * @param caption
+     * @param shortMessage
      * @param exception
-     * @param bodyFormat
+     * @param fullMessage
      * @param args
      */
-    public static void sendWarn(UserContext context, String caption, Exception exception,
-            String bodyFormat, Object... args) {
-        sendMessage(context, DPUContext.MessageType.WARNING, caption, exception, bodyFormat, args);
+    public static void sendWarn(UserContext context, String shortMessage, Exception exception,
+            String fullMessage, Object... args) {
+        sendMessage(context, DPUContext.MessageType.WARNING, shortMessage, exception, fullMessage, args);
     }
 
     /**
      * Send formated {@link DPUContext.MessageType#ERROR} message. Localization is applied before the
      * message is send.
-     *
+     * 
      * @param context
-     * @param caption
+     * @param shortMessage
      * @param exception
-     * @param bodyFormat
+     * @param fullMessage
      * @param args
      */
-    public static void sendError(UserContext context, String caption, Exception exception,
-            String bodyFormat, Object... args) {
-        sendMessage(context, DPUContext.MessageType.ERROR, caption, exception, bodyFormat, args);
+    public static void sendError(UserContext context, String shortMessage, Exception exception,
+            String fullMessage, Object... args) {
+        sendMessage(context, DPUContext.MessageType.ERROR, shortMessage, exception, fullMessage, args);
     }
 
     /**
      * Send formated {@link DPUContext.MessageType#ERROR} message. Localization is applied before the
      * message is send.
-     *
+     * 
      * @param context
-     * @param caption
-     * @param bodyFormat
+     * @param shortMessage
+     * @param fullMessage
      * @param args
      */
-    public static void sendError(UserContext context, String caption, String bodyFormat,
+    public static void sendError(UserContext context, String shortMessage, String fullMessage,
             Object... args) {
-        sendMessage(context, DPUContext.MessageType.ERROR, caption, bodyFormat, args);
+        sendMessage(context, DPUContext.MessageType.ERROR, shortMessage, fullMessage, args);
     }
 
-    /**
+/**
      * Send short {@link DPUContext.MessageType#INFO message (caption only). The caption is formated.
      * Localization is applied before the message is send.
-     *
+     * TODO: shortMessage is translated twice
+     * 
      * @param context
-     * @param captionFormat
+     * @param shortMessage
      * @param args
      */
-    public static void sendShortInfo(UserContext context, String captionFormat, Object... args) {
-        final String caption = context.tr(captionFormat, args);
-        sendMessage(context, DPUContext.MessageType.INFO, caption, "");
+    public static void sendShortInfo(UserContext context, String shortMessage, Object... args) {
+        final String shortMessageTranslated = context.tr(shortMessage, args);
+        sendMessage(context, DPUContext.MessageType.INFO, shortMessageTranslated, "");
     }
 
     /**
      * Send short {@link DPUContext.MessageType#WARNING} message (caption only). The caption is formated.
      * Localization is applied before the message is send.
-     *
+     * TODO: shortMessage is translated twice
+     * 
      * @param context
-     * @param captionFormat
+     * @param shortMessage
      * @param args
      */
-    public static void sendShortWarn(UserContext context, String captionFormat, Object... args) {
-        final String caption = context.tr(captionFormat, args);
-        sendMessage(context, DPUContext.MessageType.WARNING, caption, "");
+    public static void sendShortWarn(UserContext context, String shortMessage, Object... args) {
+        final String shortMessageTranslated = context.tr(shortMessage, args);
+        sendMessage(context, DPUContext.MessageType.WARNING, shortMessageTranslated, "");
     }
 
     /**
      * Return DPU exception of given text. Before throw given text is localized based on current locale
      * setting.
-     *
+     * 
      * @param context
-     * @param message Exception message.
-     *
+     * @param message
+     *            Exception message.
      * @return newly created exception
      */
     public static DPUException dpuException(UserContext context, String message) {
@@ -201,11 +210,11 @@ public class ContextUtils {
     /**
      * Return DPU exception of given text. Before throw given text is localized based on current locale
      * setting.
-     *
+     * 
      * @param context
      * @param cause
-     * @param message Exception message.
-     *
+     * @param message
+     *            Exception message.
      * @return newly created exception
      */
     public static DPUException dpuException(UserContext context, Exception cause, String message) {
@@ -215,11 +224,10 @@ public class ContextUtils {
     /**
      * Return DPU exception of given text. Before throw given text is localized based on current locale
      * setting.
-     *
+     * 
      * @param context
      * @param message
      * @param args
-     *
      * @return newly created exception
      */
     public static DPUException dpuException(UserContext context, String message, Object... args) {
@@ -229,12 +237,11 @@ public class ContextUtils {
     /**
      * Return DPU exception of given text. Before throw given text is localized based on current locale
      * setting.
-     *
+     * 
      * @param context
      * @param cause
      * @param message
      * @param args
-     *
      * @return newly created exception
      */
     public static DPUException dpuException(UserContext context, Exception cause, String message, Object... args) {
@@ -243,9 +250,8 @@ public class ContextUtils {
 
     /**
      * Return DPU exception that informs that current execution has been cancelled.
-     *
+     * 
      * @param context
-     *
      * @return newly created exception
      */
     public static DPUException dpuExceptionCancelled(UserContext context) {

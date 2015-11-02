@@ -19,7 +19,8 @@ package eu.unifiedviews.helpers.dpu.rdf.sparql;
 import eu.unifiedviews.helpers.dataunit.HelperFailedException;
 
 /**
- *
+ * Exception thrown by {@link SparqlUtils} class
+ * 
  * @author Škoda Petr
  */
 public class SparqlProblemException extends HelperFailedException {
