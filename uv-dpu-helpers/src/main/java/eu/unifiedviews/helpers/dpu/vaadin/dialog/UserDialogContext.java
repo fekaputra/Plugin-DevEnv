@@ -19,8 +19,9 @@ package eu.unifiedviews.helpers.dpu.vaadin.dialog;
 import eu.unifiedviews.helpers.dpu.context.UserContext;
 
 /**
- * User version of dialog context.
- *
+ * User version of dialog context {@link DialogContext}.
+ * DPU developer has access to this context from the DPU's configuration dialog by calling {@code this.ctx}
+ * 
  * @author Škoda Petr
  */
 public class UserDialogContext extends UserContext {
@@ -33,7 +34,6 @@ public class UserDialogContext extends UserContext {
     }
 
     /**
-     *
      * @return True if dialog is used as a template.
      */
     public boolean isTemplate() {

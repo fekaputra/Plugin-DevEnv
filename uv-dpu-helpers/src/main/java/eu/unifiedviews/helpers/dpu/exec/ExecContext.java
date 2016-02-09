@@ -21,7 +21,9 @@ import eu.unifiedviews.dpu.DPUContext;
 import eu.unifiedviews.dpu.DPUException;
 
 /**
- *
+ * A context of the executed DPU. Such context is available for the DPU during its execution.
+ * DPU developer has access, during DPU execution, to {@link UserExecContext}
+ * 
  * @author Škoda Petr
  */
 public class ExecContext<CONFIG> extends Context<CONFIG> {
@@ -43,7 +45,7 @@ public class ExecContext<CONFIG> extends Context<CONFIG> {
 
     /**
      * Cause given DPU initialization. Must not be called in constructor!
-     *
+     * 
      * @param dpuClass
      * @param dpuInstance
      * @param ontology
