@@ -66,6 +66,32 @@ public class ContextUtils {
     }
 
     /**
+     * Translates and sends given formated message consisting of shortMessage. Does not support messages with exception.
+     * Given arguments are used in the localization of a shortMessage.
+     *
+     * @param context
+     *            If null only log about message is stored.
+     * @param type
+     * @param shortMessage
+     * @param args
+     */
+    public static void sendShortMessage(UserContext context, DPUContext.MessageType type, String shortMessage,
+            Object... args) {
+        // Localization.
+        final String shortMessageTranslated = context.tr(shortMessage, args);
+        // Send message.
+        if (context.getMasterContext() instanceof ExecContext) {
+            final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
+            if (dpuContext != null) {
+                dpuContext.sendMessage(type, shortMessageTranslated, null);
+                return;
+            }
+        }
+        // Else context has not yet been initialized.
+        LOG.info("Message ignored:\ntype:{}\ncaption:{}\n", type, shortMessageTranslated);
+    }
+
+    /**
      * Translates and sends given formated message consisting of shortMessage and longMessage.
      * Only body (long message) may have arguments.
      * 
@@ -169,29 +195,25 @@ public class ContextUtils {
 /**
      * Send short {@link DPUContext.MessageType#INFO message (caption only). The caption is formated.
      * Localization is applied before the message is send.
-     * TODO: shortMessage is translated twice
      * 
      * @param context
      * @param shortMessage
      * @param args
      */
     public static void sendShortInfo(UserContext context, String shortMessage, Object... args) {
-        final String shortMessageTranslated = context.tr(shortMessage, args);
-        sendMessage(context, DPUContext.MessageType.INFO, shortMessageTranslated, "");
+        sendShortMessage(context, DPUContext.MessageType.INFO, shortMessage, args);
     }
 
     /**
      * Send short {@link DPUContext.MessageType#WARNING} message (caption only). The caption is formated.
      * Localization is applied before the message is send.
-     * TODO: shortMessage is translated twice
      * 
      * @param context
      * @param shortMessage
      * @param args
      */
     public static void sendShortWarn(UserContext context, String shortMessage, Object... args) {
-        final String shortMessageTranslated = context.tr(shortMessage, args);
-        sendMessage(context, DPUContext.MessageType.WARNING, shortMessageTranslated, "");
+        sendShortMessage(context, DPUContext.MessageType.WARNING, shortMessage, args);
     }
 
     /**
