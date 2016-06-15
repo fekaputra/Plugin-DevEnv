@@ -7,14 +7,6 @@
     <packaging>pom</packaging>
     <name>uv-pom</name>
 
-    <developers>
-        <developer>
-            <name>Petr Škoda</name>
-            <email>skoda@ksi.mff.cuni.cz</email>
-            <organization>Faculty of Mathematics and Physics, Charles University in Prague</organization>
-        </developer>
-    </developers>
-
     <properties>
         <!-- UV version for dependencies. -->
         <unifiedviews.api.version>2.1.6</unifiedviews.api.version>
