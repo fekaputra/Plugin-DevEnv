@@ -22,12 +22,12 @@
     
     <repositories>
         <repository>
-            <id>thirdparty</id>
-            <name>UnifiedViews Development</name>
-            <url>https://mvn.semantic-web.at/nexus/content/repositories/thirdparty/</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <id>releases</id>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/snapshots</url>
         </repository>
         <repository>
             <id>maven.eea.sk</id>
