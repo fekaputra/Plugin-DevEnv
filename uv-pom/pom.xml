@@ -7,6 +7,17 @@
     <packaging>pom</packaging>
     <name>uv-pom</name>
 
+    <distributionManagement>
+        <repository>
+            <id>thirdparty</id>
+            <name>UnifiedViews Development</name>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/thirdparty/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </distributionManagement>
+
     <developers>
         <developer>
             <name>Petr Škoda</name>
