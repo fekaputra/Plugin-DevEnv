@@ -18,6 +18,7 @@
             <url>https://mvn.semantic-web.at/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+    
     <repositories>
         <repository>
             <id>thirdparty</id>
