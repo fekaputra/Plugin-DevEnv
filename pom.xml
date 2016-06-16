@@ -27,6 +27,18 @@
         <module>uv-dpu-helpers</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>thirdparty</id>
+            <name>UnifiedViews Development</name>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/thirdparty/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
     <contributors>
         <contributor>
             <name>Tomas Knap</name>
