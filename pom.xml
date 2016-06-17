@@ -27,18 +27,6 @@
         <module>uv-dpu-helpers</module>
     </modules>
 
-    <contributors>
-        <contributor>
-            <name>Tomas Knap</name>
-            <email>knap@ksi.mff.cuni.cz</email>
-            <roles>
-                <role>project supervisor</role>
-            </roles>
-            <url>http://www.ksi.mff.cuni.cz/~knap</url>
-            <organization>Faculty of Mathematics and Physics, Charles University in Prague</organization>
-        </contributor>
-    </contributors>
-
     <build>
         <plugins>
             <plugin>
