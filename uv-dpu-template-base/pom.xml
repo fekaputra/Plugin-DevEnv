@@ -16,7 +16,7 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases/</url>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
@@ -24,6 +24,22 @@
         </snapshotRepository>
 
     </distributionManagement>
+    
+    <repositories>
+        <repository>
+            <id>releases</id>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>maven.eea.sk</id>
+            <name>maven.eea.sk-public</name>
+            <url>http://maven.eea.sk/artifactory/public/</url>
+        </repository>
+    </repositories>
 
     <build>
         <extensions>
