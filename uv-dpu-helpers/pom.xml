@@ -19,14 +19,6 @@
         <unifiedviews.helpers.dataunit.version>2.1.6</unifiedviews.helpers.dataunit.version>
     </properties>
 
-    <developers>
-        <developer>
-            <name>Petr Škoda</name>
-            <email>skoda@ksi.mff.cuni.cz</email>
-            <organization>Faculty of Mathematics and Physics, Charles University in Prague</organization>
-        </developer>
-    </developers>
-
     <dependencies>
         <!-- UnifiedViews dependencies. -->
         <dependency>
