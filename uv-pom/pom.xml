@@ -16,11 +16,6 @@
             <id>snapshots</id>
             <url>https://mvn.semantic-web.at/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
-        <repository>
-            <id>ext-release-local</id>
-            <url>http://odcs.xrg.cz:8080/artifactory/ext-release-local</url>
-        </repository>
-
     </distributionManagement>
 
     
