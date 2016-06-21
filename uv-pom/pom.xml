@@ -10,7 +10,7 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases/</url>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
@@ -23,7 +23,7 @@
     <repositories>
         <repository>
             <id>releases</id>
-            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases/</url>
+            <url>https://mvn.semantic-web.at/nexus/content/repositories/releases</url>
         </repository>
         <repository>
             <id>snapshots</id>
