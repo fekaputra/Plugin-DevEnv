@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-plugin-devenv</artifactId>
-    <version>2.1.6-SNAPSHOT</version>
+    <version>2.1.6</version>
     <packaging>pom</packaging>
     <description>Maven build all project, used instead of build plugin.</description>
 
@@ -26,18 +26,6 @@
         <module>uv-dataunit-helpers</module>
         <module>uv-dpu-helpers</module>
     </modules>
-
-    <contributors>
-        <contributor>
-            <name>Tomas Knap</name>
-            <email>knap@ksi.mff.cuni.cz</email>
-            <roles>
-                <role>project supervisor</role>
-            </roles>
-            <url>http://www.ksi.mff.cuni.cz/~knap</url>
-            <organization>Faculty of Mathematics and Physics, Charles University in Prague</organization>
-        </contributor>
-    </contributors>
 
     <build>
         <plugins>

@@ -4,13 +4,13 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom-api</artifactId>
-        <version>2.1.6-SNAPSHOT</version>
+        <version>2.1.6</version>
         <relativePath>../uv-pom-api/pom.xml</relativePath>
     </parent>
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-dataunit-files</artifactId>
-    <version>2.1.6-SNAPSHOT</version>
+    <version>2.1.6</version>
     <packaging>bundle</packaging>
     <description>Definition of FilesDataUnit.</description>
 
