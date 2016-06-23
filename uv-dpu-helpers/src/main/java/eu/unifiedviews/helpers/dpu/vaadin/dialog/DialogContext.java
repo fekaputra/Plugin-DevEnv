@@ -25,7 +25,9 @@ import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.dpu.config.vaadin.ConfigDialogContext;
 
 /**
- *
+ * A context of the DPU's dialog. Such context is available for the DPU during its execution.
+ * DPU developer has access, during DPU execution, to {@link UserExecContext}
+ * 
  * @author Škoda Petr
  */
 public class DialogContext<CONFIG> extends Context<CONFIG> {

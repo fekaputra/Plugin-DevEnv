@@ -35,8 +35,11 @@ import eu.unifiedviews.helpers.dpu.serialization.xml.SerializationXmlFactory;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
 
 /**
- * Base class for context.
- *
+ * Base class for a context.
+ * There are two types of context:
+ * - {@link ExecContext}, which is a context of the executed DPU
+ * - {@link DialogContext}, which is a context of the DPU's dialog
+ * 
  * @author Škoda Petr
  * @param <CONFIG>
  *            Last configuration class.
@@ -97,7 +100,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Set base fields and create
-     *
+     * 
      * @param <T>
      * @param dpuClass
      * @param dpuInstance
@@ -127,7 +130,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Initialize fields and set given configuration.
-     *
+     * 
      * @param configAsString
      *            If null no configuration is set. Used by dialog as there the configuration is set
      *            later.
@@ -155,7 +158,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Callback to gather ad-dons.
-     *
+     * 
      * @param field
      * @param value
      */
@@ -174,7 +177,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Can be used before complete context initialization.
-     *
+     * 
      * @return
      */
     public Class<AbstractDpu<CONFIG>> getDpuClass() {
@@ -183,7 +186,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Can be used before complete context initialization.
-     *
+     * 
      * @return
      */
     public boolean isDialog() {
@@ -192,7 +195,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Can be used before complete context initialization.
-     *
+     * 
      * @return
      */
     public SerializationXml getSerializationXml() {
@@ -221,7 +224,7 @@ public class Context<CONFIG> implements ExtensionInitializer.FieldSetListener {
 
     /**
      * Return class with given type stored in context.
-     *
+     * 
      * @param <T>
      * @param clazz
      * @return Null if no {@link Addon} of given type exists.

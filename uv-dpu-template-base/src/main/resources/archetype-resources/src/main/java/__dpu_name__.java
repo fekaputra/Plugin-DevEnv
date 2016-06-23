@@ -23,9 +23,6 @@ import eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance;
 public class ${dpu_name} extends AbstractDpu<${dpu_name}Config_V1> {
 
     private static final Logger log = LoggerFactory.getLogger(${dpu_name}.class);
-		
-    @ExtensionInitializer.Init
-    public FaultTolerance faultTolerance;
 
 	public ${dpu_name}() {
 		super(${dpu_name}VaadinDialog.class, ConfigHistory.noHistory(${dpu_name}Config_V1.class));

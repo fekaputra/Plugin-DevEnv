@@ -20,7 +20,8 @@ import eu.unifiedviews.helpers.dpu.context.UserContext;
 
 /**
  * User version of {@link ExecContext}.
- *
+ * DPU developer has access to this context from the DPU by calling {@code this.ctx}
+ * 
  * @author Škoda Petr
  */
 public class UserExecContext extends UserContext {
@@ -33,7 +34,6 @@ public class UserExecContext extends UserContext {
     }
 
     /**
-     *
      * @return True if DPU is cancelled.
      */
     public boolean canceled() {
