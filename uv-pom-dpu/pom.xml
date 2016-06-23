@@ -10,17 +10,17 @@
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-dpu</artifactId>
-    <version>2.1.6</version>
+    <version>2.1.7-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>uv-pom-dpu</name>
     <description>Commons base project for DPU's.</description>
 
     <properties>
-        <unifiedviews.helpers.dataunit.version>2.1.6</unifiedviews.helpers.dataunit.version>
-        <unifiedviews.helpers.dpu.version>2.1.6</unifiedviews.helpers.dpu.version>
+        <unifiedviews.helpers.dataunit.version>2.1.7-SNAPSHOT</unifiedviews.helpers.dataunit.version>
+        <unifiedviews.helpers.dpu.version>2.1.7-SNAPSHOT</unifiedviews.helpers.dpu.version>
 
         <!-- UV modules dependecies version for DPUs. -->
-        <unifiedviews.module-test.version>2.2.0</unifiedviews.module-test.version>
+        <unifiedviews.module-test.version>2.3.1</unifiedviews.module-test.version>
 
         <!-- versions of 3rd party libraries -->
         <commons.commons-lang3>3.0</commons.commons-lang3>
