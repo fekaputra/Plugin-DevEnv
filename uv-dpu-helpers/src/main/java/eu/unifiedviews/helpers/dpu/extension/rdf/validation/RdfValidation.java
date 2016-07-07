@@ -16,6 +16,10 @@
  */
 package eu.unifiedviews.helpers.dpu.extension.rdf.validation;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +47,7 @@ import eu.unifiedviews.helpers.dpu.rdf.sparql.SparqlUtils;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractExtensionDialog;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +72,7 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
 
     private static final Logger log = LoggerFactory.getLogger(RdfValidation.class);
 
-    private Map<String, RDFDataUnit> outputDataUnits = new HashMap<>();
+    private List<String> outputDataUnitNames = new ArrayList<>();
 
     private RDFDataUnit validatedDataUnit;
 
@@ -83,63 +88,87 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
     private void validate() {
         log.info("Validation launched");
 
-        if (config.askQuery != null && (!config.askQuery.isEmpty())) {
+        if (config.enabled) {
 
-            //get connection to the validated output data unit
-            RepositoryConnection connection = null;
-            try {
-                connection = validatedDataUnit.getConnection();
+            if (config.askQuery != null && (!config.askQuery.isEmpty())) {
 
-                //get entries (graphs to be validated)
-                List<RDFDataUnit.Entry> entries;
-                try {
-                    entries = DataUnitUtils.getEntries(validatedDataUnit, RDFDataUnit.Entry.class);
-                } catch (DataUnitException ex) {
-                    log.error("Cannot obtain list of graphs withing the validated output data unit", ex);
+                //get the data unit to be validated
+                if (config.validatedDataUnitName == null) {
+                    ContextUtils.sendShortWarn(context.asUserContext(), "rdfvalidation.started.missingdataunit");
                     return;
                 }
 
-                //execute the given sparql query
-                SparqlUtils.SparqlAskObject ask;
+                //get connection to the validated output data unit
+                RepositoryConnection connection = null;
                 try {
-                    ask = SparqlUtils.createAsk(config.getAskQuery(), entries);
-                } catch (SparqlProblemException ex) {
-                    log.error("Problem with the SPARQL ASK query", ex);
-                    return;
-                } catch (DataUnitException ex) {
-                    log.error("Cannot execute the SPARQL ASK query", ex);
-                    return;
-                }
-                try {
-                    SparqlUtils.execute(connection, ask);
-                } catch (RepositoryException | MalformedQueryException | UpdateExecutionException | QueryEvaluationException ex) {
-                    java.util.logging.Logger.getLogger(RdfValidation.class.getName()).log(Level.SEVERE, null, ex);
-                    return;
-                }
+                    connection = validatedDataUnit.getConnection();
 
-                //report failure
-                if (!ask.result) {
-                    String msg = "RDF Validator: Outputted RDF data does not satisfy SPARQL ASK constraint";
-                    String constrainedFailed = "Constraint failed: " + config.getAskQuery();
-                    ContextUtils.sendMessage(context.asUserContext(), DPUContext.MessageType.ERROR, msg, constrainedFailed);
-                }
+                    //get entries (graphs to be validated)
+                    List<RDFDataUnit.Entry> entries;
+                    try {
+                        entries = DataUnitUtils.getEntries(validatedDataUnit, RDFDataUnit.Entry.class);
+                        if (entries.isEmpty()) {
+                            ContextUtils.sendShortWarn(context.asUserContext(), "rdfvalidation.started.nodata", config.validatedDataUnitName);
+                            return;
+                        }
+                        ContextUtils.sendShortInfo(context.asUserContext(), "rdfvalidation.started", config.validatedDataUnitName);
+                        //                        log.info("Number of entries: {}", entries.size());
+                        //                        for (RDFDataUnit.Entry e : entries) {
+                        //                            log.info(e.getSymbolicName() + e.getDataGraphURI().toString());
+                        //                        }
 
-            } catch (DataUnitException ex) {
-                log.error("Cannot obtain connection to the validated output data unit", ex);
-                return;
-            } finally {
-                try {
-                    if (connection != null) {
-                        connection.close();
+                    } catch (DataUnitException ex) {
+                        log.error("Cannot obtain list of graphs withing the validated output data unit", ex);
+                        return;
                     }
-                } catch (RepositoryException ex) {
-                    log.warn("Can't close connection!");
-                }
-            }
 
+                    //execute the given sparql query
+                    SparqlUtils.SparqlAskObject ask;
+                    try {
+                        ask = SparqlUtils.createAsk(config.getAskQuery(), entries);
+                    } catch (SparqlProblemException ex) {
+                        log.error("Problem with the SPARQL ASK query", ex);
+                        return;
+                    } catch (DataUnitException ex) {
+                        log.error("Cannot execute the SPARQL ASK query", ex);
+                        return;
+                    }
+                    try {
+                        SparqlUtils.execute(connection, ask);
+                    } catch (RepositoryException | MalformedQueryException | UpdateExecutionException | QueryEvaluationException ex) {
+                        java.util.logging.Logger.getLogger(RdfValidation.class.getName()).log(Level.SEVERE, null, ex);
+                        return;
+                    }
+
+                    //report failure
+                    if (!ask.result) {
+                        ContextUtils.sendMessage(context.asUserContext(), DPUContext.MessageType.ERROR, "rdfvalidation.finished.error", "rdfvalidation.constraintfailed", config.getAskQuery().replaceAll("<", "").replaceAll(">", ""));
+                    }
+                    else {
+                        ContextUtils.sendShortInfo(context.asUserContext(), "rdfvalidation.finished.ok", config.validatedDataUnitName);
+                    }
+
+                } catch (DataUnitException ex) {
+                    log.error("Cannot obtain connection to the validated output data unit", ex);
+                    return;
+                } finally {
+                    try {
+                        if (connection != null) {
+                            connection.close();
+                        }
+                    } catch (RepositoryException ex) {
+                        log.warn("Can't close connection!");
+                    }
+                }
+
+            }
+            else {
+                log.error("NO SPARQL ASK query defined");
+            }
         }
         else {
-            log.info("No validation defined");
+            log.info("Validation disabled");
+
         }
 
     }
@@ -149,30 +178,30 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
         /**
          * If false no rdf validation is provided by this add-on.
          */
-        //        private boolean enabled = true;
+        private boolean enabled = false;
 
         private String askQuery = "ASK { ?s ?p ?o }";
 
-        //        /**
-        //         * Store names of exceptions that should be catch.
-        //         */
-        //        private List<String> exceptionNames = new LinkedList<>();
+        private String validatedDataUnitName;
 
-        //        /**
-        //         * Number of retry before failure, use -1 as no limit.
-        //         */
-        //        private int maxRetryCount = -1;
+        public String getValidatedDataUnitName() {
+            return validatedDataUnitName;
+        }
+
+        public void setValidatedDataUnitName(String dataUnitValidated) {
+            this.validatedDataUnitName = dataUnitValidated;
+        }
 
         public Configuration_V1() {
         }
 
-        //        public boolean isEnabled() {
-        //            return enabled;
-        //        }
-        //
-        //        public void setEnabled(boolean enabled) {
-        //            this.enabled = enabled;
-        //        }
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
 
         public String getAskQuery() {
             return askQuery;
@@ -186,9 +215,11 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
 
     public class VaadinDialog extends AbstractExtensionDialog<Configuration_V1> {
 
-        //        private CheckBox checkEnabled;
+        private CheckBox checkEnabled;
 
         private TextArea txtAskQuery;
+
+        private ComboBox cbDataUnitValidated;
 
         public VaadinDialog() {
             super(configHistory);
@@ -200,10 +231,31 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
             layout.setSpacing(true);
             layout.setMargin(true);
 
-            //            checkEnabled = new CheckBox(RdfValidation.this.context.asUserContext().tr("dialog.dpu.rdfvalidation.enabled"));
-            //            layout.addComponent(checkEnabled);
+            checkEnabled = new CheckBox(RdfValidation.this.context.asUserContext().tr("dialog.dpu.rdfvalidation.enabled"));
+            checkEnabled.addListener(new ValueChangeListener() {
+                public void valueChange(ValueChangeEvent event) {
+                    txtAskQuery.setEnabled(checkEnabled.getValue());
+                    cbDataUnitValidated.setEnabled(checkEnabled.getValue());
+                }
+            });
 
-            txtAskQuery = new TextArea("SPARQL ASK query:");
+            layout.addComponent(checkEnabled);
+
+            cbDataUnitValidated = new ComboBox(RdfValidation.this.context.asUserContext().tr("dialog.dpu.rdfvalidation.dataunitsvalidated"));
+            cbDataUnitValidated.removeAllItems();
+            for (int i = 0; i < outputDataUnitNames.size(); i++) {
+                String dataUnitNameAvailable = outputDataUnitNames.get(i);
+                cbDataUnitValidated.addItem(dataUnitNameAvailable);
+            }
+            //            if (outputDataUnitNames.size() > 0) {
+            //                cbDataUnitValidated.setValue(cbDataUnitValidated.getItem(1));
+            //            }
+            //        dataUnitValidated.setInvalidAllowed(false);
+            //        dataUnitValidated.setNullSelectionAllowed(false);
+            //automatically preselect the first one
+            layout.addComponent(cbDataUnitValidated);
+
+            txtAskQuery = new TextArea(RdfValidation.this.context.asUserContext().tr("dialog.dpu.rdfvalidation.sparqlaskquery"));
             txtAskQuery.setSizeFull();
             txtAskQuery.setNullRepresentation("");
             txtAskQuery.setNullSettingAllowed(true);
@@ -224,18 +276,32 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
 
         @Override
         protected void setConfiguration(Configuration_V1 conf) throws DPUConfigException {
-            //            checkEnabled.setValue(conf.isEnabled());
+            checkEnabled.setValue(conf.isEnabled());
             txtAskQuery.setValue(conf.getAskQuery());
+            txtAskQuery.setEnabled(checkEnabled.getValue());
+
+            if (conf.getValidatedDataUnitName() != null && !conf.getValidatedDataUnitName().isEmpty())
+                cbDataUnitValidated.setValue(conf.getValidatedDataUnitName());
+            else if (cbDataUnitValidated.size() > 0) {
+                //select the first one otherwise 
+                cbDataUnitValidated.setValue(outputDataUnitNames.get(0));
+            } else {
+                //do not select any (no item!) 
+            }
+            cbDataUnitValidated.setEnabled(checkEnabled.getValue());
         }
 
         @Override
         protected Configuration_V1 getConfiguration() throws DPUConfigException {
             final Configuration_V1 c = new Configuration_V1();
-            //            c.setEnabled(checkEnabled.getValue());
+            c.setEnabled(checkEnabled.getValue());
             c.setAskQuery(txtAskQuery.getValue());
+
+            if (cbDataUnitValidated.getValue() != null) {
+                c.setValidatedDataUnitName(cbDataUnitValidated.getValue().toString());
+            }
             return c;
         }
-
     }
 
     private Configuration_V1 config;
@@ -275,32 +341,38 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
     @Override
     public void afterInit(Context context) throws DPUException {
         this.context = context;
+
+        // Load configuration.
+        try {
+            this.config = context.getConfigManager().get(USED_CONFIG_NAME, configHistory);
+        } catch (ConfigException ex) {
+            log.warn("Can't load configuration.", ex);
+            ContextUtils.sendInfo(context.asUserContext(), "Addon failed to load configuration",
+                    "Failed to load configuration for: {0} default configuration is used.", ADDON_NAME);
+            this.config = new Configuration_V1();
+        }
+        if (this.config == null) {
+            ContextUtils.sendInfo(context.asUserContext(), "Addon failed to load configuration",
+                    "Failed to load configuration for: {0} default configuration is used.", ADDON_NAME);
+            this.config = new Configuration_V1();
+        }
+
         if (context instanceof ExecContext) {
+            //we are executing the extension
+            //get the particular instance of the selected output data unit to be validated (this is available only during execution)
             this.dpuContext = ((ExecContext) context).getDpuContext();
             log.info("\tcontext set to: {}", this.dpuContext);
 
             final ExecContext execContext = (ExecContext) context;
             final AbstractDpu dpu = execContext.getDpu();
 
-            // Load configuration.
-            try {
-                this.config = context.getConfigManager().get(USED_CONFIG_NAME, configHistory);
-            } catch (ConfigException ex) {
-                log.warn("Can't load configuration.", ex);
-                ContextUtils.sendInfo(context.asUserContext(), "Addon failed to load configuration",
-                        "Failed to load configuration for: {0} default configuration is used.", ADDON_NAME);
-                this.config = new Configuration_V1();
-            }
-            if (this.config == null) {
-                ContextUtils.sendInfo(context.asUserContext(), "Addon failed to load configuration",
-                        "Failed to load configuration for: {0} default configuration is used.", ADDON_NAME);
-                this.config = new Configuration_V1();
-            }
+            validatedDataUnit = null;
 
-            //get output data unit which may be validated
+            //get output data unit which should be validated
             for (Field field : dpu.getClass().getFields()) {
                 if (field.getAnnotation(DataUnit.AsOutput.class) != null) {
                     // We got annotated field which is output data unit. Get it's value.
+
                     try {
                         final Object value = field.get(dpu);
                         if (value == null) {
@@ -308,34 +380,49 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
                             return;
                         }
                         if (value instanceof RDFDataUnit) {
-                            //we got output RDF data unit !
-                            validatedDataUnit = (RDFDataUnit) value;
-                            return;
-                        } else {
-                            throw new DPUException("Field " + field.getName() + " does not have requested type "
-                                    + "RDFDataUnit");
+                            //we got output RDF data unit - add it to the list ! 
+                            log.info("Data unit to be validated:::: {}", config.validatedDataUnitName);
+                            log.info("Examined data unit name: {}", field.getAnnotation(DataUnit.AsOutput.class).name());
+                            if (field.getAnnotation(DataUnit.AsOutput.class).name().equals(config.validatedDataUnitName)) {
+                                validatedDataUnit = (RDFDataUnit) value;
+                                return;
+                            }
                         }
+                        //                        if (value instanceof RDFDataUnit) {
+                        //                            //we got output RDF data unit !
+                        //                            validatedDataUnit = (RDFDataUnit) value;
+                        //                            return;
+                        //                        } else {
+                        //                            throw new DPUException("Field " + field.getName() + " does not have requested type "
+                        //                                    + "RDFDataUnit");
+                        //                        }
                     } catch (IllegalAccessException | IllegalArgumentException ex) {
                         throw new DPUException("Can't get value for annotated field: " + field.getName(), ex);
                     }
                 }
             }
-            throw new DPUException("Missing configuration RDFDataUnit! "
-                    + "Use RdfConfiguration.ContainsConfiguration annotation to mark it.");
+            throw new DPUException("No data unit to be validated available. Please specify data unit which should be validated!");
 
+        }
+        else {
+            //it is dialog context
+            //get output data unit names to be depicted in the dialog
+            outputDataUnitNames = new ArrayList<>();
+            for (Field field : context.asUserContext().getMasterContext().getDpuClass().getFields()) {
+                if (field.getAnnotation(DataUnit.AsOutput.class) != null) {
+                    // We got annotated field which is output data unit. G
+
+                    if (field.getType().getName().contains("RDFDataUnit")) {
+
+                        //we got only output data units, which are RDF data units
+                        String outputDataUnitName = field.getAnnotation(DataUnit.AsOutput.class).name();
+                        outputDataUnitNames.add(outputDataUnitName);
+                    }
+
+                }
+
+            }
         }
 
     }
-
-    //    /**
-    //     * Set configuration for test purpose.
-    //     *    /**
-    // 
-    //     * @param config
-    //     */
-    //    void configure(Configuration_V1 config, DPUContext ctx) {
-    //        this.config = config;
-    //        this.dpuContext = ctx;
-    //    }
-
 }
