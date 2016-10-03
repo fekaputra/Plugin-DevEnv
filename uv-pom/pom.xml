@@ -10,11 +10,11 @@
     <repositories>
         <repository>
             <id>uv-releases</id>
-            <url>https://unifiedviews-web.semantic-web.at:8082/nexus/content/repositories/releases</url>
+            <url>https://repository.unifiedviews.eu/nexus/content/repositories/releases</url>
         </repository>
         <repository>
             <id>uv-snapshots</id>
-            <url>https://unifiedviews-web.semantic-web.at:8082/nexus/content/repositories/snapshots</url>
+            <url>https://repository.unifiedviews.eu/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>maven.eea.sk</id>
