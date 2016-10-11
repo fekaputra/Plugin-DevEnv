@@ -38,8 +38,8 @@ public class ContextUtils {
     }
 
     /**
-     * Translates and sends given formated message consisting of shortMessage and longMessage. sDoes not support message with exception.
-     * Only body (long message) may have arguments.
+     * Translates and sends given formated message consisting of shortMessage and fullMessage. Does not support message with exception.
+     * Both messages (short and full) may have arguments, but there is just one list of arguments, which is shared between short and long message.
      * 
      * @param context
      *            If null only log about message is stored.
@@ -51,7 +51,7 @@ public class ContextUtils {
     public static void sendMessage(UserContext context, DPUContext.MessageType type, String shortMessage,
             String fullMessage, Object... args) {
         // Localization.
-        String shortMessageTranslated = context.tr(shortMessage);
+        String shortMessageTranslated = context.tr(shortMessage, args);
         final String fullMessageTranslated = context.tr(fullMessage, args);
         // Send message.
         if (context.getMasterContext() instanceof ExecContext) {
@@ -92,8 +92,8 @@ public class ContextUtils {
     }
 
     /**
-     * Translates and sends given formated message consisting of shortMessage and longMessage.
-     * Only body (long message) may have arguments.
+     * Translates and sends given formated message consisting of shortMessage and fullMessage and an Exception.
+     * Both messages (short and full) may have arguments, but there is just one list of arguments, which is shared between short and long message.
      * 
      * @param context
      *            If null only log about message is stored.
@@ -106,7 +106,7 @@ public class ContextUtils {
     public static void sendMessage(UserContext context, DPUContext.MessageType type, String shortMessage,
             Exception exception, String fullMessage, Object... args) {
         // Localization.
-        String shortMessageTranslated = context.tr(shortMessage);
+        String shortMessageTranslated = context.tr(shortMessage, args);
         final String fullMessageTranslated = context.tr(fullMessage, args);
         // Send message.
         if (context.getMasterContext() instanceof ExecContext) {
@@ -119,6 +119,32 @@ public class ContextUtils {
         // Else context has not yet been initialized.
         LOG.info("Message ignored:\ntype:{}\ncaption:{}\ntext:{}\n", type, shortMessageTranslated, fullMessageTranslated);
     }
+
+    /**
+     * Translates and sends given formated message consisting of shortMessage. Full message is constructed automatically - it contains exception.
+     * Given arguments are used in the localization of a shortMessage.
+     *
+     * @param context
+     *            If null only log about message is stored.
+     * @param type
+     * @param shortMessage
+     * @param args
+     */
+    public static void sendShortMessage(UserContext context, DPUContext.MessageType type, String shortMessage, Exception exception, Object... args) {
+        // Localization.
+        final String shortMessageTranslated = context.tr(shortMessage, args);
+        // Send message.
+        if (context.getMasterContext() instanceof ExecContext) {
+            final DPUContext dpuContext = ((ExecContext) context.getMasterContext()).getDpuContext();
+            if (dpuContext != null) {
+                dpuContext.sendMessage(type, shortMessageTranslated, null, exception);
+                return;
+            }
+        }
+        // Else context has not yet been initialized.
+        LOG.info("Message ignored:\ntype:{}\ncaption:{}\n", type, shortMessageTranslated);
+    }
+
 
     /**
      * Sends formated {@link DPUContext.MessageType#INFO} message. Localization is applied before the
@@ -163,6 +189,8 @@ public class ContextUtils {
         sendMessage(context, DPUContext.MessageType.WARNING, shortMessage, exception, fullMessage, args);
     }
 
+
+
     /**
      * Send formated {@link DPUContext.MessageType#ERROR} message. Localization is applied before the
      * message is send.
@@ -192,7 +220,32 @@ public class ContextUtils {
         sendMessage(context, DPUContext.MessageType.ERROR, shortMessage, fullMessage, args);
     }
 
-/**
+    /**
+     * Send short {@link DPUContext.MessageType#ERROR} message (caption only). The caption is formatted.
+     * Localization is applied before the message is send.
+     *
+     * @param context
+     * @param shortMessage
+     * @param args
+     */
+    public static void sendShortError(UserContext context, String shortMessage, Object... args) {
+        sendShortMessage(context, DPUContext.MessageType.ERROR, shortMessage, args);
+    }
+
+    /**
+     * Send short {@link DPUContext.MessageType#ERROR} message (caption only). The caption is formatted.
+     * Localization is applied before the message is send. Exception may be provided.
+     *
+     * @param context
+     * @param shortMessage
+     * @param exception
+     * @param args
+     */
+    public static void sendShortError(UserContext context, String shortMessage, Exception exception, Object... args) {
+        sendShortMessage(context, DPUContext.MessageType.ERROR, shortMessage, exception, args);
+    }
+
+    /**
      * Send short {@link DPUContext.MessageType#INFO message (caption only). The caption is formated.
      * Localization is applied before the message is send.
      * 
@@ -205,6 +258,19 @@ public class ContextUtils {
     }
 
     /**
+     * Send short {@link DPUContext.MessageType#INFO message (caption only). The caption is formated.
+     * Localization is applied before the message is send. Exception may be provided.
+     *
+     * @param context
+     * @param shortMessage
+     * @param exception
+     * @param args
+     */
+    public static void sendShortInfo(UserContext context, String shortMessage, Exception exception, Object... args) {
+        sendShortMessage(context, DPUContext.MessageType.INFO, shortMessage, exception, args);
+    }
+
+    /**
      * Send short {@link DPUContext.MessageType#WARNING} message (caption only). The caption is formated.
      * Localization is applied before the message is send.
      * 
@@ -214,6 +280,19 @@ public class ContextUtils {
      */
     public static void sendShortWarn(UserContext context, String shortMessage, Object... args) {
         sendShortMessage(context, DPUContext.MessageType.WARNING, shortMessage, args);
+    }
+
+    /**
+     * Send short {@link DPUContext.MessageType#WARNING} message (caption only). The caption is formated.
+     * Localization is applied before the message is send. Exception may be provided.
+     *
+     * @param context
+     * @param shortMessage
+     * @param exception
+     * @param args
+     */
+    public static void sendShortWarn(UserContext context, String shortMessage, Exception exception, Object... args) {
+        sendShortMessage(context, DPUContext.MessageType.WARNING, shortMessage, exception, args);
     }
 
     /**
