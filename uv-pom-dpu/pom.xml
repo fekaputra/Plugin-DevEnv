@@ -10,7 +10,7 @@
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-dpu</artifactId>
-    <version>2.1.7-SNAPSHOT</version>
+    <version>2.1.7</version>
     <packaging>pom</packaging>
     <name>uv-pom-dpu</name>
     <description>Commons base project for DPU's.</description>
