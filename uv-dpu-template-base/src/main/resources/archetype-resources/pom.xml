@@ -5,6 +5,7 @@
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom-dpu</artifactId>
         <version>${unifiedviews_api_version}</version>
+	<relativePath />
     </parent>
     <groupId>${groupId}</groupId>
     <artifactId>${artifactId}</artifactId>
