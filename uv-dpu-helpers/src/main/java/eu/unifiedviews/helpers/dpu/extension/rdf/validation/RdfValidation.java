@@ -339,42 +339,49 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
 
         if (context instanceof ExecContext) {
             //we are executing the extension
-            //get the particular instance of the selected output data unit to be validated (this is available only during execution)
-            this.dpuContext = ((ExecContext) context).getDpuContext();
-            log.info("\tcontext set to: {}", this.dpuContext);
 
-            final ExecContext execContext = (ExecContext) context;
-            final AbstractDpu dpu = execContext.getDpu();
+            //continue only when the extension is enabled
+            if (config.enabled) {
 
-            validatedDataUnit = null;
+                //get the particular instance of the selected output data unit to be validated (this is available only during execution)
+                this.dpuContext = ((ExecContext) context).getDpuContext();
+                log.info("\tcontext set to: {}", this.dpuContext);
 
-            //get output data unit which should be validated
-            for (Field field : dpu.getClass().getFields()) {
-                if (field.getAnnotation(DataUnit.AsOutput.class) != null) {
-                    // We got annotated field which is output data unit. Get it's value.
+                final ExecContext execContext = (ExecContext) context;
+                final AbstractDpu dpu = execContext.getDpu();
 
-                    try {
-                        final Object value = field.get(dpu);
-                        if (value == null) {
-                            // We are in scope of dialog, or input is not set.
-                            return;
-                        }
-                        if (value instanceof RDFDataUnit) {
-                            //we got output RDF data unit - add it to the list ! 
-                            log.info("Data unit to be validated: {}", config.validatedDataUnitName);
-                            log.info("Examined data unit name: {}", field.getAnnotation(DataUnit.AsOutput.class).name());
-                            if (field.getAnnotation(DataUnit.AsOutput.class).name().equals(config.validatedDataUnitName)) {
-                                validatedDataUnit = (RDFDataUnit) value;
+                validatedDataUnit = null;
+
+                //get output data unit which should be validated
+                for (Field field : dpu.getClass().getFields()) {
+                    if (field.getAnnotation(DataUnit.AsOutput.class) != null) {
+                        // We got annotated field which is output data unit. Get it's value.
+
+                        try {
+                            final Object value = field.get(dpu);
+                            if (value == null) {
+                                // We are in scope of dialog, or input is not set.
                                 return;
                             }
-                        }
+                            if (value instanceof RDFDataUnit) {
+                                //we got output RDF data unit - add it to the list !
+                                log.info("Data unit to be validated: {}", config.validatedDataUnitName);
+                                log.info("Examined data unit name: {}", field.getAnnotation(DataUnit.AsOutput.class).name());
+                                if (field.getAnnotation(DataUnit.AsOutput.class).name().equals(config.validatedDataUnitName)) {
+                                    validatedDataUnit = (RDFDataUnit) value;
+                                    return;
+                                }
+                            }
 
-                    } catch (IllegalAccessException | IllegalArgumentException ex) {
-                        throw new DPUException("Can't get value for annotated field: " + field.getName(), ex);
+                        } catch (IllegalAccessException | IllegalArgumentException ex) {
+                            throw new DPUException("Can't get value for annotated field: " + field.getName(), ex);
+                        }
                     }
                 }
+                //if we get here, something strange happened
+                log.error("Something strange happens, RDF validation was disabled. Data unit with the given name {} cannot be fetched. This is strange as the name was selected from the list of available data units! ", config.validatedDataUnitName);
+                config.enabled = false;
             }
-            throw new DPUException("No data unit to be validated available. Please specify data unit which should be validated!");
 
         }
         else {
