@@ -103,7 +103,7 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
                         ContextUtils.sendShortInfo(context.asUserContext(), "rdfvalidation.started", config.validatedDataUnitName);
 
                     } catch (DataUnitException ex) {
-                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.error", "Cannot obtain list of graphs within the validated output data unit", ex);
+                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.internalerror", ex, ex.getLocalizedMessage());
                         return;
                     }
 
@@ -112,16 +112,16 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
                     try {
                         ask = SparqlUtils.createAsk(config.getAskQuery(), entries);
                     } catch (SparqlProblemException ex) {
-                        log.error("Problem with the SPARQL ASK query", ex);
+                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.internalerror", ex, ex.getLocalizedMessage());
                         return;
                     } catch (DataUnitException ex) {
-                        log.error("Cannot execute the SPARQL ASK query", ex);
+                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.internalerror", ex, ex.getLocalizedMessage());
                         return;
                     }
                     try {
                         SparqlUtils.execute(connection, ask);
                     } catch (RepositoryException | MalformedQueryException | UpdateExecutionException | QueryEvaluationException ex) {
-                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.error", ex.getLocalizedMessage(), ex);
+                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.internalerror", ex, ex.getLocalizedMessage());
                         return;
                     }
 
