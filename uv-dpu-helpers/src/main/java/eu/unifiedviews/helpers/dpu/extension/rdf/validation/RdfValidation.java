@@ -103,7 +103,7 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
                         ContextUtils.sendShortInfo(context.asUserContext(), "rdfvalidation.started", config.validatedDataUnitName);
 
                     } catch (DataUnitException ex) {
-                        log.error("Cannot obtain list of graphs within the validated output data unit", ex);
+                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.error", "Cannot obtain list of graphs within the validated output data unit", ex);
                         return;
                     }
 
@@ -121,7 +121,7 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
                     try {
                         SparqlUtils.execute(connection, ask);
                     } catch (RepositoryException | MalformedQueryException | UpdateExecutionException | QueryEvaluationException ex) {
-                        log.error(ex.getLocalizedMessage(),ex);
+                        ContextUtils.sendError(context.asUserContext(),"rdfvalidation.finished.error", ex.getLocalizedMessage(), ex);
                         return;
                     }
 
