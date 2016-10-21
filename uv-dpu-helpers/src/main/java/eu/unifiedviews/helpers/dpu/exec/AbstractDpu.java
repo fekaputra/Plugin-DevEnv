@@ -141,7 +141,7 @@ public abstract class AbstractDpu<CONFIG> implements DPU, DPUConfigurable,
             exception = new DPUException("DPU.innerExecute throws throwable.", ex);
         }
         if (exception != null) {
-            LOG.error("DPU exeution failed!", exception);
+            LOG.error("DPU execution failed!", exception);
         }
 
         // Execute DPU's code - innerCleanUp.
