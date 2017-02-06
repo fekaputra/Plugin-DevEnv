@@ -16,12 +16,12 @@
  */
 package eu.unifiedviews.dpu;
 
+import eu.unifiedviews.dataunit.DataUnit;
+
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-
-import eu.unifiedviews.dataunit.DataUnit;
 
 /**
  * Context used by {@link DPU} during their execution process. The context
@@ -113,10 +113,26 @@ public interface DPUContext {
 
     /**
      * To enable more verbose behavior of {@link DPU} execution, or more detailed information processed.
-     * 
+     *
      * @return True if the {@link DPU} is running in debugging mode.
      */
     boolean isDebugging();
+
+    /**
+     * Get information whether the given {@link DataUnit} may be executed in optimistic mode, i.e., may
+     * change its data directly - this is possible when:
+     * 1) the DPU is NOT executed in debug mode (because in this case we need intermediate data)
+     * 2) the {@link DataUnit} of this DPU is the only {@link DataUnit} working on top of the output data produced by the preceding DPU
+     * (so that input data is not accidentally changed for another parallel DPU)
+     * If the DPUs may change the inputs, they may use that for further optimizations - e.g. SPARQL Update
+     * DPU does not need to copy initial data but works directly on top of input data
+     * It makes sense to call such method on the input {@link DataUnit}s.
+     *
+     * @param dataunit
+     *            {@link DataUnit} which should be tested whether it can be run in optimistic mode or not
+     * @return True if the {@link DataUnit} can run in optmistic mode
+     */
+     boolean isOptimisticModeEnabled(DataUnit dataunit);
 
     /**
      * Return pipeline owner user name
