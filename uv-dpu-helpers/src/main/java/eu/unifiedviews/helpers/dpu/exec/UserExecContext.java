@@ -49,8 +49,8 @@ public class UserExecContext extends UserContext {
     }
 
     /**
-     * Get information whether the given {@link DataUnit} may be executed in optimistic mode, i.e., may
-     * change its data directly - this is possible when:
+     * Get information whether the RDF performance optimization is enabled for the given {@link DataUnit}, i.e., may
+     * change its input data graphs directly e.g. via a SPARQL Update query - this is possible when:
      * 1) the DPU is NOT executed in debug mode (because in this case we need intermediate data)
      * 2) the {@link DataUnit} of this DPU is the only {@link DataUnit} working on top of the output data produced by the preceding DPU
      * (so that input data is not accidentally changed for another parallel DPU)
@@ -59,15 +59,15 @@ public class UserExecContext extends UserContext {
      * It makes sense to call such method on the input {@link DataUnit}s.
      *
      * @param dataunit
-     *            {@link DataUnit} which should be tested whether it can be run in optimistic mode or not
+     *            {@link DataUnit} which should be tested whether we can directly change the data unit
      * @return True if the {@link DataUnit} can run in optmistic mode
      */
-    public boolean isOptimisticModeEnabled(DataUnit dataunit) {
+    public boolean isPerformanceOptimizationEnabled(DataUnit dataunit) {
         try {
-            return execMasterContext.getDpuContext().isOptimisticModeEnabled(dataunit);
+            return execMasterContext.getDpuContext().isPerformanceOptimizationEnabled(dataunit);
         } catch (NoSuchMethodError e) {
-            log.warn("Method isOptimisticModeEnabled not available at DpuContext interface. This message may appear if you try to run DPU using 2.1.8+ API in UnifiedViews using <2.1.8 API", e);
-            log.info("Optimistic mode always DISABLED");
+            log.warn("Method isPerformanceOptimizationEnabled is not available at DpuContext interface. This message may appear if you try to run DPU using 2.1.8+ API in UnifiedViews using <2.1.8 API", e);
+            log.info("Performance optimization is always DISABLED");
             return false;
         }
     }

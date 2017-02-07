@@ -119,7 +119,7 @@ public interface DPUContext {
     boolean isDebugging();
 
     /**
-     * Get information whether the given {@link DataUnit} may be executed in optimistic mode, i.e., may
+     * Get information whether the RDF performance optimization is enabled for the given {@link DataUnit}, i.e., may
      * change its data directly - this is possible when:
      * 1) the DPU is NOT executed in debug mode (because in this case we need intermediate data)
      * 2) the {@link DataUnit} of this DPU is the only {@link DataUnit} working on top of the output data produced by the preceding DPU
@@ -129,10 +129,10 @@ public interface DPUContext {
      * It makes sense to call such method on the input {@link DataUnit}s.
      *
      * @param dataunit
-     *            {@link DataUnit} which should be tested whether it can be run in optimistic mode or not
-     * @return True if the {@link DataUnit} can run in optmistic mode
+     *            {@link DataUnit} which should be tested whether it can be optimized
+     * @return True if RDF performance may be optimized for the {@link DataUnit}
      */
-     boolean isOptimisticModeEnabled(DataUnit dataunit);
+     boolean isPerformanceOptimizationEnabled(DataUnit dataunit);
 
     /**
      * Return pipeline owner user name
