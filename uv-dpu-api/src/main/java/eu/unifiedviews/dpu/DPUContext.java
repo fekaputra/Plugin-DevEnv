@@ -243,9 +243,16 @@ public interface DPUContext {
     String getDpuInstanceDirectory();
 
     /**
-     * Return the execution environment variables
-     * 
-     * @return
+     * Return the execution environment variables.
+     *
+     * Execution environment variables are collected from config.properties file properties and from runtime properties.
+     *
+     * It may be used to e.g. set up loader correspondingly based on
+     * the particular deployment (test, pre-release, release).
+     *
+     * Such map SHOULD NOT be used for exchanging data between DPUs.
+     *
+     * @return Map of environment variables.
      */
     Map<String, String> getEnvironment();
 

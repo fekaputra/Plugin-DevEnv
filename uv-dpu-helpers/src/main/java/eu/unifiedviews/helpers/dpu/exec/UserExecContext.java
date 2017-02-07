@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import eu.unifiedviews.dataunit.DataUnit;
 import eu.unifiedviews.helpers.dpu.context.UserContext;
 
+import java.util.Map;
+
 /**
  * User version of {@link ExecContext}.
  * DPU developer has access to this context from the DPU by calling {@code this.ctx}
@@ -71,6 +73,37 @@ public class UserExecContext extends UserContext {
             return false;
         }
     }
+
+    /**
+     * Return the execution environment variables.
+     *
+     * Execution environment variables are collected from config.properties file properties and from runtime properties.
+     *
+     * It may be used to e.g. set up loader correspondingly based on
+     * the particular deployment (test, pre-release, release).
+     *
+     * Such map SHOULD NOT be used for exchanging data between DPUs.
+     *
+     * @return Map of environment variables.
+     */
+    public Map<String, String> getEnvironmentVariables() {
+        return execMasterContext.getDpuContext().getEnvironment();
+    }
+
+    /**
+     * Returns the value for the given environment variable
+     * @param key The key of the environment variable
+     * @return Returns the value for the given key or NULL if such execution variable is not defined.
+     */
+    public String getEnvironmentVariable(String key) {
+        if (execMasterContext.getDpuContext().getEnvironment().containsKey(key)) {
+            return execMasterContext.getDpuContext().getEnvironment().get(key);
+        }
+        else {
+            return null;
+        }
+    }
+
 
     public ExecContext<?> getExecMasterContext() {
         return execMasterContext;
