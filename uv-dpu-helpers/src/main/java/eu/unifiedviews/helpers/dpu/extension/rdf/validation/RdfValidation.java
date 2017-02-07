@@ -75,9 +75,9 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
     }
 
     private void validate() {
-        log.info("Validation launched");
 
         if (config.enabled) {
+            log.info("RDF Validation extension enabled");
 
             if (config.askQuery != null && (!config.askQuery.isEmpty())) {
 
@@ -152,7 +152,7 @@ public class RdfValidation implements Extension, Extension.Executable, Configura
             }
         }
         else {
-            log.info("Validation disabled");
+            log.info("RDF Validation extension disabled");
 
         }
 

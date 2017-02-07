@@ -112,9 +112,9 @@ public abstract class AbstractDpu<CONFIG> implements DPU, DPUConfigurable,
         this.ctx = new UserExecContext(this.masterContext);
         // Execute DPU's code - innerInit.
         try {
-            LOG.info("innerInit:start");
+            LOG.info("DPU's user initialization started");
             innerInit();
-            LOG.info("innerInit:end");
+            LOG.info("DPU's user initialization finished");
         } catch (DataUnitException ex) {
             throw new DPUException("DPU.innerInit fail for problem with data unit.", ex);
         } catch (DPUException ex) {
@@ -129,9 +129,9 @@ public abstract class AbstractDpu<CONFIG> implements DPU, DPUConfigurable,
         DPUException exception = null;
         try {
             if (executeDpu) {
-                LOG.info("innerExecute:start");
+                LOG.info("DPU's user execution started");
                 innerExecute();
-                LOG.info("innerExecute:end");
+                LOG.info("DPU's user execution finished");
             }
         } catch (DPUException ex) {
             exception = ex;
@@ -146,9 +146,9 @@ public abstract class AbstractDpu<CONFIG> implements DPU, DPUConfigurable,
 
         // Execute DPU's code - innerCleanUp.
         try {
-            LOG.info("innerCleanUp:start");
+            LOG.info("DPU's user cleanup started");
             innerCleanUp();
-            LOG.info("innerCleanUp:stop");
+            LOG.info("DPU's user cleanup finished");
         } catch (Throwable ex) {
             if (exception == null) {
                 exception = new DPUException("DPU.innerCleanUp throws throwable.", ex);
