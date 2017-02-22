@@ -136,9 +136,9 @@
         <!-- Profile for compilation with Java 8. -->
         <profile>
             <id>java8</id>
-            <activation>
+            <!--<activation>
                 <jdk>1.8</jdk>
-            </activation>
+            </activation>-->
             <properties>
                 <project.java.target.version>1.8</project.java.target.version>
             </properties>
