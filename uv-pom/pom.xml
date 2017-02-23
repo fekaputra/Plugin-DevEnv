@@ -147,6 +147,7 @@
         <profile>
             <id>java7</id>
             <properties>
+                <project.java.source.version>1.7</project.java.source.version>
                 <project.java.target.version>1.7</project.java.target.version>
             </properties>
         </profile>
