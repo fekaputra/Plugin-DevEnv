@@ -44,8 +44,8 @@
         <commons.io>2.4</commons.io>
 
         <!-- System properties. -->
-        <project.java.source.version>1.7</project.java.source.version>
-        <project.java.target.version>1.7</project.java.target.version>
+        <project.java.source.version>1.8</project.java.source.version>
+        <project.java.target.version>1.8</project.java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
@@ -141,6 +141,13 @@
             </activation>
             <properties>
                 <project.java.target.version>1.8</project.java.target.version>
+            </properties>
+        </profile>
+        <!-- Profile for compilation with Java 7. -->
+        <profile>
+            <id>java7</id>
+            <properties>
+                <project.java.target.version>1.7</project.java.target.version>
             </properties>
         </profile>
     </profiles>
