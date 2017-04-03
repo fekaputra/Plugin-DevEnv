@@ -18,11 +18,11 @@ package eu.unifiedviews.helpers.dataunit.metadata;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import java.util.Set;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.*;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.*;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 /**
  * Manipulator for writing metadata.
@@ -67,7 +67,7 @@ public class WritableMetadataUtilsInstance extends MetadataUtilsInstance<Writabl
      */
     private final String datasetWithClause;
 
-    WritableMetadataUtilsInstance(RepositoryConnection connection, Set<URI> readGraphs, URI writeGraph,
+    WritableMetadataUtilsInstance(RepositoryConnection connection, Set<IRI> readGraphs, IRI writeGraph,
             String symbolicName, boolean closeConnectionOnClose) throws DataUnitException {
         super(connection, readGraphs, symbolicName, closeConnectionOnClose);
         if (useDataset()) {
@@ -92,7 +92,7 @@ public class WritableMetadataUtilsInstance extends MetadataUtilsInstance<Writabl
      * @return
      * @throws DataUnitException
      */
-    public WritableMetadataUtilsInstance add(URI predicate, String value) throws DataUnitException {
+    public WritableMetadataUtilsInstance add(IRI predicate, String value) throws DataUnitException {
         try {
             final String query;
             if (useDataset()) {
@@ -128,7 +128,7 @@ public class WritableMetadataUtilsInstance extends MetadataUtilsInstance<Writabl
      * @return
      * @throws DataUnitException
      */
-    public WritableMetadataUtilsInstance set(URI predicate, String value) throws DataUnitException {
+    public WritableMetadataUtilsInstance set(IRI predicate, String value) throws DataUnitException {
         try {
             final String query;
             if (useDataset()) {

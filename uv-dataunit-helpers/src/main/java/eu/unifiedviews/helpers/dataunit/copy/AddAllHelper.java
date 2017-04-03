@@ -16,13 +16,13 @@
  */
 package eu.unifiedviews.helpers.dataunit.copy;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.Update;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +58,7 @@ public class AddAllHelper {
             connection = destination.getConnection();
 
             String targetGraphName = destination.addNewDataGraph("all").stringValue();
-            for (URI sourceGraph : RDFHelper.getGraphsURISet(source)) {
+            for (IRI sourceGraph : RDFHelper.getGraphsURISet(source)) {
                 String sourceGraphName = sourceGraph.stringValue();
 
                 LOG.info("Trying to merge {} triples from <{}> to <{}>.",

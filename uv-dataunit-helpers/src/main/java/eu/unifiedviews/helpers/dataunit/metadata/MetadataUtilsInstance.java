@@ -16,21 +16,23 @@
  */
 package eu.unifiedviews.helpers.dataunit.metadata;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.MetadataDataUnit;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.*;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.*;
+import org.eclipse.rdf4j.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dpu.DPUException;
 
 /**
@@ -113,7 +115,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
      * @param closeConnectionOnClose If true then given connection is close one this instance is closed.
      * @throws DataUnitException
      */
-    MetadataUtilsInstance(RepositoryConnection connection, Set<URI> readGraph, String symbolicName,
+    MetadataUtilsInstance(RepositoryConnection connection, Set<IRI> readGraph, String symbolicName,
             boolean closeConnectionOnClose) throws DataUnitException {
         this.connection = connection;
         this.symbolicName = symbolicName;
@@ -121,7 +123,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
         // Add read graphs.
         if (useDataset()) {
             this.dataset = new DatasetImpl();
-            for (URI uri : readGraph) {
+            for (IRI uri : readGraph) {
                 this.dataset.addDefaultGraph(uri);
             }
             this.datasetUsingClause = null;
@@ -131,7 +133,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
             // Build USING clause
             final StringBuilder clauseUsingBuilder = new StringBuilder(readGraph.size() * 15);
             final StringBuilder clauseFromBuilder = new StringBuilder(readGraph.size() * 15);
-            for (URI uri : readGraph) {
+            for (IRI uri : readGraph) {
                 clauseUsingBuilder.append("USING <");
                 clauseUsingBuilder.append(uri.toString());
                 clauseUsingBuilder.append(">\n");
@@ -171,11 +173,11 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
      *
      * If more strings are stored under given predicate then one of them is returned.
      *
-     * @param predicate Must be valid URI in string form.
+     * @param predicate Must be valid IRI in string form.
      * @return
      * @throws DataUnitException
      */
-    public Value getFirst(URI predicate) throws DataUnitException {
+    public Value getFirst(IRI predicate) throws DataUnitException {
         try {
             final TupleQueryResult result = executeSelectQuery(predicate);
             // Return first result.
@@ -190,7 +192,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
         }
     }
 
-    public Value get(URI predicate) throws DataUnitException, DPUException {
+    public Value get(IRI predicate) throws DataUnitException, DPUException {
         try {
             final TupleQueryResult result = executeSelectQuery(predicate);
             // Return first result.
@@ -214,11 +216,11 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
     /**
      * Get all strings stored under given predicate. For metadata under current {@link #symbolicName}.
      *
-     * @param predicate Must be valid URI in string form.
+     * @param predicate Must be valid IRI in string form.
      * @return
      * @throws DataUnitException
      */
-    public List<Value> getAll(URI predicate) throws DataUnitException {
+    public List<Value> getAll(IRI predicate) throws DataUnitException {
         try {
             final TupleQueryResult result = executeSelectQuery(predicate);
             // Dump result list.
@@ -288,7 +290,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
      * @throws MalformedQueryException
      * @throws QueryEvaluationException
      */
-    private TupleQueryResult executeSelectQuery(URI predicate) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+    private TupleQueryResult executeSelectQuery(IRI predicate) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
         final ValueFactory valueFactory = connection.getValueFactory();
         // Prepare query. Add clause if dataset is not used.
         final String query;

@@ -29,7 +29,7 @@
         <unifiedviews.api.version>2.1.8-SNAPSHOT</unifiedviews.api.version>
 
         <!-- Used bundle plugin version. -->
-        <bundle.plugin.version>2.3.7</bundle.plugin.version>
+        <bundle.plugin.version>2.4.0</bundle.plugin.version>
 
         <!-- Versions of 3rd party libraries -->
         <!-- Vaadin -->
@@ -38,7 +38,7 @@
         <!-- other third party libraries versions -->
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
-        <sesame.version>2.8.11</sesame.version>
+        <rdf4j.version>2.2</rdf4j.version>
         <junit.version>4.12</junit.version>
         <xstream.version>1.4.7</xstream.version>
         <commons.io>2.4</commons.io>
@@ -80,14 +80,14 @@
             </dependency>
 
             <dependency>
-                <groupId>org.openrdf.sesame</groupId>
-                <artifactId>sesame-model</artifactId>
-                <version>${sesame.version}</version>
+                <groupId>org.eclipse.rdf4j</groupId>
+                <artifactId>rdf4j-model</artifactId>
+                <version>${rdf4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.openrdf.sesame</groupId>
-                <artifactId>sesame-repository-api</artifactId>
-                <version>${sesame.version}</version>
+                <groupId>org.eclipse.rdf4j</groupId>
+                <artifactId>rdf4j-repository-api</artifactId>
+                <version>${rdf4j.version}</version>
             </dependency>
 
             <dependency>

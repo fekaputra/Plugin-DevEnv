@@ -19,9 +19,9 @@ package eu.unifiedviews.helpers.dataunit.dataset;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.impl.DatasetImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * <blockquote>
  * 
  * <pre>
- * Set&lt;URI&gt; someSet = obtainRemoveGraphsSomehow();
+ * Set&lt;IRI&gt; someSet = obtainRemoveGraphsSomehow();
  * Query query = connection.prepareQuery();
  * query.setDataset(new DatasetBuilder()
  *         .withInsertGraph(&quot;http://default&quot;)
@@ -52,13 +52,13 @@ public class DatasetBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasetBuilder.class);
 
-    private Set<URI> defaultRemoveGraphs = new LinkedHashSet<URI>();
+    private Set<IRI> defaultRemoveGraphs = new LinkedHashSet<IRI>();
 
-    private URI defaultInsertGraph;
+    private IRI defaultInsertGraph;
 
-    private Set<URI> defaultGraphs = new LinkedHashSet<URI>();;
+    private Set<IRI> defaultGraphs = new LinkedHashSet<IRI>();;
 
-    private Set<URI> namedGraphs = new LinkedHashSet<URI>();
+    private Set<IRI> namedGraphs = new LinkedHashSet<IRI>();
 
     public DatasetBuilder() {
     }
@@ -70,7 +70,7 @@ public class DatasetBuilder {
      *            graph URIs to add to defaultRemoveGraphs property
      * @return this
      */
-    public DatasetBuilder withDefaultRemoveGraphs(Set<URI> defaultRemoveGraphs) {
+    public DatasetBuilder withDefaultRemoveGraphs(Set<IRI> defaultRemoveGraphs) {
         this.defaultRemoveGraphs.addAll(defaultRemoveGraphs);
         return this;
     }
@@ -79,10 +79,10 @@ public class DatasetBuilder {
      * Add provided graph to an existing set of defaultRemoveGraphs. Does not replace previously added graphs.
      * 
      * @param defaultRemoveGraph
-     *            graph URI to add to defaultRemoveGraphs property
+     *            graph IRI to add to defaultRemoveGraphs property
      * @return this
      */
-    public DatasetBuilder addDefaultRemoveGraph(URI defaultRemoveGraph) {
+    public DatasetBuilder addDefaultRemoveGraph(IRI defaultRemoveGraph) {
         this.defaultRemoveGraphs.add(defaultRemoveGraph);
         return this;
     }
@@ -91,10 +91,10 @@ public class DatasetBuilder {
      * Sets defaultInsertGraph property (rewrites previous value)
      * 
      * @param defaultInsertGraph
-     *            graph URI to set to defaultInsertGraph property
+     *            graph IRI to set to defaultInsertGraph property
      * @return this
      */
-    public DatasetBuilder withInsertGraph(URI defaultInsertGraph) {
+    public DatasetBuilder withInsertGraph(IRI defaultInsertGraph) {
         this.defaultInsertGraph = defaultInsertGraph;
         return this;
     }
@@ -106,7 +106,7 @@ public class DatasetBuilder {
      *            graph URIs to add to defaultGraphs property
      * @return this
      */
-    public DatasetBuilder withDefaultGraphs(Set<URI> defaultGraphs) {
+    public DatasetBuilder withDefaultGraphs(Set<IRI> defaultGraphs) {
         this.defaultGraphs.addAll(defaultGraphs);
         return this;
     }
@@ -117,7 +117,7 @@ public class DatasetBuilder {
      * @return this
      */
     @Deprecated
-    public DatasetBuilder addDefaultGraphs(URI defaultGraph) {
+    public DatasetBuilder addDefaultGraphs(IRI defaultGraph) {
         this.defaultGraphs.add(defaultGraph);
         return this;
     }
@@ -126,10 +126,10 @@ public class DatasetBuilder {
      * Add provided graph to an existing set of defaultGraphs. Does not replace previously added graphs.
      * 
      * @param defaultGraph
-     *            graph URI to add to defaultGraphs property
+     *            graph IRI to add to defaultGraphs property
      * @return this
      */
-    public DatasetBuilder addDefaultGraph(URI defaultGraph) {
+    public DatasetBuilder addDefaultGraph(IRI defaultGraph) {
         this.defaultGraphs.add(defaultGraph);
         return this;
     }
@@ -141,7 +141,7 @@ public class DatasetBuilder {
      *            graph URIs to add to namedGraphs property
      * @return this
      */
-    public DatasetBuilder withNamedGraphs(Set<URI> namedGraphs) {
+    public DatasetBuilder withNamedGraphs(Set<IRI> namedGraphs) {
         this.namedGraphs.addAll(namedGraphs);
         return this;
     }
@@ -150,10 +150,10 @@ public class DatasetBuilder {
      * Add provided graph to an existing set of namedGraphs. Does not replace previously added graphs.
      * 
      * @param namedGraph
-     *            graph URI to add to namedGraphs property
+     *            graph IRI to add to namedGraphs property
      * @return this
      */
-    public DatasetBuilder addNamedGraph(URI namedGraph) {
+    public DatasetBuilder addNamedGraph(IRI namedGraph) {
         this.namedGraphs.add(namedGraph);
         return this;
     }
@@ -165,14 +165,14 @@ public class DatasetBuilder {
      */
     public Dataset build() {
         DatasetImpl dataset = new DatasetImpl();
-        for (URI graphURI : defaultRemoveGraphs) {
+        for (IRI graphURI : defaultRemoveGraphs) {
             dataset.addDefaultRemoveGraph(graphURI);
         }
         dataset.setDefaultInsertGraph(defaultInsertGraph);
-        for (URI graphURI : defaultGraphs) {
+        for (IRI graphURI : defaultGraphs) {
             dataset.addDefaultGraph(graphURI);
         }
-        for (URI graphURI : namedGraphs) {
+        for (IRI graphURI : namedGraphs) {
             dataset.addNamedGraph(graphURI);
         }
         return dataset;

@@ -16,14 +16,14 @@
  */
 package eu.unifiedviews.helpers.dataunit.copy;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.Update;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +149,7 @@ public class CopyHelpers {
                         connection.getValueFactory().createLiteral(symbolicName));
 
                 final DatasetImpl dataset = new DatasetImpl();
-                for (URI item : source.getMetadataGraphnames()) {
+                for (IRI item : source.getMetadataGraphnames()) {
                     dataset.addDefaultGraph(item);
                 }
                 dataset.setDefaultInsertGraph(

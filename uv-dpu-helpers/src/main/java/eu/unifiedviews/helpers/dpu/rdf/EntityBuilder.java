@@ -19,10 +19,10 @@ package eu.unifiedviews.helpers.dpu.rdf;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 /**
  * Class designed for easy building of statements about certain RDF resource (entity). Each builder can be used to build just one RDF resource and its
@@ -41,7 +41,7 @@ public class EntityBuilder {
     /**
      * Uri of currently constructed entity.
      */
-    private final URI entityUri;
+    private final IRI entityUri;
 
     /**
      * Used value factory.
@@ -55,7 +55,7 @@ public class EntityBuilder {
      *            Ontology used during creation of this object. Can be null but in such case methods
      *            which utilize ontology must no be called.
      */
-    public EntityBuilder(URI entityUri, ValueFactory valueFactory) {
+    public EntityBuilder(IRI entityUri, ValueFactory valueFactory) {
         this.entityUri = entityUri;
         this.valueFactory = valueFactory;
     }
@@ -67,7 +67,7 @@ public class EntityBuilder {
      * @param value
      * @return
      */
-    public EntityBuilder property(URI property, String value) {
+    public EntityBuilder property(IRI property, String value) {
         statemetns.add(valueFactory.createStatement(entityUri, property, valueFactory.createLiteral(value)));
         return this;
     }
@@ -79,20 +79,20 @@ public class EntityBuilder {
      * @param value
      * @return
      */
-    public EntityBuilder property(URI property, Value value) {
+    public EntityBuilder property(IRI property, Value value) {
         statemetns.add(valueFactory.createStatement(entityUri, property, value));
         return this;
     }
 
     /**
-     * Adds property with certain value to the subject. As a value certain entity URI of given {@link EntityBuilder} is used.
+     * Adds property with certain value to the subject. As a value certain entity IRI of given {@link EntityBuilder} is used.
      * So this method should be used to model object properties.
      * 
      * @param property
      * @param entity
      * @return
      */
-    public EntityBuilder property(URI property, EntityBuilder entity) {
+    public EntityBuilder property(IRI property, EntityBuilder entity) {
         statemetns.add(valueFactory.createStatement(entityUri, property, entity.getEntityUri()));
         return this;
     }
@@ -107,11 +107,11 @@ public class EntityBuilder {
     }
 
     /**
-     * Gets URI of the constructed entity
+     * Gets IRI of the constructed entity
      * 
-     * @return URI of entity that is under construction.
+     * @return IRI of entity that is under construction.
      */
-    public URI getEntityUri() {
+    public IRI getEntityUri() {
         return entityUri;
     }
 

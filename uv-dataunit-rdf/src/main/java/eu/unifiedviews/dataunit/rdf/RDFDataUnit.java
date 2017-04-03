@@ -16,7 +16,7 @@
  */
 package eu.unifiedviews.dataunit.rdf;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
@@ -41,12 +41,12 @@ public interface RDFDataUnit extends MetadataDataUnit {
      */
     interface Entry extends MetadataDataUnit.Entry {
         /**
-         * Get the URI of graph inside storage where data are located.
+         * Get the IRI of graph inside storage where data are located.
          *
-         * @return URI of graph inside storage where data are located.
+         * @return IRI of graph inside storage where data are located.
          * @throws DataUnitException when something fails
          */
-        URI getDataGraphURI() throws DataUnitException;
+        IRI getDataGraphURI() throws DataUnitException;
     }
 
     interface Iteration extends MetadataDataUnit.Iteration {

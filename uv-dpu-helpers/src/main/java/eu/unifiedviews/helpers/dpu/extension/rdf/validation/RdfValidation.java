@@ -38,11 +38,11 @@ import eu.unifiedviews.helpers.dpu.rdf.sparql.SparqlProblemException;
 import eu.unifiedviews.helpers.dpu.rdf.sparql.SparqlUtils;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractExtensionDialog;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

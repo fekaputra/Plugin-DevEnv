@@ -16,8 +16,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-model</artifactId>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-model</artifactId>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -27,8 +27,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-repository-api</artifactId>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-repository-api</artifactId>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

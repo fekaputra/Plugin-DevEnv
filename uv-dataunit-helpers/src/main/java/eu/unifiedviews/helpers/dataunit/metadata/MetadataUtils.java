@@ -16,13 +16,13 @@
  */
 package eu.unifiedviews.helpers.dataunit.metadata;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.ValueFactoryImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import eu.unifiedviews.dpu.DPUException;
 
@@ -175,7 +175,7 @@ public class MetadataUtils {
      * @throws DataUnitException
      * @throws DPUException If more then one object is found for given predicate and symbolicName.
      */
-    public static String get(MetadataDataUnit dataUnit, String symbolicName, URI predicate)
+    public static String get(MetadataDataUnit dataUnit, String symbolicName, IRI predicate)
             throws DataUnitException, DPUException {
         try (MetadataUtilsInstance instance = create(dataUnit, symbolicName)) {
             final Value value = instance.get(predicate);
@@ -197,7 +197,7 @@ public class MetadataUtils {
      * @throws DataUnitException
      * @throws DPUException If more then one object is found for given predicate and symbolicName.
      */
-    public static String get(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate)
+    public static String get(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate)
             throws DataUnitException, DPUException {
         try (MetadataUtilsInstance instance = create(dataUnit, entry)) {
             final Value value = instance.get(predicate);
@@ -220,7 +220,7 @@ public class MetadataUtils {
      * @throws DataUnitException
      * @throws DPUException If more then one object is found for given predicate and symbolicName.
      */
-    public static String get(MetadataDataUnit dataUnit, String symbolicName, URI predicate,
+    public static String get(MetadataDataUnit dataUnit, String symbolicName, IRI predicate,
             RepositoryConnection connection) throws DataUnitException, DPUException {
         try (MetadataUtilsInstance instance = create(dataUnit, symbolicName, connection)) {
             final Value value = instance.get(predicate);
@@ -243,7 +243,7 @@ public class MetadataUtils {
      * @throws DataUnitException
      * @throws DPUException If more then one object is found for given predicate and symbolicName.
      */
-    public static String get(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate,
+    public static String get(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate,
             RepositoryConnection connection) throws DataUnitException, DPUException {
         try (MetadataUtilsInstance instance = create(dataUnit, entry, connection)) {
             final Value value = instance.get(predicate);
@@ -270,7 +270,7 @@ public class MetadataUtils {
     @Deprecated
     public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, String predicate)
             throws DataUnitException {
-        return getFirst(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createURI(predicate));
+        return getFirst(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate));
     }
 
     /**
@@ -284,7 +284,7 @@ public class MetadataUtils {
      * @return
      * @throws DataUnitException
      */
-    public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, URI predicate)
+    public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, IRI predicate)
             throws DataUnitException {
         try (MetadataUtilsInstance instance = create(dataUnit, symbolicName)) {
             final Value value = instance.getFirst(predicate);
@@ -325,7 +325,7 @@ public class MetadataUtils {
      * @return
      * @throws DataUnitException
      */
-    public static String getFirst(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate)
+    public static String getFirst(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate)
             throws DataUnitException {
         return getFirst(dataUnit, entry.getSymbolicName(), predicate);
     }
@@ -346,7 +346,7 @@ public class MetadataUtils {
     @Deprecated
     public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, String predicate,
             RepositoryConnection connection) throws DataUnitException {
-        return getFirst(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createURI(predicate),
+        return getFirst(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate),
                 connection);
     }
 
@@ -362,7 +362,7 @@ public class MetadataUtils {
      * @return
      * @throws DataUnitException
      */
-    public static String getFirst(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate,
+    public static String getFirst(MetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate,
             RepositoryConnection connection) throws DataUnitException {
         return getFirst(dataUnit, entry.getSymbolicName(), predicate, connection);
     }
@@ -398,7 +398,7 @@ public class MetadataUtils {
      * @return
      * @throws DataUnitException
      */
-    public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, URI predicate,
+    public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, IRI predicate,
             RepositoryConnection connection) throws DataUnitException {
         try (MetadataUtilsInstance instance = create(dataUnit, symbolicName, connection)) {
             final Value value = instance.getFirst(predicate);
@@ -425,7 +425,7 @@ public class MetadataUtils {
     @Deprecated
     public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value) throws DataUnitException {
-        set(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createURI(predicate), value);
+        set(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value);
     }
 
     /**
@@ -439,7 +439,7 @@ public class MetadataUtils {
      * @param value
      * @throws DataUnitException
      */
-    public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, URI predicate,
+    public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, IRI predicate,
             String value) throws DataUnitException {
         try (WritableMetadataUtilsInstance instance = create(dataUnit, symbolicName)) {
             instance.set(predicate, value);
@@ -475,7 +475,7 @@ public class MetadataUtils {
      * @param value
      * @throws DataUnitException
      */
-    public static void set(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate,
+    public static void set(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate,
             String value) throws DataUnitException {
         set(dataUnit, entry.getSymbolicName(), predicate, value);
     }
@@ -497,7 +497,7 @@ public class MetadataUtils {
     @Deprecated
     public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
-        set(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createURI(predicate), value, connection);
+        set(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value, connection);
     }
 
     /**
@@ -512,7 +512,7 @@ public class MetadataUtils {
      * @param connection
      * @throws DataUnitException
      */
-    public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, URI predicate,
+    public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, IRI predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
         try (WritableMetadataUtilsInstance instance = create(dataUnit, symbolicName, connection)) {
             instance.set(predicate, value);
@@ -550,7 +550,7 @@ public class MetadataUtils {
      * @param connection
      * @throws DataUnitException
      */
-    public static void set(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate,
+    public static void set(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
         set(dataUnit, entry.getSymbolicName(), predicate, value, connection);
     }
@@ -569,7 +569,7 @@ public class MetadataUtils {
     @Deprecated
     public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value) throws DataUnitException {
-        add(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createURI(predicate), value);
+        add(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value);
     }
 
     /**
@@ -582,7 +582,7 @@ public class MetadataUtils {
      * @param value
      * @throws DataUnitException
      */
-    public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, URI predicate,
+    public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, IRI predicate,
             String value) throws DataUnitException {
         try (WritableMetadataUtilsInstance instance = create(dataUnit, symbolicName)) {
             instance.add(predicate, value);
@@ -616,7 +616,7 @@ public class MetadataUtils {
      * @param value
      * @throws DataUnitException
      */
-    public static void add(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate,
+    public static void add(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate,
             String value) throws DataUnitException {
         add(dataUnit, entry.getSymbolicName(), predicate, value);
     }
@@ -637,7 +637,7 @@ public class MetadataUtils {
     @Deprecated
     public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
-        add(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createURI(predicate), value, connection);
+        add(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value, connection);
     }
 
     /**
@@ -651,7 +651,7 @@ public class MetadataUtils {
      * @param connection
      * @throws DataUnitException
      */
-    public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, URI predicate,
+    public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, IRI predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
         try (WritableMetadataUtilsInstance instance = create(dataUnit, symbolicName, connection)) {
             instance.add(predicate, value);
@@ -687,7 +687,7 @@ public class MetadataUtils {
      * @param connection
      * @throws DataUnitException
      */
-    public static void add(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, URI predicate,
+    public static void add(WritableMetadataDataUnit dataUnit, MetadataDataUnit.Entry entry, IRI predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
         add(dataUnit, entry.getSymbolicName(), predicate, value, connection);
     }

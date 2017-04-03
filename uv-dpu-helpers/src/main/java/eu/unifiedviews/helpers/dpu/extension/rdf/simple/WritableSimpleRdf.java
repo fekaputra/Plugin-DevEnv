@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import eu.unifiedviews.dataunit.rdf.WritableRDFDataUnit;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.StatementImpl;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,7 +101,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
     /**
      * Current write set.
      */
-    protected List<URI> writeContext = new ArrayList<>();
+    protected List<IRI> writeContext = new ArrayList<>();
 
     protected Configuration configuration = new Configuration();
 
@@ -118,7 +118,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
      * @throws SimpleRdfException
      * @throws DPUException
      */
-    public WritableSimpleRdf add(Resource s, URI p, Value o) throws SimpleRdfException, DPUException {
+    public WritableSimpleRdf add(Resource s, IRI p, Value o) throws SimpleRdfException, DPUException {
         // Add to buffer.
         writeBuffer.add(new StatementImpl(s, p, o));
         applyFlushBufferPolicy();
@@ -177,7 +177,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
             createDefaultWriteGraph();
         }
         // Prepare write contexts.
-        final URI[] contexts = writeContext.toArray(new URI[0]);
+        final IRI[] contexts = writeContext.toArray(new IRI[0]);
         // Get connection and add data.
         RepositoryConnection connection = null;
         try {
@@ -242,7 +242,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
 
     public void setOutputInner(List<RDFDataUnit.Entry> entries) throws SimpleRdfException {
         // Change target graph.
-        final List<URI> newWriteContext = new ArrayList<>(entries.size());
+        final List<IRI> newWriteContext = new ArrayList<>(entries.size());
         for (RDFDataUnit.Entry entry : entries) {
             try {
                 newWriteContext.add(entry.getDataGraphURI());
@@ -253,11 +253,11 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
         this.writeContext = newWriteContext;
     }
 
-    public List<URI> getWriteContext() {
+    public List<IRI> getWriteContext() {
         return writeContext;
     }
 
-    public void setWriteContext(List<URI> writeContext) {
+    public void setWriteContext(List<IRI> writeContext) {
         this.writeContext = writeContext;
     }
 
@@ -291,7 +291,7 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
      */
     private void createDefaultWriteGraph() throws SimpleRdfException, DPUException {
         LOG.info("Default output graph used.");
-        final URI writeGraphUri;
+        final IRI writeGraphUri;
         if (faultTolerance == null) {
             try {
                 writeGraphUri = writableDataUnit.addNewDataGraph(DEFAULT_SYMBOLIC_NAME);
@@ -299,10 +299,10 @@ public class WritableSimpleRdf extends SimpleRdf implements Extension.Executable
                 throw new SimpleRdfException("Failed to add new graph.", ex);
             }
         } else {
-            writeGraphUri = faultTolerance.execute(new FaultTolerance.ActionReturn<URI>() {
+            writeGraphUri = faultTolerance.execute(new FaultTolerance.ActionReturn<IRI>() {
 
                 @Override
-                public URI action() throws Exception {
+                public IRI action() throws Exception {
                     return writableDataUnit.addNewDataGraph(DEFAULT_SYMBOLIC_NAME);
                 }
             });

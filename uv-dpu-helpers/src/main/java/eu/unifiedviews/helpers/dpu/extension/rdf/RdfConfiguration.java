@@ -24,14 +24,14 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +54,7 @@ import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.helpers.dpu.extension.Extension;
 import eu.unifiedviews.helpers.dpu.extension.faulttolerance.FaultTolerance;
-import info.aduna.iteration.Iterations;
+import org.eclipse.rdf4j.common.iteration.Iterations;
 
 /**
  * Load configuration from RDFDataUnit into configuration classes.
@@ -104,7 +104,7 @@ public class RdfConfiguration implements ConfigTransformer, Extension {
             return;
         }
         // Get class resource type.
-        final URI resourceClass = ValueFactoryImpl.getInstance().createURI(annotation.type());
+        final IRI resourceClass = ValueFactoryImpl.getInstance().createIRI(annotation.type());
         if (wrap == null) {
             RepositoryConnection connection = null;
             try {
@@ -155,11 +155,11 @@ public class RdfConfiguration implements ConfigTransformer, Extension {
         }
     }
 
-    private <TYPE> void loadRdfIntoObject(RepositoryConnection connection, URI resourceClass, TYPE object)
+    private <TYPE> void loadRdfIntoObject(RepositoryConnection connection, IRI resourceClass, TYPE object)
             throws DataUnitException, RepositoryException, SerializationFailure, SerializationRdfFailure {
         final List<RDFDataUnit.Entry> etries = DataUnitUtils.getEntries(sourceDataUnit,
                 RDFDataUnit.Entry.class);
-        final URI [] graphs = RdfDataUnitUtils.asGraphs(etries);
+        final IRI [] graphs = RdfDataUnitUtils.asGraphs(etries);
         // Load subjects.
         final List<Resource> resources = getConfigurationSubject(resourceClass, graphs);
         if (resources.isEmpty()) {
@@ -178,11 +178,11 @@ public class RdfConfiguration implements ConfigTransformer, Extension {
 
     /**
      * 
-     * @param clazz URI of configuration subject.
+     * @param clazz IRI of configuration subject.
      * @param graphs
      * @return Resources of given class.
      */
-    private List<Resource> getConfigurationSubject(URI clazz, URI [] graphs) throws DataUnitException, RepositoryException {
+    private List<Resource> getConfigurationSubject(IRI clazz, IRI [] graphs) throws DataUnitException, RepositoryException {
         final List<Resource> subjects = new LinkedList<>();
         RepositoryConnection conn = null;
         try {

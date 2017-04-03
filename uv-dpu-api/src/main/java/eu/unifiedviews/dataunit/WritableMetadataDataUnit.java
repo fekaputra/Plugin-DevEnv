@@ -16,7 +16,7 @@
  */
 package eu.unifiedviews.dataunit;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 /**
  * {@link MetadataDataUnit} which is writable (adding triples, removing triples).
@@ -42,8 +42,8 @@ public interface WritableMetadataDataUnit extends MetadataDataUnit {
     /**
      * Return the graph name where all new metadata created must be written.
      *
-     * @return URI of the graph
+     * @return IRI of the graph
      * @throws DataUnitException
      */
-    URI getMetadataWriteGraphname() throws DataUnitException;
+    IRI getMetadataWriteGraphname() throws DataUnitException;
 }
