@@ -18,7 +18,7 @@ package eu.unifiedviews.helpers.dataunit.metadata;
 
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Value;
-import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
@@ -270,7 +270,7 @@ public class MetadataUtils {
     @Deprecated
     public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, String predicate)
             throws DataUnitException {
-        return getFirst(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate));
+        return getFirst(dataUnit, symbolicName, SimpleValueFactory.getInstance().createIRI(predicate));
     }
 
     /**
@@ -346,7 +346,7 @@ public class MetadataUtils {
     @Deprecated
     public static String getFirst(MetadataDataUnit dataUnit, String symbolicName, String predicate,
             RepositoryConnection connection) throws DataUnitException {
-        return getFirst(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate),
+        return getFirst(dataUnit, symbolicName, SimpleValueFactory.getInstance().createIRI(predicate),
                 connection);
     }
 
@@ -425,7 +425,7 @@ public class MetadataUtils {
     @Deprecated
     public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value) throws DataUnitException {
-        set(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value);
+        set(dataUnit, symbolicName, SimpleValueFactory.getInstance().createIRI(predicate), value);
     }
 
     /**
@@ -497,7 +497,7 @@ public class MetadataUtils {
     @Deprecated
     public static void set(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
-        set(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value, connection);
+        set(dataUnit, symbolicName, SimpleValueFactory.getInstance().createIRI(predicate), value, connection);
     }
 
     /**
@@ -569,7 +569,7 @@ public class MetadataUtils {
     @Deprecated
     public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value) throws DataUnitException {
-        add(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value);
+        add(dataUnit, symbolicName, SimpleValueFactory.getInstance().createIRI(predicate), value);
     }
 
     /**
@@ -637,7 +637,7 @@ public class MetadataUtils {
     @Deprecated
     public static void add(WritableMetadataDataUnit dataUnit, String symbolicName, String predicate,
             String value, RepositoryConnection connection) throws DataUnitException {
-        add(dataUnit, symbolicName, ValueFactoryImpl.getInstance().createIRI(predicate), value, connection);
+        add(dataUnit, symbolicName, SimpleValueFactory.getInstance().createIRI(predicate), value, connection);
     }
 
     /**

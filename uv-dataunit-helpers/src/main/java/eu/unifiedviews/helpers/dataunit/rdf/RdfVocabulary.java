@@ -16,11 +16,10 @@
  */
 package eu.unifiedviews.helpers.dataunit.rdf;
 
+import eu.unifiedviews.helpers.dataunit.virtualgraph.VirtualGraphHelper;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.ValueFactory;
-import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
-
-import eu.unifiedviews.helpers.dataunit.virtualgraph.VirtualGraphHelper;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 /**
  * Vocabulary definition for RDF.
@@ -34,7 +33,7 @@ public class RdfVocabulary {
     public static final IRI UV_VIRTUAL_URI;
 
     static {
-        final ValueFactory valueFactory = ValueFactoryImpl.getInstance();
+        final ValueFactory valueFactory = SimpleValueFactory.getInstance();
 
         UV_VIRTUAL_URI = valueFactory.createIRI(STR_UV_VIRTUAL_URI);
     }

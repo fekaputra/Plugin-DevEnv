@@ -18,7 +18,8 @@ package eu.unifiedviews.helpers.dataunit.metadata;
 
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.ValueFactory;
-import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+
 import eu.unifiedviews.dataunit.MetadataDataUnit;
 
 /**
@@ -33,7 +34,7 @@ public class MetadataVocabulary {
     public static final IRI UV_SYMBOLIC_NAME;
 
     static {
-        final ValueFactory valueFactory = ValueFactoryImpl.getInstance();
+        final ValueFactory valueFactory = SimpleValueFactory.getInstance();
 
         UV_SYMBOLIC_NAME = valueFactory.createIRI(STR_UV_SYMBOLIC_NAME);
     }

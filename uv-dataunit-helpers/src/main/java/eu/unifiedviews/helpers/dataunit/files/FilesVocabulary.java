@@ -16,11 +16,10 @@
  */
 package eu.unifiedviews.helpers.dataunit.files;
 
+import eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.ValueFactory;
-import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
-
-import eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 /**
  * Vocabulary definition for files.
@@ -34,7 +33,7 @@ public class FilesVocabulary {
     public static final IRI UV_VIRTUAL_PATH;
 
     static {
-        final ValueFactory valueFactory = ValueFactoryImpl.getInstance();
+        final ValueFactory valueFactory = SimpleValueFactory.getInstance();
 
         UV_VIRTUAL_PATH = valueFactory.createIRI(STR_UV_VIRTUAL_PATH);
     }

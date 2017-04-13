@@ -27,7 +27,7 @@ import java.util.List;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.impl.ValueFactoryImpl;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
@@ -104,7 +104,7 @@ public class RdfConfiguration implements ConfigTransformer, Extension {
             return;
         }
         // Get class resource type.
-        final IRI resourceClass = ValueFactoryImpl.getInstance().createIRI(annotation.type());
+        final IRI resourceClass = SimpleValueFactory.getInstance().createIRI(annotation.type());
         if (wrap == null) {
             RepositoryConnection connection = null;
             try {
