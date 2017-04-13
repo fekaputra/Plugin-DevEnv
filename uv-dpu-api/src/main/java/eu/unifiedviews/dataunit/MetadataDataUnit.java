@@ -82,7 +82,7 @@ import eu.unifiedviews.dpu.DPU;
  *   // Build a query
  *   TupleQuery query = connection.prepareTupleQuery(...);
  *   // Start building dataset for query
- *   DatasetImpl dataset = new DatasetImpl();
+ *   SimpleDataset dataset = new SimpleDataset();
  *   // Use all graph URIs the dataunit provides to feed the dataset - we want the query to run over all graphs in this dataunit
  *   for (URI graph : dataUnit.getMetadataGraphnames()) {
  *     dataset.addDefaultGraph(graph);

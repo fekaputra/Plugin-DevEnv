@@ -16,14 +16,14 @@
  */
 package eu.unifiedviews.helpers.dataunit.dataset;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.query.Dataset;
-import org.eclipse.rdf4j.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Dynamic creational class for creating {@link Dataset} instances in .withX() notation.
@@ -164,7 +164,7 @@ public class DatasetBuilder {
      * @return mutable {@link Dataset} implementation which is independent of this class (deep copies values)
      */
     public Dataset build() {
-        DatasetImpl dataset = new DatasetImpl();
+        SimpleDataset dataset = new SimpleDataset();
         for (IRI graphURI : defaultRemoveGraphs) {
             dataset.addDefaultRemoveGraph(graphURI);
         }

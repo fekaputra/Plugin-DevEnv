@@ -21,11 +21,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.query.*;
-import org.eclipse.rdf4j.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
@@ -95,7 +94,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
     /**
      * Dataset used for queries.
      */
-    protected final DatasetImpl dataset;
+    protected final SimpleDataset dataset;
 
     /**
      * String version of {@link #dataset}.
@@ -122,7 +121,7 @@ public class MetadataUtilsInstance<THIS extends MetadataUtilsInstance> implement
         this.closeConnectionOnClose = closeConnectionOnClose;
         // Add read graphs.
         if (useDataset()) {
-            this.dataset = new DatasetImpl();
+            this.dataset = new SimpleDataset();
             for (IRI uri : readGraph) {
                 this.dataset.addDefaultGraph(uri);
             }

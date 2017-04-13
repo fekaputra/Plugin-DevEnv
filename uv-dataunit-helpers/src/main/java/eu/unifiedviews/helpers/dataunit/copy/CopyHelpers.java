@@ -21,7 +21,7 @@ import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.query.UpdateExecutionException;
-import org.eclipse.rdf4j.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
@@ -148,7 +148,7 @@ public class CopyHelpers {
                 update.setBinding(SYMBOLIC_NAME_BINDING,
                         connection.getValueFactory().createLiteral(symbolicName));
 
-                final DatasetImpl dataset = new DatasetImpl();
+                final SimpleDataset dataset = new SimpleDataset();
                 for (IRI item : source.getMetadataGraphnames()) {
                     dataset.addDefaultGraph(item);
                 }

@@ -20,16 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.rdf4j.model.ValueFactory;
-import org.eclipse.rdf4j.query.BindingSet;
-import org.eclipse.rdf4j.query.Dataset;
-import org.eclipse.rdf4j.query.MalformedQueryException;
-import org.eclipse.rdf4j.query.QueryEvaluationException;
-import org.eclipse.rdf4j.query.QueryLanguage;
-import org.eclipse.rdf4j.query.TupleQuery;
-import org.eclipse.rdf4j.query.TupleQueryResult;
-import org.eclipse.rdf4j.query.Update;
-import org.eclipse.rdf4j.query.UpdateExecutionException;
-import org.eclipse.rdf4j.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.query.*;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
@@ -292,7 +284,7 @@ public class MapHelpers {
                 connection = writableDataUnit.getConnection();
             }
             final ValueFactory valueFactory = connection.getValueFactory();
-            final DatasetImpl dataset = new DatasetImpl();
+            final SimpleDataset dataset = new SimpleDataset();
             dataset.addDefaultGraph(writableDataUnit.getMetadataWriteGraphname());
             dataset.setDefaultInsertGraph(writableDataUnit.getMetadataWriteGraphname());
             dataset.addDefaultRemoveGraph(writableDataUnit.getMetadataWriteGraphname());
