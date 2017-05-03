@@ -19,19 +19,11 @@ package eu.unifiedviews.helpers.dataunit.map;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.Update;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.*;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -292,7 +284,7 @@ public class MapHelpers {
                 connection = writableDataUnit.getConnection();
             }
             final ValueFactory valueFactory = connection.getValueFactory();
-            final DatasetImpl dataset = new DatasetImpl();
+            final SimpleDataset dataset = new SimpleDataset();
             dataset.addDefaultGraph(writableDataUnit.getMetadataWriteGraphname());
             dataset.setDefaultInsertGraph(writableDataUnit.getMetadataWriteGraphname());
             dataset.addDefaultRemoveGraph(writableDataUnit.getMetadataWriteGraphname());

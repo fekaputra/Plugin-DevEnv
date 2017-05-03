@@ -21,9 +21,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.Dataset;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
@@ -121,12 +121,12 @@ public class RDFHelper {
      * @return {@link Set} containing all graphs from the rdfDataUnit
      * @throws DataUnitException
      */
-    public static Set<URI> getGraphsURISet(RDFDataUnit rdfDataUnit) throws DataUnitException {
+    public static Set<IRI> getGraphsURISet(RDFDataUnit rdfDataUnit) throws DataUnitException {
         if (rdfDataUnit == null) {
             return new LinkedHashSet<>();
         }
         RDFDataUnit.Iteration iteration = rdfDataUnit.getIteration();
-        Set<URI> resultSet = new LinkedHashSet<>();
+        Set<IRI> resultSet = new LinkedHashSet<>();
         try {
             while (iteration.hasNext()) {
                 RDFDataUnit.Entry entry = iteration.next();
@@ -162,8 +162,8 @@ public class RDFHelper {
      * @return array of URIs containing all graphs from the rdfDataUnit
      * @throws DataUnitException
      */
-    public static URI[] getGraphsURIArray(RDFDataUnit rdfDataUnit) throws DataUnitException {
-        return getGraphsURISet(rdfDataUnit).toArray(new URI[0]);
+    public static IRI[] getGraphsURIArray(RDFDataUnit rdfDataUnit) throws DataUnitException {
+        return getGraphsURISet(rdfDataUnit).toArray(new IRI[0]);
     }
 
     /**
@@ -201,7 +201,7 @@ public class RDFHelper {
      *             when rdfDataUnit does contain any graph or connection errors occur
      */
     public static Dataset getDatasetWithDefaultGraphs(RDFDataUnit rdfDataUnit) throws DataUnitException {
-        Set<URI> graphsUriSet = RDFHelper.getGraphsURISet(rdfDataUnit);
+        Set<IRI> graphsUriSet = RDFHelper.getGraphsURISet(rdfDataUnit);
         if (graphsUriSet.isEmpty()) {
             throw new DataUnitException("Trying to build dataset from dataunit, which contains no data graphs");
         }
@@ -229,7 +229,7 @@ public class RDFHelper {
      * @return new entry
      * @throws DataUnitException
      */
-    public static RDFDataUnit.Entry addGraph(WritableRDFDataUnit rdfDataUnit, URI graphURI)
+    public static RDFDataUnit.Entry addGraph(WritableRDFDataUnit rdfDataUnit, IRI graphURI)
             throws DataUnitException {
         String graphName = graphURI.toString();
         return RdfDataUnitUtils.addGraph(rdfDataUnit, graphName, graphURI);
@@ -244,20 +244,20 @@ public class RDFHelper {
      * @return
      * @throws DataUnitException
      */
-    public static RDFDataUnit.Entry addGraph(WritableRDFDataUnit rdfDataUnit, URI graphURI, final String graphName)
+    public static RDFDataUnit.Entry addGraph(WritableRDFDataUnit rdfDataUnit, IRI graphURI, final String graphName)
             throws DataUnitException {
         return RdfDataUnitUtils.addGraph(rdfDataUnit, graphName, graphURI);
     }
 
     /**
-     * Gets data graph URI of the RDF data unit entry
+     * Gets data graph IRI of the RDF data unit entry
      * 
      * @param entry
      *            RDF data unit entry
-     * @return data graph URI of the entry
+     * @return data graph IRI of the entry
      * @throws DataUnitException
      */
-    public static URI asGraph(RDFDataUnit.Entry entry) throws DataUnitException {
+    public static IRI asGraph(RDFDataUnit.Entry entry) throws DataUnitException {
         return RdfDataUnitUtils.asGraph(entry);
     }
 
@@ -269,7 +269,7 @@ public class RDFHelper {
      * @return List of data graph URIs of the given entries
      * @throws DataUnitException
      */
-    public static URI[] asGraphs(List<RDFDataUnit.Entry> entries) throws DataUnitException {
+    public static IRI[] asGraphs(List<RDFDataUnit.Entry> entries) throws DataUnitException {
         return RdfDataUnitUtils.asGraphs(entries);
     }
 

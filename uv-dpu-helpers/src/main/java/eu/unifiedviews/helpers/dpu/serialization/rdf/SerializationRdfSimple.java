@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.openrdf.model.*;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.*;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,11 +60,11 @@ class SerializationRdfSimple implements SerializationRdf {
         
         final RepositoryConnection connection;
         
-        final URI[] graphs;
+        final IRI[] graphs;
         
         final Configuration config;
 
-        public Context(RepositoryConnection connection, URI[] graphs, Configuration config) {
+        public Context(RepositoryConnection connection, IRI[] graphs, Configuration config) {
             this.connection = connection;
             this.graphs = graphs;
             this.config = config;
@@ -80,7 +80,7 @@ class SerializationRdfSimple implements SerializationRdf {
             config = SerializationUtils.createConfiguration(object.getClass());
         }
         // Get read graphs.
-        final URI[] graphs = RdfDataUnitUtils.asGraphs(context);
+        final IRI[] graphs = RdfDataUnitUtils.asGraphs(context);
         // Load object.
         loadIntoObject(new Context(connection, graphs, config), rootResource, object);
     }
@@ -177,7 +177,7 @@ class SerializationRdfSimple implements SerializationRdf {
      *
      * @param config
      * @param uri
-     * @return Full name of property or null if no match for given URI has been found.
+     * @return Full name of property or null if no match for given IRI has been found.
      */
     private String getPropertyName(Configuration config, String uri) {
         for (String propertyName : config.getProperties().keySet()) {
@@ -281,10 +281,10 @@ class SerializationRdfSimple implements SerializationRdf {
         LOG.debug("loadNewObject(, {}, {})", objectType.getSigners(), objectValue.stringValue());
         Object result;
         // It's a complex object - class.
-        if (objectValue instanceof URI) {
+        if (objectValue instanceof IRI) {
             // Another resource in rdf, create and load data into it.
             result = SerializationUtils.createInstance(objectType);
-            loadIntoObject(context, (URI)objectValue, result);
+            loadIntoObject(context, (IRI)objectValue, result);
         } else {
             // Ctor from string - literal, etc ..
             try {

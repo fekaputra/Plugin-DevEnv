@@ -24,10 +24,10 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
-import org.openrdf.model.URI;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.*;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +58,7 @@ public final class InputOutputUtils {
         
         RepositoryConnection connection = null;
         try {
-            final URI graphUri = target.getDataGraphURI();
+            final IRI graphUri = target.getDataGraphURI();
 
             connection = dataunit.getConnection();
             connection.begin();
@@ -91,7 +91,7 @@ public final class InputOutputUtils {
         RepositoryConnection connection = null;
 
         // Get all contexts.
-        final List<URI> uris = new LinkedList<>();
+        final List<IRI> uris = new LinkedList<>();
         try {
             final RDFDataUnit.Iteration iter = source.getIteration();
             while (iter.hasNext()) {
@@ -103,7 +103,7 @@ public final class InputOutputUtils {
         }
 
         // Load from file to obtaned contexts.
-        final URI[] sourceContexts = uris.toArray(new URI[0]);
+        final IRI[] sourceContexts = uris.toArray(new IRI[0]);
         try (FileOutputStream out = new FileOutputStream(target);
                 OutputStreamWriter os = new OutputStreamWriter(out, Charset.forName("UTF-8"));) {
             connection = source.getConnection();

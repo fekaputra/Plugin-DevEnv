@@ -4,20 +4,20 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom-api</artifactId>
-        <version>2.1.8-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
         <relativePath>../uv-pom-api/pom.xml</relativePath>
     </parent>
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-dpu-api</artifactId>
-    <version>2.1.8-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>Contains execution data processing unit APU definitions.</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-model</artifactId>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-model</artifactId>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -27,8 +27,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-repository-api</artifactId>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-repository-api</artifactId>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

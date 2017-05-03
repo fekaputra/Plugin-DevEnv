@@ -16,7 +16,7 @@
  */
 package eu.unifiedviews.dataunit.rdf;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
@@ -27,16 +27,16 @@ import eu.unifiedviews.dataunit.WritableMetadataDataUnit;
 public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUnit {
 
     /**
-     * Get URI prefix which is unique for this data unit. For generating graph names use
+     * Get IRI prefix which is unique for this data unit. For generating graph names use
      * <p><blockquote><pre>
      * getBaseDataGraphURI() + "/" + "myName"
      * </pre></blockquote></p>
      * to avoid any graph name conflicts (as the prefix is unique already).
      *
-     * @return URI-prefix to be used when generating graph names manually (and then adding them by {@link WritableRDFDataUnit#addExistingDataGraph(String, URI)}
+     * @return URI-prefix to be used when generating graph names manually (and then adding them by {@link WritableRDFDataUnit#addExistingDataGraph(String, IRI)}
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
-    URI getBaseDataGraphURI() throws DataUnitException;
+    IRI getBaseDataGraphURI() throws DataUnitException;
 
     /**
      * Adds an existing graph with supplied symbolic name to the data unit.
@@ -49,7 +49,7 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * @param existingDataGraphURI real graph name
      * @throws DataUnitException when symbolicName is not unique or something goes wrong
      */
-    void addExistingDataGraph(String symbolicName, URI existingDataGraphURI) throws DataUnitException;
+    void addExistingDataGraph(String symbolicName, IRI existingDataGraphURI) throws DataUnitException;
 
     /**
      * Generates unique graph name prefixed by the {@link WritableRDFDataUnit#getBaseDataGraphURI()}.
@@ -60,7 +60,7 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * @return URI of newly created data graph
      * @throws DataUnitException when symbolicName is not unique or something goes wrong
      */
-    URI addNewDataGraph(String symbolicName) throws DataUnitException;
+    IRI addNewDataGraph(String symbolicName) throws DataUnitException;
 
     /**
      * Update an existing graph symbolic name with new existingDataGraphURI
@@ -76,6 +76,6 @@ public interface WritableRDFDataUnit extends RDFDataUnit, WritableMetadataDataUn
      * @deprecated Do not use, may be removed soon and replaced by proper helper.
      */
     @Deprecated
-    void updateExistingDataGraph(String symbolicName, URI newDataGraphURI) throws DataUnitException;
+    void updateExistingDataGraph(String symbolicName, IRI newDataGraphURI) throws DataUnitException;
 }
 

@@ -237,7 +237,7 @@ public class SerializationUtils {
             if (property != null) {
                 propertyConfig = new SerializationRdf.Configuration.Property(property.uri());
             } else {
-                // We need to generate uri -> we need base URI.
+                // We need to generate uri -> we need base IRI.
                 if (baseOntologyURI == null) {
                     throw new SerializationFailure("Missing uri for: " + field.getName()
                             + " and no general base URI is provided.");

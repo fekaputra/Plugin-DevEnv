@@ -16,13 +16,12 @@
  */
 package eu.unifiedviews.helpers.dpu.vaadin.validator;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.Locale;
-
 import com.vaadin.data.Validator;
-
 import eu.unifiedviews.helpers.dpu.localization.Messages;
+import org.eclipse.rdf4j.model.IRI;
+
+import java.net.MalformedURLException;
+import java.util.Locale;
 
 /**
  * Validate given value to be full URL.
@@ -86,8 +85,8 @@ public class UrlValidator implements Validator {
                 throw new InvalidValueException(localization.getString("urlvalidator.invaliduri", valueStr));
             }
 
-        } else if (value instanceof URI) {
-            final String valueStr = ((URI) value).toString();
+        } else if (value instanceof IRI) {
+            final String valueStr = ((IRI) value).toString();
             // null instance does not pass 'instanceof' test.
             if (emptyAllowed && valueStr.isEmpty()) {
                 return;

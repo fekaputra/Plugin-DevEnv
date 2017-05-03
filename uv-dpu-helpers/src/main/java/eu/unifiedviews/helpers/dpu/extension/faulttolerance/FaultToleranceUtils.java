@@ -19,7 +19,7 @@ package eu.unifiedviews.helpers.dpu.extension.faulttolerance;
 import java.io.File;
 import java.util.List;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 import eu.unifiedviews.helpers.dataunit.DataUnitUtils;
 import eu.unifiedviews.helpers.dataunit.files.FilesDataUnitUtils;
 import eu.unifiedviews.dataunit.MetadataDataUnit;
@@ -84,19 +84,19 @@ public class FaultToleranceUtils {
     }
 
     /**
-     * Convert {@link RDFDataUnit.Entry} to {@link URI}
+     * Convert {@link RDFDataUnit.Entry} to {@link IRI}
      * 
      * @param faultTolerance
      * @param entry
      * @return
      * @throws DPUException 
      */
-    public static URI asGraph(FaultTolerance faultTolerance, final RDFDataUnit.Entry entry)
+    public static IRI asGraph(FaultTolerance faultTolerance, final RDFDataUnit.Entry entry)
             throws DPUException {
-        return faultTolerance.execute(new FaultTolerance.ActionReturn<URI>() {
+        return faultTolerance.execute(new FaultTolerance.ActionReturn<IRI>() {
 
             @Override
-            public URI action() throws Exception {
+            public IRI action() throws Exception {
                 return RdfDataUnitUtils.asGraph(entry);
             }
         });
