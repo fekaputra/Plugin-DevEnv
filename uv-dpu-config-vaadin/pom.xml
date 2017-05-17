@@ -4,13 +4,13 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom-api</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
         <relativePath>../uv-pom-api/pom.xml</relativePath>
     </parent>
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-dpu-config-vaadin</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>bundle</packaging>
 
     <repositories>
