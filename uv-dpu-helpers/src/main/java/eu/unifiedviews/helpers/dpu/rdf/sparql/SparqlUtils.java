@@ -16,28 +16,28 @@
  */
 package eu.unifiedviews.helpers.dpu.rdf.sparql;
 
+import static eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance.ENV_PROP_VIRTUOSO;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.*;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.*;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.unifiedviews.helpers.dpu.exec.UserExecContext;
-import eu.unifiedviews.helpers.dataunit.rdf.RdfDataUnitUtils;
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
 import eu.unifiedviews.dpu.DPUException;
-
-import static eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance.ENV_PROP_VIRTUOSO;
+import eu.unifiedviews.helpers.dataunit.rdf.RdfDataUnitUtils;
+import eu.unifiedviews.helpers.dpu.exec.UserExecContext;
 
 /**
  * Utilities for SPARQL execution.
@@ -204,7 +204,7 @@ public class SparqlUtils {
      * 
      * @param clause
      * @param entry
-     * @return Witch clause with given graph URI.
+     * @return Witch clause with given graph IRI.
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
     public static String prepareClause(String clause, RDFDataUnit.Entry entry) throws DataUnitException {
@@ -455,9 +455,9 @@ public class SparqlUtils {
      */
     protected static Dataset prepareDataset(List<RDFDataUnit.Entry> source, RDFDataUnit.Entry target)
             throws DataUnitException {
-        final DatasetImpl dataset = new DatasetImpl();
+        final SimpleDataset dataset = new SimpleDataset();
         // Add read graphs.
-        for (URI uri : RdfDataUnitUtils.asGraphs(source)) {
+        for (IRI uri : RdfDataUnitUtils.asGraphs(source)) {
             dataset.addDefaultGraph(uri);
         }
         // Add write graph.

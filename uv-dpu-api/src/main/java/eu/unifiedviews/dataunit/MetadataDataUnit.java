@@ -19,9 +19,9 @@ package eu.unifiedviews.dataunit;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import eu.unifiedviews.dpu.DPU;
 
@@ -82,7 +82,7 @@ import eu.unifiedviews.dpu.DPU;
  *   // Build a query
  *   TupleQuery query = connection.prepareTupleQuery(...);
  *   // Start building dataset for query
- *   DatasetImpl dataset = new DatasetImpl();
+ *   SimpleDataset dataset = new SimpleDataset();
  *   // Use all graph URIs the dataunit provides to feed the dataset - we want the query to run over all graphs in this dataunit
  *   for (URI graph : dataUnit.getMetadataGraphnames()) {
  *     dataset.addDefaultGraph(graph);
@@ -151,10 +151,10 @@ public interface MetadataDataUnit extends DataUnit {
     /**
      * Returns set of URIs of graphs where metadata are stored. See {@link MetadataDataUnit}:Example 2 for example usage.
      *
-     * @return URI representation of graph where meta data are stored.
+     * @return IRI representation of graph where meta data are stored.
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
-    Set<URI> getMetadataGraphnames() throws DataUnitException;
+    Set<IRI> getMetadataGraphnames() throws DataUnitException;
 
     /**
      * Interface describing one piece of data which can be decorated by metadata. See <b>Example 1</b> at {@link MetadataDataUnit} for example usage.

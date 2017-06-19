@@ -18,7 +18,7 @@ package eu.unifiedviews.helpers.dataunit.rdf;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
@@ -36,17 +36,17 @@ public class RdfDataUnitUtils {
      */
     public static class InMemoryEntry implements RDFDataUnit.Entry {
 
-        private final URI graphUri;
+        private final IRI graphUri;
 
         private final String symbolicName;
 
-        public InMemoryEntry(URI graphUri, String symbolicName) {
+        public InMemoryEntry(IRI graphUri, String symbolicName) {
             this.graphUri = graphUri;
             this.symbolicName = symbolicName;
         }
 
         @Override
-        public URI getDataGraphURI() throws DataUnitException {
+        public IRI getDataGraphURI() throws DataUnitException {
             return graphUri;
         }
 
@@ -71,7 +71,7 @@ public class RdfDataUnitUtils {
      */
     public static InMemoryEntry addGraph(WritableRDFDataUnit dataUnit, String symbolicName)
             throws DataUnitException {
-        final URI uri = dataUnit.addNewDataGraph(symbolicName);
+        final IRI uri = dataUnit.addNewDataGraph(symbolicName);
         return new InMemoryEntry(uri, symbolicName);
     }
 
@@ -84,7 +84,7 @@ public class RdfDataUnitUtils {
      * @return Wrap of a new entry.
      * @throws DataUnitException
      */
-    public static InMemoryEntry addGraph(WritableRDFDataUnit dataUnit, String symbolicName, URI uri)
+    public static InMemoryEntry addGraph(WritableRDFDataUnit dataUnit, String symbolicName, IRI uri)
             throws DataUnitException {
         dataUnit.addExistingDataGraph(symbolicName, uri);
         return new InMemoryEntry(uri, symbolicName);
@@ -92,10 +92,10 @@ public class RdfDataUnitUtils {
 
     /**
      * @param entry
-     * @return URI of graph represented by this entry.
+     * @return IRI of graph represented by this entry.
      * @throws DataUnitException
      */
-    public static URI asGraph(RDFDataUnit.Entry entry) throws DataUnitException {
+    public static IRI asGraph(RDFDataUnit.Entry entry) throws DataUnitException {
         return entry.getDataGraphURI();
     }
 
@@ -106,12 +106,12 @@ public class RdfDataUnitUtils {
      * @return
      * @throws DataUnitException
      */
-    public static URI[] asGraphs(List<RDFDataUnit.Entry> entries) throws DataUnitException {
-        final List<URI> result = new ArrayList<>(entries.size());
+    public static IRI[] asGraphs(List<RDFDataUnit.Entry> entries) throws DataUnitException {
+        final List<IRI> result = new ArrayList<>(entries.size());
         for (RDFDataUnit.Entry entry : entries) {
             result.add(asGraph(entry));
         }
-        return result.toArray(new URI[0]);
+        return result.toArray(new IRI[0]);
     }
 
 }

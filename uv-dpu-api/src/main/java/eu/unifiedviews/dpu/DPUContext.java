@@ -16,12 +16,12 @@
  */
 package eu.unifiedviews.dpu;
 
+import eu.unifiedviews.dataunit.DataUnit;
+
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-
-import eu.unifiedviews.dataunit.DataUnit;
 
 /**
  * Context used by {@link DPU} during their execution process. The context
@@ -113,10 +113,26 @@ public interface DPUContext {
 
     /**
      * To enable more verbose behavior of {@link DPU} execution, or more detailed information processed.
-     * 
+     *
      * @return True if the {@link DPU} is running in debugging mode.
      */
     boolean isDebugging();
+
+    /**
+     * Get information whether the RDF performance optimization is enabled for the given {@link DataUnit}, i.e., may
+     * change its data directly - this is possible when:
+     * 1) the DPU is NOT executed in debug mode (because in this case we need intermediate data)
+     * 2) the {@link DataUnit} of this DPU is the only {@link DataUnit} working on top of the output data produced by the preceding DPU
+     * (so that input data is not accidentally changed for another parallel DPU)
+     * If the DPUs may change the inputs, they may use that for further optimizations - e.g. SPARQL Update
+     * DPU does not need to copy initial data but works directly on top of input data
+     * It makes sense to call such method on the input {@link DataUnit}s.
+     *
+     * @param dataunit
+     *            {@link DataUnit} which should be tested whether it can be optimized
+     * @return True if RDF performance may be optimized for the {@link DataUnit}
+     */
+     boolean isPerformanceOptimizationEnabled(DataUnit dataunit);
 
     /**
      * Return pipeline owner user name
@@ -227,9 +243,16 @@ public interface DPUContext {
     String getDpuInstanceDirectory();
 
     /**
-     * Return the execution environment variables
-     * 
-     * @return
+     * Return the execution environment variables.
+     *
+     * Execution environment variables are collected from config.properties file properties and from runtime properties.
+     *
+     * It may be used to e.g. set up loader correspondingly based on
+     * the particular deployment (test, pre-release, release).
+     *
+     * Such map SHOULD NOT be used for exchanging data between DPUs.
+     *
+     * @return Map of environment variables.
      */
     Map<String, String> getEnvironment();
 

@@ -81,13 +81,12 @@ public class FilesDataUnitUtils {
      * @param dataUnit
      * @param file
      *            File to add, must be under root.
-     * @param path
+     * @param symbolicName
      * @return
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
-    public static FilesDataUnit.Entry addFile(WritableFilesDataUnit dataUnit, File file, String path)
+    public static FilesDataUnit.Entry addFile(WritableFilesDataUnit dataUnit, File file, String symbolicName)
             throws DataUnitException {
-        final String symbolicName = path;
         // Add existing file to DataUnit.
         dataUnit.addExistingFile(symbolicName, file.toURI().toString());
         // Set available metadata.
@@ -95,6 +94,27 @@ public class FilesDataUnitUtils {
         // Return representing instance.
         return new InMemoryEntry(file.toURI().toString(), symbolicName);
     }
+
+    /**
+     * Add file to the DataUnit.
+     *
+     * @param dataUnit
+     * @param file
+     *            File to add, must be under root.
+     * @param symbolicName
+     * @return
+     * @throws eu.unifiedviews.dataunit.DataUnitException
+     */
+    public static FilesDataUnit.Entry addFile(WritableFilesDataUnit dataUnit, File file, String symbolicName, String virtualPath)
+            throws DataUnitException {
+        // Add existing file to DataUnit.
+        dataUnit.addExistingFile(symbolicName, file.toURI().toString());
+        // Set available metadata.
+        MetadataUtils.add(dataUnit, symbolicName, FilesVocabulary.UV_VIRTUAL_PATH, virtualPath);
+        // Return representing instance.
+        return new InMemoryEntry(file.toURI().toString(), symbolicName);
+    }
+
 
     /**
      * @param entry
@@ -110,15 +130,32 @@ public class FilesDataUnitUtils {
      * As this function create new connection is should not be used for greater number of files.
      * 
      * @param dataUnit
+     * @param symbolicName
+     * @return
+     * @throws DataUnitException
+     */
+    public static FilesDataUnit.Entry createFile(WritableFilesDataUnit dataUnit, String symbolicName)
+            throws DataUnitException {
+        final String fileUri = dataUnit.addNewFile(symbolicName);
+        MetadataUtils.add(dataUnit, symbolicName, FilesVocabulary.UV_VIRTUAL_PATH, symbolicName);
+        return new InMemoryEntry(fileUri, symbolicName);
+    }
+
+    /**
+     * Create file of under given path and return {@link File} to it. Also add {@link VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to the new file.
+     * As this function create new connection is should not be used for greater number of files.
+     *
+     * @param dataUnit
      * @param virtualPath
      * @return
      * @throws DataUnitException
      */
-    public static FilesDataUnit.Entry createFile(WritableFilesDataUnit dataUnit, String virtualPath)
+    public static FilesDataUnit.Entry createFile(WritableFilesDataUnit dataUnit, String symbolicName, String virtualPath)
             throws DataUnitException {
-        final String fileUri = dataUnit.addNewFile(virtualPath);
-        MetadataUtils.add(dataUnit, virtualPath, FilesVocabulary.UV_VIRTUAL_PATH, virtualPath);
-        return new InMemoryEntry(fileUri, virtualPath);
+        final String fileUri = dataUnit.addNewFile(symbolicName);
+        MetadataUtils.add(dataUnit, symbolicName, FilesVocabulary.UV_VIRTUAL_PATH, virtualPath);
+        return new InMemoryEntry(fileUri, symbolicName);
     }
+
 
 }

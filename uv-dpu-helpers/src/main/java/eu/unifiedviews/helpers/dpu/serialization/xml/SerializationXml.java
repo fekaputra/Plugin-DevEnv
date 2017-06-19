@@ -24,9 +24,6 @@ import eu.unifiedviews.helpers.dpu.serialization.SerializationFailure;
  * <ul>
  * <li>Support substitution of new items only to first level.</li>
  * </ul>
- * 
- * @author Škoda Petr
- * @deprecated Use {@link SerializationXmlGeneral} instead.
  */
 public interface SerializationXml {
 

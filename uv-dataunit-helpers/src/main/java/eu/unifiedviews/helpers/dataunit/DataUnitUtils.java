@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import eu.unifiedviews.helpers.dataunit.rdf.RdfDataUnitUtils;
 import eu.unifiedviews.dataunit.DataUnitException;
@@ -89,7 +89,7 @@ public class DataUnitUtils {
     public static List<RDFDataUnit.Entry> getMetadataEntries(MetadataDataUnit dataUnit)
             throws DataUnitException {
         final List<RDFDataUnit.Entry> result = new LinkedList<>();
-        for (URI graphName : dataUnit.getMetadataGraphnames()) {
+        for (IRI graphName : dataUnit.getMetadataGraphnames()) {
             result.add(new RdfDataUnitUtils.InMemoryEntry(graphName, METADATA_GRAPH_SYMBOLIC_NAME));
         }
         return result;

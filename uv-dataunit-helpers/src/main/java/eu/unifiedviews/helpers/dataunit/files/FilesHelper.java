@@ -98,7 +98,7 @@ public class FilesHelper {
      * Creates new empty file in the {@link eu.unifiedviews.dataunit.files.WritableFilesDataUnit} with the symbolicName metadata equal to
      * filename.
      * The physical name of the created file is generated and the file is physically stored in the working directory of the given pipeline execution.
-     * It also automatically adds {@link VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
+     * It also automatically adds {@link eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
      * the new file, which is equal to filename.
      * Note: This function creates new connection to the RDF working store (where metadata of entries are held) anytime it is called
      * 
@@ -112,12 +112,33 @@ public class FilesHelper {
         return FilesDataUnitUtils.createFile(filesDataUnit, filename);
     }
 
+
+    /**
+     * Creates new empty file in the {@link eu.unifiedviews.dataunit.files.WritableFilesDataUnit} with the symbolicName metadata equal to
+     * filename.
+     * The physical name of the created file is generated and the file is physically stored in the working directory of the given pipeline execution.
+     * It also automatically adds {@link eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
+     * the new file, which is set to be equal to the provided virtualPath string
+     * Note: This function creates new connection to the RDF working store (where metadata of entries are held) anytime it is called
+     *
+     * @param filesDataUnit
+     *            data unit in which the file should be created
+     * @param filename symbolic name of the file
+     * @param virtualPath virtual path
+     * @return Files entry pointing to the create file.
+     * @throws DataUnitException
+     */
+    public static FilesDataUnit.Entry createFile(WritableFilesDataUnit filesDataUnit, final String filename, final String virtualPath) throws DataUnitException {
+        return FilesDataUnitUtils.createFile(filesDataUnit, filename, virtualPath);
+    }
+
+
     /**
      * Adds existing file to the {@link eu.unifiedviews.dataunit.files.WritableFilesDataUnit}.
      * It automatically creates new entry in the output data unit with the symbolicName and virtualPath metadata equal to filename.
      * The real location and the physical name of the file is as it was when it was created before calling this method. Be careful that the file
      * is not created in the working space of the given pipeline execution.
-     * It also automatically adds {@link VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
+     * It also automatically adds {@link eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
      * the new file, which is equal to filename.
      * Note: This function creates new connection to the RDF working store (where metadata of entries are held) anytime it is called
      * 
@@ -125,7 +146,7 @@ public class FilesHelper {
      *            data unit to which the file should be added
      * @param file
      *            File to be added
-     * @param fileName
+     * @param filename
      *            The name under which the file should be added
      * @throws DPUException
      */
@@ -135,11 +156,33 @@ public class FilesHelper {
 
     /**
      * Adds existing file to the {@link eu.unifiedviews.dataunit.files.WritableFilesDataUnit}.
+     * It automatically creates new entry in the output data unit with the symbolicName equal to filename and virtualPath equal to virtualPath
+     * The real location and the physical name of the file is as it was when it was created before calling this method. Be careful that the file
+     * is not created in the working space of the given pipeline execution.
+     * It also automatically adds {@link eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
+     * the new file, which is equal to filename.
+     * Note: This function creates new connection to the RDF working store (where metadata of entries are held) anytime it is called
+     *
+     * @param filesDataUnit
+     *            data unit to which the file should be added
+     * @param file
+     *            File to be added
+     * @param filename
+     *            The name under which the file should be added
+     * @param virtualPath The virtual path of the file, which may be used e.g. by loaders at the end of the pipeline to load the file to that location
+     * @throws DPUException
+     */
+    public static FilesDataUnit.Entry addFile(WritableFilesDataUnit filesDataUnit, final File file, final String filename, String virtualPath) throws DataUnitException {
+        return FilesDataUnitUtils.addFile(filesDataUnit, file, filename, virtualPath);
+    }
+
+    /**
+     * Adds existing file to the {@link eu.unifiedviews.dataunit.files.WritableFilesDataUnit}.
      * It automatically creates new entry in the output data unit with the symbolicName and virtualPath metadata equal to filename, which is automatically
      * computed as file.getName().
      * The real location and the physical name of the file is as it was when it was created before calling this method. Be careful that the file
      * is not created in the working space of the given pipeline execution.
-     * It also automatically adds {@link VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
+     * It also automatically adds {@link eu.unifiedviews.helpers.dataunit.virtualpath.VirtualPathHelper#PREDICATE_VIRTUAL_PATH} metadata to
      * the new file, which is equal to filename.
      * Note: This function creates new connection to the RDF working store (where metadata of entries are held) anytime it is called
      * 
@@ -147,8 +190,6 @@ public class FilesHelper {
      *            data unit to which the file should be added
      * @param file
      *            File to be added
-     * @param fileName
-     *            The name under which the file should be added
      * @throws DPUException
      */
     public static FilesDataUnit.Entry addFile(WritableFilesDataUnit filesDataUnit, final File file) throws DataUnitException {
