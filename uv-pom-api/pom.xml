@@ -10,7 +10,7 @@
 
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom-api</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>uv-pom-api</name>
     <description>Commons base project for API libraries.</description>
