@@ -30,8 +30,7 @@ public interface Extension {
 
         /**
          * It's called before DPU execution. If exception is thrown here, the DPU's user code is not executed,
-         * no other add-on for this point is called. DPU execution fail. For all other points
-         * {@link #execute(cz.cuni.mff.xrg.uv.boost.dpu.addon.ExecutableAddon.ExecutionPoint)} is called.
+         * no other add-on for this point is called. DPU execution fail.
          */
         PRE_EXECUTE,
         /**
@@ -65,7 +64,7 @@ public interface Extension {
         /**
          *
          * @param execPoint Place where the add-on is executed.
-         * @throws cz.cuni.mff.xrg.uv.boost.dpu.addon.AddonException Throw in case of failure.
+         * @throws ExtensionException
          */
         void execute(ExecutionPoint execPoint) throws ExtensionException;
 
