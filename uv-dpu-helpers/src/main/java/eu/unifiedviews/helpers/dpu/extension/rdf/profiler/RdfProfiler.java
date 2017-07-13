@@ -26,6 +26,7 @@ import eu.unifiedviews.dpu.DPUContext;
 import eu.unifiedviews.dpu.DPUException;
 import eu.unifiedviews.dpu.config.DPUConfigException;
 import eu.unifiedviews.helpers.dataunit.DataUnitUtils;
+import eu.unifiedviews.helpers.dataunit.rdf.RDFHelper;
 import eu.unifiedviews.helpers.dpu.config.ConfigException;
 import eu.unifiedviews.helpers.dpu.config.ConfigHistory;
 import eu.unifiedviews.helpers.dpu.context.Context;
@@ -37,6 +38,7 @@ import eu.unifiedviews.helpers.dpu.extension.ExtensionException;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.AbstractExtensionDialog;
 import eu.unifiedviews.helpers.dpu.vaadin.dialog.Configurable;
 import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.Dataset;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
@@ -101,11 +103,39 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                         ContextUtils.sendError(context.asUserContext(),"rdfprofiler.finished.internalerror", ex, ex.getLocalizedMessage());
                         return;
                     }
+                    //get dataset - set of graphs the queries should operate on
+                    Dataset dataset = RDFHelper.getDatasetWithDefaultGraphs(profiledDataUnit);
+
+//                    for (IRI graph : dataset.getDefaultGraphs()) {
+//                        log.info("Dataset URI to be processed {}", graph.toString());
+//                    }
+
+                    StringBuilder report = new StringBuilder();
+//
+//                    //execute the given sparql query
+//                    String allQueryString = "SELECT ?s ?p ?o WHERE { ?s ?p ?o }";
+//
+////                    TupleQuery queryX = connection.prepareTupleQuery(allQueryString);
+//                    queryX.setDataset(dataset);
+//
+//                    // A QueryResult is also an AutoCloseable resource, so make sure it gets
+//                    // closed when done.
+//                    try (TupleQueryResult resultX = queryX.evaluate()) {
+//                        // we just iterate over all solutions in the result...
+//                        while (resultX.hasNext()) {
+//                            BindingSet solution = resultX.next();
+//                            // ... and print out the value of the variable bindings
+//                            // show it in the dialog
+//                           log.info("Triple {},{},{}", solution.getValue("s").stringValue(), solution.getValue("p").stringValue(), solution.getValue("o").stringValue() );
+//                        }
+//                    }
+
 
                     //execute the given sparql query
                     String countQueryString = "SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }";
                     int  numOfTriples = 0;
                     TupleQuery query = connection.prepareTupleQuery(countQueryString);
+                    query.setDataset(dataset);
                     // A QueryResult is also an AutoCloseable resource, so make sure it gets
                     // closed when done.
                     try (TupleQueryResult result = query.evaluate()) {
@@ -114,16 +144,68 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                             BindingSet solution = result.next();
                             // ... and print out the value of the variable bindings
                             // show it in the dialog
-                            numOfTriples = Integer.valueOf(solution.getValue("count").toString());
+                            numOfTriples = Integer.valueOf(solution.getValue("count").stringValue());
                             break;
                            //log.info("Count: {}", numOfTriples);
                         }
                     }
+                    report.append("<h3>Number of triples: ");
+                    report.append(numOfTriples);
+                    report.append("</h3>");
 
-                    ContextUtils.sendShortInfo(context.asUserContext(), "rdfprofiler.finished.ok", config.profiledDataUnitName);
 
-                    ContextUtils.sendInfo(context.asUserContext(), "rdfprofiler.finished.ok", "rdfprofiler.finished.ok.detail", config.profiledDataUnitName, numOfTriples);
+                    //info about classes:
+                    //get top 100 mostly used classes, including number of instances
+                    String classesQueryString = "select distinct ?class (COUNT(*) as ?count) where {[] a ?class} Group By ?class Order by DESC(?count) LIMIT 100";
+                    query = connection.prepareTupleQuery(classesQueryString);
+                    query.setDataset(dataset);
+                    // A QueryResult is also an AutoCloseable resource, so make sure it gets
+                    // closed when done.
 
+                    report.append("<h3>Top 100 classes</h3>");
+                    report.append("<table style='border-collapse:collapse;width:100%;'><tr><th>Class</th><th>Number of instances</th></tr>");
+                    try (TupleQueryResult result = query.evaluate()) {
+                        // we just iterate over all solutions in the result...
+                        while (result.hasNext()) {
+                            BindingSet solution = result.next();
+                            // ... and print out the value of the variable bindings
+                            // show it in the dialog
+                            report.append("<tr><td>");
+                            report.append(solution.getValue("class").stringValue());
+                            report.append("</td><td>");
+                            report.append(solution.getValue("count").stringValue());
+                            report.append("</td></tr>");
+
+                        }
+                    }
+                    report.append("</table>");
+
+                    //info about properties
+                    String predicatesQueryString = "select distinct ?predicate (COUNT(*) as ?count) where {[] ?predicate []} Group By ?predicate Order by DESC(?count) LIMIT 100";
+                    query = connection.prepareTupleQuery(predicatesQueryString);
+                    query.setDataset(dataset);
+                    // A QueryResult is also an AutoCloseable resource, so make sure it gets
+                    // closed when done.
+
+                    report.append("<h3>Top 100 predicates</h3>");
+                    report.append("<table style='border-collapse:collapse;width:100%;'><tr><th>Predicate</th><th>Number of occurrences</th></tr>");
+                    try (TupleQueryResult result = query.evaluate()) {
+                        // we just iterate over all solutions in the result...
+                        while (result.hasNext()) {
+                            BindingSet solution = result.next();
+                            // ... and print out the value of the variable bindings
+                            // show it in the dialog
+                            report.append("<tr><td>");
+                            report.append(solution.getValue("predicate").stringValue());
+                            report.append("</td><td>");
+                            report.append(solution.getValue("count").stringValue());
+                            report.append("</td></tr>");
+
+                        }
+                    }
+                    report.append("</table>");
+
+                    ContextUtils.sendInfo(context.asUserContext(), "rdfprofiler.finished.ok", report.toString(), config.profiledDataUnitName, numOfTriples);
 
                 } catch (DataUnitException ex) {
                     log.error("Cannot obtain connection to the profiled output data unit", ex);
@@ -182,7 +264,7 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
 
         private ComboBox cbDataUnitProfiled;
 
-//        private Label lNumOfTriples;
+        private Label lInfo;
 
 //        private TextArea txtAskQuery;
 
@@ -214,6 +296,9 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
             }
 
             layout.addComponent(cbDataUnitProfiled);
+
+            lInfo = new Label(RdfProfiler.this.context.asUserContext().tr("dialog.dpu.rdfprofiler.labelInfo"));
+            layout.addComponent(lInfo);
 
 //            txtAskQuery = new TextArea(RdfProfiler.this.context.asUserContext().tr("dialog.dpu.rdfprofiler.sparqlaskquery"));
 //            txtAskQuery.setSizeFull();
