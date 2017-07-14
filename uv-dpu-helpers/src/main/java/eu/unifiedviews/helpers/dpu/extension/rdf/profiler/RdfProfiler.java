@@ -47,6 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,20 +154,26 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                     report.append(numOfTriples);
                     report.append("</h3>");
 
+                    ContextUtils.sendShortInfo(context.asUserContext(), "rdfprofiler.finished.ok", config.profiledDataUnitName, numOfTriples);
+                    report = new StringBuilder();
+
 
                     //info about classes:
                     //get top 100 mostly used classes, including number of instances
-                    String classesQueryString = "select distinct ?class (COUNT(*) as ?count) where {[] a ?class} Group By ?class Order by DESC(?count) LIMIT 100";
+                    String classesQueryString = "select distinct ?class (SAMPLE(?x) as ?sample) (COUNT(*) as ?count) where {?x a ?class} Group By ?class Order by DESC(?count) LIMIT 100";
                     query = connection.prepareTupleQuery(classesQueryString);
                     query.setDataset(dataset);
                     // A QueryResult is also an AutoCloseable resource, so make sure it gets
                     // closed when done.
 
                     report.append("<h3>Top 100 classes</h3>");
-                    report.append("<table style='border-collapse:collapse;width:100%;'><tr><th>Class</th><th>Number of instances</th></tr>");
+                    report.append("<table><tr><th>Class</th><th>Number of instances</th><th>Sample</th></tr>");
+                    int top10counter = 0;
+                    List<String> listOfSamples = new ArrayList<>();
                     try (TupleQueryResult result = query.evaluate()) {
                         // we just iterate over all solutions in the result...
                         while (result.hasNext()) {
+                            top10counter++;
                             BindingSet solution = result.next();
                             // ... and print out the value of the variable bindings
                             // show it in the dialog
@@ -174,21 +181,29 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                             report.append(solution.getValue("class").stringValue());
                             report.append("</td><td>");
                             report.append(solution.getValue("count").stringValue());
+                            report.append("</td><td>");
+                            String sample = solution.getValue("sample").stringValue();
+                            report.append(sample);
                             report.append("</td></tr>");
+                            if (listOfSamples.size() < 5) {
+                                if (!listOfSamples.contains(sample)) {
+                                    listOfSamples.add(sample);
+                                }
+                            }
 
                         }
                     }
                     report.append("</table>");
 
                     //info about properties
-                    String predicatesQueryString = "select distinct ?predicate (COUNT(*) as ?count) where {[] ?predicate []} Group By ?predicate Order by DESC(?count) LIMIT 100";
+                    String predicatesQueryString = "select distinct ?predicate (SAMPLE(?x) as ?sample) (COUNT(*) as ?count) where {[] ?predicate ?x} Group By ?predicate Order by DESC(?count) LIMIT 100";
                     query = connection.prepareTupleQuery(predicatesQueryString);
                     query.setDataset(dataset);
                     // A QueryResult is also an AutoCloseable resource, so make sure it gets
                     // closed when done.
 
                     report.append("<h3>Top 100 predicates</h3>");
-                    report.append("<table style='border-collapse:collapse;width:100%;'><tr><th>Predicate</th><th>Number of occurrences</th></tr>");
+                    report.append("<table><tr><th>Predicate</th><th>Number of occurrences</th><th>Sample</th></tr>");
                     try (TupleQueryResult result = query.evaluate()) {
                         // we just iterate over all solutions in the result...
                         while (result.hasNext()) {
@@ -199,13 +214,63 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                             report.append(solution.getValue("predicate").stringValue());
                             report.append("</td><td>");
                             report.append(solution.getValue("count").stringValue());
+                            report.append("</td><td>");
+                            String sample = solution.getValue("sample").stringValue();
+                            String s1 = Normalizer.normalize(sample, Normalizer.Form.NFD);
+                            String resultString = flattenToAscii(s1);
+                            if (resultString.length() > 100) {
+                                resultString = resultString.substring(0,100) + "...";
+                            }
+                            report.append(resultString);
                             report.append("</td></tr>");
 
                         }
                     }
                     report.append("</table>");
 
-                    ContextUtils.sendInfo(context.asUserContext(), "rdfprofiler.finished.ok", report.toString(), config.profiledDataUnitName, numOfTriples);
+                    ContextUtils.sendInfo(context.asUserContext(), "rdfprofiler.finished.report1", report.toString(), config.profiledDataUnitName, numOfTriples);
+                    report = new StringBuilder();
+                    report.append("<h3>Details about up to 5 sample resources - instances of the most used classes</h3>");
+
+                    //info about particula subjects from top10 (always one example)
+                    String subjectQueryString = "select ?p ?o where {?s ?p ?o} LIMIT 30";
+                    query = connection.prepareTupleQuery(subjectQueryString);
+                    query.setDataset(dataset);
+
+                    for (String oneSample: listOfSamples) {
+                        //log.info("Subj: {}", oneClass);
+                        report.append("<h4>Max 30 predicates/object values for '");
+                        report.append(oneSample);
+                        report.append("'</h4>");
+
+                        report.append("<table><tr><th>Predicate</th><th>Object</th></tr>");
+
+                        query.setBinding("s",connection.getValueFactory().createIRI(oneSample));
+                        //log.info("Query: {}", query.toString());
+                        try (TupleQueryResult result = query.evaluate()) {
+                            // we just iterate over all solutions in the result...
+                            while (result.hasNext()) {
+                                BindingSet solution = result.next();
+                                // ... and print out the value of the variable bindings
+                                // show it in the dialog
+                                report.append("<tr><td>");
+                                report.append(solution.getValue("p").stringValue());
+                                report.append("</td><td>");
+                                String object = solution.getValue("o").stringValue();
+                                String s1 = Normalizer.normalize(object, Normalizer.Form.NFD);
+                                String resultString = flattenToAscii(s1);
+                                if (resultString.length() > 100) {
+                                    resultString = resultString.substring(0,100) + "...";
+                                }
+                                report.append(resultString);
+                                report.append("</td></tr>");
+
+                            }
+                        }
+                        report.append("</table>");
+                    }
+
+                    ContextUtils.sendInfo(context.asUserContext(), "rdfprofiler.finished.report2", report.toString(), config.profiledDataUnitName, numOfTriples);
 
                 } catch (DataUnitException ex) {
                     log.error("Cannot obtain connection to the profiled output data unit", ex);
@@ -226,6 +291,15 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
 
         }
 
+    }
+
+    public String flattenToAscii(String string) {
+        StringBuilder sb = new StringBuilder(string.length());
+        string = Normalizer.normalize(string, Normalizer.Form.NFD);
+        for (char c : string.toCharArray()) {
+            if (c <= '\u007F') sb.append(c);
+        }
+        return sb.toString();
     }
 
     public static class Configuration_V1 {
@@ -257,6 +331,10 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
         }
 
     }
+
+
+
+
 
     public class VaadinDialog extends AbstractExtensionDialog<Configuration_V1> {
 
