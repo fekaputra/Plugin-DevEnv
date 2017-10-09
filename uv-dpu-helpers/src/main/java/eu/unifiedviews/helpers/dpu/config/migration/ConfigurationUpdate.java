@@ -16,18 +16,17 @@
  */
 package eu.unifiedviews.helpers.dpu.config.migration;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.unifiedviews.helpers.dpu.config.ConfigException;
 import eu.unifiedviews.helpers.dpu.config.ConfigManager;
 import eu.unifiedviews.helpers.dpu.config.ConfigTransformer;
 import eu.unifiedviews.helpers.dpu.config.MasterConfigObject;
 import eu.unifiedviews.helpers.dpu.context.Context;
 import eu.unifiedviews.helpers.dpu.extension.Extension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Provide DPU with possibility of opening configuration from "core" DPUs.
@@ -35,7 +34,6 @@ import eu.unifiedviews.helpers.dpu.extension.Extension;
  * As initialization parameter accept name of configuration class that will be used if the configuration
  * class name is missing in stored configuration. This name must respect xStream naming conventions,
  * so it should be same as the one that would be presented in configuration.
- *
  * @author Škoda Petr
  */
 public class ConfigurationUpdate implements ConfigTransformer, Extension {
@@ -50,8 +48,8 @@ public class ConfigurationUpdate implements ConfigTransformer, Extension {
      * Contains pattern used to match old configurations.
      */
     private static final Pattern pattern = Pattern.compile("^<object-stream>\\s*<ConfigurationVersion>.*"
-            + "<className>(?<" + CLASS_GROUP + ">[^<]*)</className>\\s*</ConfigurationVersion>\\s*"
-            + "<Configuration>(?<" + CONFIGURATION_GROUP + ">.+)</Configuration>\\s*</object-stream>\\s*$"
+                    + "<className>(?<" + CLASS_GROUP + ">[^<]*)</className>\\s*</ConfigurationVersion>\\s*"
+                    + "<Configuration>(?<" + CONFIGURATION_GROUP + ">.+)</Configuration>\\s*</object-stream>\\s*$"
             , Pattern.DOTALL);
 
     /**
@@ -84,7 +82,7 @@ public class ConfigurationUpdate implements ConfigTransformer, Extension {
             LOG.info("Missing class name, user given is used insted!");
             className = defaultClassName;
         }
-        
+
         String originalConfiguration = matcher.group(CONFIGURATION_GROUP);
         originalConfiguration = originalConfiguration.
                 replaceAll("&", "&amp;").
@@ -105,7 +103,7 @@ public class ConfigurationUpdate implements ConfigTransformer, Extension {
         newConfiguration.append("&gt;");
 
         newConfiguration.append(originalConfiguration);
-        
+
         newConfiguration.append("&lt;/");
         newConfiguration.append(className);
         newConfiguration.append("&gt;"
