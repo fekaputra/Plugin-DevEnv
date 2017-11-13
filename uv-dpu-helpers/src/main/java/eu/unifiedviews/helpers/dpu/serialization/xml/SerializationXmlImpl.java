@@ -86,6 +86,7 @@ class SerializationXmlImpl implements SerializationXml {
                 };
             }
         };
+        xStream.autodetectAnnotations(true);
     }
 
     @Override
