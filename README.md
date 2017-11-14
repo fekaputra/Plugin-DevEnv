@@ -1,7 +1,7 @@
 UnifiedViews/Plugin-DevEnv
 ==========================
 
-Master branch: [![Build Status](https://travis-ci.org/UnifiedViews/Plugin-DevEnv.svg?branch=master)](https://travis-ci.org/UnifiedViews/Plugin-DevEnv) Develop branch: [![Build Status](https://travis-ci.org/UnifiedViews/Plugin-DevEnv.svg?branch=develop)](https://travis-ci.org/UnifiedViews/Plugin-DevEnv)
+Master branch: ![Build Status](https://travis-ci.org/UnifiedViews/Plugin-DevEnv.svg?branch=master) Develop branch: ![Build Status](https://travis-ci.org/UnifiedViews/Plugin-DevEnv.svg?branch=develop)
 
 UnifiedViews is an open source Extract-Transform-Load (ETL) framework that allows users - publishers, consumers, or analysts - to define, execute, monitor, debug, schedule, and share RDF data processing tasks. The data processing tasks may use custom plugins created by users. UnifiedViews differs from other ETL frameworks by natively supporting RDF data and ontologies. UnifiedViews has a graphical user interface for the administration, debugging, and monitoring of the ETL process. 
 
