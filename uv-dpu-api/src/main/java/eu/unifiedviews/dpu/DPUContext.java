@@ -245,7 +245,7 @@ public interface DPUContext {
     /**
      * Return the execution environment variables.
      *
-     * Execution environment variables are collected from config.properties file properties and from runtime properties.
+     * Execution environment variables are collected from runtime properties.
      *
      * It may be used to e.g. set up loader correspondingly based on
      * the particular deployment (test, pre-release, release).
