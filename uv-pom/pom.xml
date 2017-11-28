@@ -24,7 +24,7 @@
         <unifiedviews.api.version>3.0.1-SNAPSHOT</unifiedviews.api.version>
 
         <!-- Used bundle plugin version. -->
-        <bundle.plugin.version>3.3.0</bundle.plugin.version>
+        <bundle.plugin.version>2.4.0</bundle.plugin.version>
 
         <!-- Versions of 3rd party libraries -->
         <!-- Vaadin -->
