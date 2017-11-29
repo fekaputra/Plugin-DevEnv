@@ -126,20 +126,6 @@
                 <version>${junit.version}</version>
             </dependency>
 
-            <!--
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient-osgi</artifactId>
-                <version>${httpclient.osgi.version}</version>
-
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore-osgi</artifactId>
-                <version>${httpcore.osgi.version}</version>
-            </dependency>
-            -->
-
         </dependencies>
     </dependencyManagement>
 
