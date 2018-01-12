@@ -36,7 +36,7 @@
         <rdf4j.version>2.2.4</rdf4j.version>
         <sesame.version>2.8.11</sesame.version>
         <junit.version>4.12</junit.version>
-        <xstream.version>1.4.10</xstream.version>
+        <xstream.version>1.4.7</xstream.version>
         <commons.io>2.4</commons.io>
         <maven.javadoc.plugin>2.10.4</maven.javadoc.plugin>
 
