@@ -178,18 +178,24 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                             // ... and print out the value of the variable bindings
                             // show it in the dialog
                             report.append("<tr><td>");
-                            report.append(solution.getValue("class").stringValue());
+                            if (solution.getValue("class") != null) {
+                                report.append(solution.getValue("class").stringValue());
+                            }
                             report.append("</td><td>");
-                            report.append(solution.getValue("count").stringValue());
+                            if (solution.getValue("count") != null) {
+                                report.append(solution.getValue("count").stringValue());
+                            }
                             report.append("</td><td>");
-                            String sample = solution.getValue("sample").stringValue();
-                            report.append(sample);
-                            report.append("</td></tr>");
-                            if (listOfSamples.size() < 5) {
-                                if (!listOfSamples.contains(sample)) {
-                                    listOfSamples.add(sample);
+                            if (solution.getValue("sample") != null) {
+                                String sample = solution.getValue("sample").stringValue();
+                                report.append(sample);
+                                if (listOfSamples.size() < 5) {
+                                    if (!listOfSamples.contains(sample)) {
+                                        listOfSamples.add(sample);
+                                    }
                                 }
                             }
+                            report.append("</td></tr>");
 
                         }
                     }
@@ -211,17 +217,23 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                             // ... and print out the value of the variable bindings
                             // show it in the dialog
                             report.append("<tr><td>");
-                            report.append(solution.getValue("predicate").stringValue());
-                            report.append("</td><td>");
-                            report.append(solution.getValue("count").stringValue());
-                            report.append("</td><td>");
-                            String sample = solution.getValue("sample").stringValue();
-                            String s1 = Normalizer.normalize(sample, Normalizer.Form.NFD);
-                            String resultString = flattenToAscii(s1);
-                            if (resultString.length() > 100) {
-                                resultString = resultString.substring(0,100) + "...";
+                            if (solution.getValue("predicate") != null) {
+                                report.append(solution.getValue("predicate").stringValue());
                             }
-                            report.append(resultString);
+                            report.append("</td><td>");
+                            if (solution.getValue("count") != null) {
+                                report.append(solution.getValue("count").stringValue());
+                            }
+                            report.append("</td><td>");
+                            if (solution.getValue("sample") != null) {
+                                String sample = solution.getValue("sample").stringValue();
+                                String s1 = Normalizer.normalize(sample, Normalizer.Form.NFD);
+                                String resultString = flattenToAscii(s1);
+                                if (resultString.length() > 100) {
+                                    resultString = resultString.substring(0, 100) + "...";
+                                }
+                                report.append(resultString);
+                            }
                             report.append("</td></tr>");
 
                         }
@@ -254,15 +266,19 @@ public class RdfProfiler implements Extension, Extension.Executable, Configurabl
                                 // ... and print out the value of the variable bindings
                                 // show it in the dialog
                                 report.append("<tr><td>");
-                                report.append(solution.getValue("p").stringValue());
-                                report.append("</td><td>");
-                                String object = solution.getValue("o").stringValue();
-                                String s1 = Normalizer.normalize(object, Normalizer.Form.NFD);
-                                String resultString = flattenToAscii(s1);
-                                if (resultString.length() > 100) {
-                                    resultString = resultString.substring(0,100) + "...";
+                                if (solution.getValue("p") != null) {
+                                    report.append(solution.getValue("p").stringValue());
                                 }
-                                report.append(resultString);
+                                report.append("</td><td>");
+                                if (solution.getValue("o") != null) {
+                                    String object = solution.getValue("o").stringValue();
+                                    String s1 = Normalizer.normalize(object, Normalizer.Form.NFD);
+                                    String resultString = flattenToAscii(s1);
+                                    if (resultString.length() > 100) {
+                                        resultString = resultString.substring(0, 100) + "...";
+                                    }
+                                    report.append(resultString);
+                                }
                                 report.append("</td></tr>");
 
                             }
