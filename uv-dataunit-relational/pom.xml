@@ -4,12 +4,12 @@
     <parent>
         <groupId>eu.unifiedviews</groupId>
         <artifactId>uv-pom-api</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.1</version>
         <relativePath>../uv-pom-api/pom.xml</relativePath>
     </parent>
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-dataunit-relational</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.1</version>
     <packaging>bundle</packaging>
     <description>Definition of RelationalDataUnit.</description>
 
