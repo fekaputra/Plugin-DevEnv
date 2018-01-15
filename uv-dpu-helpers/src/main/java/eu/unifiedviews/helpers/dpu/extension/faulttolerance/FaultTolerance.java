@@ -227,7 +227,7 @@ public class FaultTolerance implements Extension, Configurable<FaultTolerance.Co
         this.context = context;
         if (context instanceof ExecContext) {
             this.dpuContext = ((ExecContext) context).getDpuContext();
-            LOG.info("\tcontext set to: {}", this.dpuContext);
+            LOG.debug("\tcontext set to: {}", this.dpuContext);
         }
         // Load configuration.
         try {

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.unifiedviews</groupId>
     <artifactId>uv-pom</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <packaging>pom</packaging>
     <name>uv-pom</name>
     
@@ -21,7 +21,7 @@
 
     <properties>
         <!-- UV version for dependencies. -->
-        <unifiedviews.api.version>3.0.0</unifiedviews.api.version>
+        <unifiedviews.api.version>3.0.1</unifiedviews.api.version>
 
         <!-- Used bundle plugin version. -->
         <bundle.plugin.version>2.4.0</bundle.plugin.version>
@@ -31,13 +31,14 @@
         <vaadin.version>7.3.7</vaadin.version>
 
         <!-- other third party libraries versions -->
-        <slf4j.version>1.7.7</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <rdf4j.version>2.2</rdf4j.version>
+        <rdf4j.version>2.2.4</rdf4j.version>
         <sesame.version>2.8.11</sesame.version>
         <junit.version>4.12</junit.version>
         <xstream.version>1.4.7</xstream.version>
         <commons.io>2.4</commons.io>
+        <maven.javadoc.plugin>2.10.4</maven.javadoc.plugin>
 
         <!-- System properties. -->
         <project.java.source.version>1.8</project.java.source.version>
@@ -124,20 +125,6 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
-
-            <!--
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient-osgi</artifactId>
-                <version>${httpclient.osgi.version}</version>
-
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore-osgi</artifactId>
-                <version>${httpcore.osgi.version}</version>
-            </dependency>
-            -->
 
         </dependencies>
     </dependencyManagement>

@@ -16,13 +16,11 @@
  */
 package eu.unifiedviews.helpers.dpu.rdf.sparql;
 
-import static eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance.ENV_PROP_VIRTUOSO;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import eu.unifiedviews.dataunit.DataUnitException;
+import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
+import eu.unifiedviews.dpu.DPUException;
+import eu.unifiedviews.helpers.dataunit.rdf.RdfDataUnitUtils;
+import eu.unifiedviews.helpers.dpu.exec.UserExecContext;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
@@ -33,11 +31,12 @@ import org.eclipse.rdf4j.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.unifiedviews.dataunit.DataUnitException;
-import eu.unifiedviews.dataunit.rdf.RDFDataUnit;
-import eu.unifiedviews.dpu.DPUException;
-import eu.unifiedviews.helpers.dataunit.rdf.RdfDataUnitUtils;
-import eu.unifiedviews.helpers.dpu.exec.UserExecContext;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static eu.unifiedviews.helpers.dataunit.metadata.MetadataUtilsInstance.ENV_PROP_VIRTUOSO;
 
 /**
  * Utilities for SPARQL execution.
@@ -249,7 +248,7 @@ public class SparqlUtils {
      * @param sources
      * @param target
      * @return Prepared SPARQL update query.
-     * @throws cz.cuni.mff.xrg.uv.utils.dataunit.rdf.sparql.SparqlProblemException
+     * @throws SparqlProblemException
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
     public static SparqlUpdateObject createInsert(String query, List<RDFDataUnit.Entry> sources,
@@ -268,7 +267,7 @@ public class SparqlUtils {
      * @param sources
      * @param target
      * @return Prepared SPARQL update query.
-     * @throws cz.cuni.mff.xrg.uv.utils.dataunit.rdf.sparql.SparqlProblemException
+     * @throws SparqlProblemException
      * @throws eu.unifiedviews.dataunit.DataUnitException
      */
     public static SparqlUpdateObject createDelete(String query, List<RDFDataUnit.Entry> sources,
@@ -282,11 +281,12 @@ public class SparqlUtils {
     }
 
     /**
+     *
      * @param query
      * @param sources
      * @return Prepared SPARQL update query.
-     * @throws cz.cuni.mff.xrg.uv.utils.dataunit.rdf.sparql.SparqlProblemException
-     * @throws eu.unifiedviews.dataunit.DataUnitException
+     * @throws SparqlProblemException
+     * @throws DataUnitException
      */
     public static SparqlAskObject createAsk(String query, List<RDFDataUnit.Entry> sources)
             throws SparqlProblemException, DataUnitException {
@@ -298,10 +298,12 @@ public class SparqlUtils {
     }
 
     /**
+     *
      * @param query
-     * @param entries
-     *            If empty the SELECT is executed over the whole repository.
-     * @return Prepared SPARQL select query object.
+     * @param sources If empty the SELECT is executed over the whole repository.
+     * @return Prepared SPARQL select query object
+     * @throws SparqlProblemException
+     * @throws DataUnitException
      */
     public static SparqlSelectObject createSelect(String query, List<RDFDataUnit.Entry> sources)
             throws SparqlProblemException, DataUnitException {
@@ -316,9 +318,9 @@ public class SparqlUtils {
      * 
      * @param connection
      * @param updateObject
-     * @throws org.openrdf.repository.RepositoryException
-     * @throws org.openrdf.query.MalformedQueryException
-     * @throws org.openrdf.query.UpdateExecutionException
+     * @throws RepositoryException
+     * @throws MalformedQueryException
+     * @throws UpdateExecutionException
      */
     public static void execute(RepositoryConnection connection, SparqlUpdateObject updateObject)
             throws RepositoryException, MalformedQueryException, UpdateExecutionException {
@@ -410,7 +412,7 @@ public class SparqlUtils {
      * @param constructObject
      * @param callback
      *            Use null to not iterate over result.
-     * @throws cz.cuni.mff.xrg.uv.utils.dataunit.rdf.sparql.SparqlProblemException
+     * @throws SparqlProblemException
      * @throws MalformedQueryException
      */
     public static void execute(RepositoryConnection connection, UserExecContext context,

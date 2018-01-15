@@ -25,7 +25,7 @@ import eu.unifiedviews.dataunit.DataUnitException;
 import eu.unifiedviews.dataunit.relational.RelationalDataUnit;
 
 /**
- * Helper to make various tasks with {@link TabularDataUnit} friendly.
+ * Helper to make various tasks with {@link RelationalDataUnit} friendly.
  */
 public class RelationalHelper {
     
@@ -58,7 +58,6 @@ public class RelationalHelper {
     /**
      * Exhaust {@link eu.unifiedviews.dataunit.relational.RelationalDataUnit.Iteration} (obtained using {@link eu.unifiedviews.dataunit.relational.RelationalDataUnit#getIteration()}) into one {@link Set} of entries.
      * Beware - if the {@link eu.unifiedviews.dataunit.relational.RelationalDataUnit} contains milions or more entries, storing all of this in single {@link Set} is not a good idea.
-     * Only suitable for work with ~100000 of entries (tables)
      *
      * @param relationalDataUnit data unit from which the iteration will be obtained and exhausted
      * @return {@link Set} containing all entries, keys are symbolic names

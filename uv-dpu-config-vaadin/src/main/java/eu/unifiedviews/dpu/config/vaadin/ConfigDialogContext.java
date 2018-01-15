@@ -37,10 +37,13 @@ public interface ConfigDialogContext {
     Locale getLocale();
 
     /**
-     * Return the execution environment variables
+     * Return the execution environment variables.
+     *
+     * For security reasons, it does not provides any configurations from config.properties!
      * 
      * @return
      */
+    @Deprecated
     Map<String, String> getEnvironment();
 
     /**
